@@ -74,12 +74,18 @@ const AcademyTeaserSection: React.FC = () => {
                     viewport={{ once: true }}
                     className="relative"
                 >
-                    <div className="aspect-[4/5] bg-stone-800 rounded-lg overflow-hidden relative border border-[#d4af37]/20">
+                    <div className="aspect-[4/5] bg-stone-800 rounded-lg overflow-hidden relative border border-[#d4af37]/20 group">
                         <div className="absolute inset-0 bg-black/40 z-10" />
+
+                        {/* Status Badge */}
+                        <div className="absolute top-4 right-4 z-30 bg-[#c07a60] text-white text-[10px] font-bold px-3 py-1 uppercase tracking-widest rounded-full shadow-lg animate-pulse">
+                            Coming Soon
+                        </div>
+
                         <img
-                            src="https://images.unsplash.com/photo-1544367563-12123d8965cd?auto=format&fit=crop&q=80"
+                            src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80"
                             alt="Academy Training"
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700 scale-100 group-hover:scale-110"
                         />
 
                         {/* Overlay Card */}

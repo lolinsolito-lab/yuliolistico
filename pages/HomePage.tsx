@@ -9,6 +9,7 @@ import Membership from '../components/Membership';
 import Newsletter from '../components/Newsletter';
 import GiftCards from '../components/GiftCards';
 
+import SolutionBridge from '../components/SolutionBridge';
 import AcademyTeaserSection from '../components/AcademyTeaserSection';
 
 const HomePage: React.FC = () => {
@@ -17,6 +18,7 @@ const HomePage: React.FC = () => {
       <Hero />
       <Philosophy /> {/* The Hook: Why we exist */}
       <WellnessQuiz /> {/* The Lead Magnet: AI Consultant */}
+      <SolutionBridge /> {/* The Bridge: Why/Necessity */}
       <Services /> {/* The Product: What we do */}
       <AcademyTeaserSection /> {/* The Authority: Psychological Upsell */}
       <GiftCards /> {/* The Revenue: Vouchers */}
