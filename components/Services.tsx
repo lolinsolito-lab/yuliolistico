@@ -58,11 +58,15 @@ const Services: React.FC = () => {
       </div>
 
       {/* ── TIER 3: SOVEREIGNTY (Dark Luxury) ──────── */}
-      <div className="py-32 px-6 bg-[#292524] text-[#faf9f6] relative">
+      <div className="py-32 px-6 bg-[#1c1917] text-[#faf9f6] relative border-t border-[#d4af37]/20">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#1c1917] p-4 border border-[#d4af37]/20 rounded-full">
+          <Crown className="w-6 h-6 text-[#d4af37]" />
+        </div>
+
         <div className="max-w-7xl mx-auto">
           <div className="mb-16 text-center">
             <span className="text-[#d4af37] uppercase tracking-[0.2em] text-xs font-bold flex items-center justify-center gap-2">
-              <Crown className="w-4 h-4" /> La Sovranità
+              La Sovranità
             </span>
             <h2 className="text-4xl md:text-6xl font-serif text-[#f3e9d2] mt-3 mb-6">
               Il Tempo Sospeso.
