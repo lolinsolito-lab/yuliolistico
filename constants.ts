@@ -56,7 +56,7 @@ export const SERVICES: Service[] = [
     description: 'L\'intelligenza del legno contro la stasi della materia. Rimodella non solo la silhouette, ma la tua percezione di leggerezza.',
     duration: '45 min',
     price: '€70',
-    imageUrl: 'https://images.unsplash.com/photo-1598901865264-463778a1705d?q=80&w=800&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=800&auto=format&fit=crop' // New Wood/Spa image
   },
   {
     id: '6',
@@ -65,7 +65,7 @@ export const SERVICES: Service[] = [
     description: 'Pietre laviche di basalto, levigate dal tempo. Posate lungo i meridiani, il calore vulcanico parla direttamente al sistema nervoso.',
     duration: '75 min',
     price: '€95',
-    imageUrl: 'https://images.unsplash.com/photo-1533261642879-88544e5bc52a?q=80&w=800&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1600334129128-685c5582fd35?q=80&w=800&auto=format&fit=crop' // Stone detail
   },
   {
     id: '7',
@@ -74,7 +74,7 @@ export const SERVICES: Service[] = [
     description: 'Sfere di puro sale rosa, scaldate dalla terra. Il calore minerale penetra nei tessuti, scioglie le tensioni e riequilibra l\'energia.',
     duration: '60 min',
     price: '€90',
-    imageUrl: 'https://images.unsplash.com/photo-1591343395902-1ad8b07050fa?q=80&w=800&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=800&auto=format&fit=crop' // Salt/Pink texture
   },
   {
     id: '8',
@@ -83,7 +83,7 @@ export const SERVICES: Service[] = [
     description: 'Un viaggio sensoriale per il tuo viso. Quarzo rosa e giada naturale rilasciano la tensione. Il volto si distende, lo sguardo cambia.',
     duration: '40 min',
     price: '€65',
-    imageUrl: 'https://images.unsplash.com/photo-1631730486784-5456113f6947?q=80&w=800&auto=format&fit=crop' // Luxury detailed Gua Sha
+    imageUrl: 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?q=80&w=800&auto=format&fit=crop' // Crystal/Face tool
   },
   {
     id: '9',
@@ -92,12 +92,21 @@ export const SERVICES: Service[] = [
     description: 'Una tecnica che il mondo orientale conosce da millenni. Le coppette creano un vuoto gentile che risveglia la circolazione profonda.',
     duration: '40 min',
     price: '€60',
-    imageUrl: 'https://images.unsplash.com/photo-1635889240428-3e4b3e817c18?q=80&w=800&auto=format&fit=crop' // Cupping detail
+    imageUrl: 'https://images.unsplash.com/photo-1598901844391-7eb9b51e51c4?q=80&w=800&auto=format&fit=crop' // Cupping/Back detail
+  },
+  {
+    id: '10',
+    title: 'Tibetan Sound Bath — Armonia Sonora',
+    category: TreatmentType.TOOLS,
+    description: 'Non solo orecchie. Le vibrazioni delle campane tibetane attraversano l\'acqua del tuo corpo, riordinando le frequenze disarmoniche.',
+    duration: '45 min',
+    price: '€65',
+    imageUrl: 'https://images.unsplash.com/photo-1519757656910-b99616e2b694?q=80&w=800&auto=format&fit=crop' // Singing bowls
   },
 
   // ── TIER 3: The Sovereignty (Rituali Luxury) ────────────────────────
   {
-    id: '10',
+    id: '11',
     title: 'Ayurveda Soul Connection',
     category: TreatmentType.RITUAL,
     description: 'Il lusso supremo. Oli caldi colati a filo, silenzio assoluto, tempo sospeso. Non è un trattamento, è un viaggio astrale.',
@@ -106,7 +115,7 @@ export const SERVICES: Service[] = [
     imageUrl: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=800&auto=format&fit=crop'
   },
   {
-    id: '11',
+    id: '12',
     title: 'Rituale delle Origini',
     category: TreatmentType.RITUAL,
     description: 'Un viaggio di due ore che ripercorre le radici di Yuli. Si parte dal Thai ancestrale, si attraversa il calore delle pietre vulcaniche, si arriva all\'abbraccio degli oli aromatici.',
@@ -115,7 +124,7 @@ export const SERVICES: Service[] = [
     imageUrl: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop' // Abstract origin/oil
   },
   {
-    id: '12',
+    id: '13',
     title: 'Yuli Signature — L\'Esperienza Totale',
     category: TreatmentType.RITUAL,
     description: 'L\'esperienza che solo Yuli può darti. Scrub minerale, olio caldo, pietre vulcaniche, rituale viso. Quando torni nel mondo, non sei la stessa persona.',
