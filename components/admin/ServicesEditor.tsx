@@ -33,29 +33,71 @@ const ServicesEditor: React.FC = () => {
         setIsModalOpen(true);
     };
 
-    const handleSave = async () => {
-        if (!editingService || !editingService.id) return;
+    const handleNewService = () => {
+        setEditingService({
+            title: 'Nuovo Rituale',
+            category: TreatmentType.MANUAL,
+            price: '€0',
+            duration: '0 min',
+            description: '',
+            soul_description: '',
+            benefits: [],
+            active: false,
+            image_url: 'https://images.unsplash.com/photo-1600334089648-b0d9c3024ea2?auto=format&fit=crop&q=80',
+            order: services.length + 1
+        });
+        setIsModalOpen(true);
+    };
 
-        const { error } = await supabase
-            .from('services')
-            .update({
-                title: editingService.title,
-                price: editingService.price,
-                duration: editingService.duration,
-                description: editingService.description,
-                soul_description: editingService.soul_description,
-                benefits: editingService.benefits,
-                category: editingService.category,
-                image_url: editingService.imageUrl || editingService.image_url
-            })
-            .eq('id', editingService.id);
+    const handleDelete = async (id: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (!window.confirm("Sei sicuro di voler eliminare definitivamente questo rituale? L'azione è irreversibile.")) return;
+
+        const { error } = await supabase.from('services').delete().eq('id', id);
 
         if (!error) {
+            fetchServices();
+        } else {
+            alert("Errore nell'eliminazione: " + error.message);
+        }
+    };
+
+    const handleSave = async () => {
+        if (!editingService) return;
+
+        const serviceData = {
+            title: editingService.title,
+            price: editingService.price,
+            duration: editingService.duration,
+            description: editingService.description,
+            soul_description: editingService.soul_description,
+            benefits: editingService.benefits,
+            category: editingService.category,
+            image_url: editingService.imageUrl || editingService.image_url,
+            active: editingService.active,
+            order: editingService.order
+        };
+
+        let result;
+        if (editingService.id) {
+            // UPDATE
+            result = await supabase
+                .from('services')
+                .update(serviceData)
+                .eq('id', editingService.id);
+        } else {
+            // INSERT
+            result = await supabase
+                .from('services')
+                .insert([serviceData]);
+        }
+
+        if (!result.error) {
             setIsModalOpen(false);
             setEditingService(null);
             fetchServices();
         } else {
-            alert("Errore nel salvataggio: " + error.message);
+            alert("Errore nel salvataggio: " + result.error.message);
         }
     };
 
@@ -136,6 +178,13 @@ const ServicesEditor: React.FC = () => {
                                     >
                                         {service.active ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                                     </button>
+                                    <button
+                                        onClick={(e) => handleDelete(service.id, e)}
+                                        className="p-2 hover:bg-red-50 rounded-full text-stone-300 hover:text-red-500 transition-colors"
+                                        title="Elimina"
+                                    >
+                                        <X className="w-4 h-4" />
+                                    </button>
                                 </div>
                                 <button className={`px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-colors flex items-center gap-2 ${bgClass} text-white shadow-md hover:shadow-lg transform active:scale-95`}>
                                     <Edit2 className="w-3 h-3" /> Modifica
@@ -170,7 +219,10 @@ const ServicesEditor: React.FC = () => {
                         className="w-full pl-10 pr-4 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm focus:outline-none focus:border-[#c07a60] transition-colors"
                     />
                 </div>
-                <button className="px-6 py-2 bg-[#292524] text-white text-xs uppercase tracking-widest rounded-lg hover:bg-[#c07a60] transition-colors flex items-center gap-2 shadow-lg shadow-stone-200">
+                <button
+                    onClick={handleNewService}
+                    className="px-6 py-2 bg-[#292524] text-white text-xs uppercase tracking-widest rounded-lg hover:bg-[#c07a60] transition-colors flex items-center gap-2 shadow-lg shadow-stone-200"
+                >
                     <Plus className="w-4 h-4" /> Nuovo Rituale
                 </button>
             </div>
@@ -219,8 +271,8 @@ const ServicesEditor: React.FC = () => {
                             {/* Modal Header */}
                             <div className="p-6 border-b border-stone-200 bg-white flex justify-between items-center">
                                 <div>
-                                    <h3 className="font-serif text-2xl text-[#292524]">Modifica Rituale</h3>
-                                    <p className="text-xs text-stone-500 uppercase tracking-widest mt-1">ID: {editingService.id?.slice(0, 8)}...</p>
+                                    <h3 className="font-serif text-2xl text-[#292524]">{editingService.id ? 'Modifica Rituale' : 'Nuovo Rituale'}</h3>
+                                    <p className="text-xs text-stone-500 uppercase tracking-widest mt-1">ID: {editingService.id ? editingService.id.slice(0, 8) + '...' : 'Generazione...'}</p>
                                 </div>
                                 <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-stone-100 rounded-full transition-colors">
                                     <X className="w-5 h-5 text-stone-400" />

@@ -25,13 +25,18 @@ export const useServices = () => {
             if (data && data.length > 0) {
                 // Map Supabase snake_case to app camelCase
                 const mappedServices: Service[] = data.map((item: any) => ({
-                    id: item.id, // Supabase ID is usually numeric or uuid, types.ts expects string
+                    id: item.id,
                     title: item.title,
+                    subtitle: item.subtitle,
                     category: item.category as TreatmentType,
                     description: item.description,
+                    soul_description: item.soul_description,
+                    benefits: item.benefits,
+                    program_details: item.program_details,
                     duration: item.duration,
                     price: item.price,
-                    imageUrl: item.image_url
+                    imageUrl: item.image_url,
+                    active: item.active
                 }));
                 setServices(mappedServices);
             } else {
