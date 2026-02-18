@@ -16,7 +16,7 @@ const printConsoleSignature = () => {
 ━━━━━━━━━━━━━━━━━━━━━━━━
 "L'arte del tocco, l'equilibrio dell'anima."
 
-Il tocco che ascolta • Bergamo, Italia
+Ogni corpo ha una storia. Ogni rituale la ascolta. • Bergamo, Italia
 yuliolistico@gmail.com
 
 Ogni corpo ha una storia.

@@ -13,9 +13,9 @@ const Journal: React.FC = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <span className="text-[#849b87] uppercase tracking-[0.2em] text-xs font-bold">The Journal</span>
+            <span className="text-[#849b87] uppercase tracking-[0.2em] text-xs font-bold">L'Archivio Olistico</span>
             <h2 className="text-5xl font-serif text-[#292524] mt-4">
-              Parole per l'Anima.
+              Saggezza Ancestrale.
             </h2>
           </motion.div>
           <motion.button

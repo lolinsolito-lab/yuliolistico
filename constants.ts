@@ -10,7 +10,7 @@ export const BRAND_COLORS = {
 };
 
 export const SERVICES: Service[] = [
-  // ── TIER 1: Tecniche Manuali ──────────────────────────
+  // ── TIER 1: The Essentials (Iniziazione) ──────────────────────────
   {
     id: '1',
     title: 'Thai Royal Flow',
@@ -27,7 +27,7 @@ export const SERVICES: Service[] = [
     description: 'Il tuo corpo trattiene ciò che la mente non lascia andare. Questo rituale insegna alle tue cellule a respirare di nuovo.',
     duration: '50 min',
     price: '€75',
-    imageUrl: 'https://images.unsplash.com/photo-1600334129128-685c5582fd35?q=80&w=800&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=800&auto=format&fit=crop' // Updated image
   },
   {
     id: '3',
@@ -36,19 +36,19 @@ export const SERVICES: Service[] = [
     description: 'Per chi porta il peso del mondo sulle spalle. La forza del bamboo penetra dove le mani non arrivano. Liberatorio.',
     duration: '50 min',
     price: '€75',
-    imageUrl: 'https://images.unsplash.com/photo-1632920202241-118833909e7d?q=80&w=800&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1620147512372-9e00421556bb?q=80&w=800&auto=format&fit=crop' // Fixed broken image
   },
   {
     id: '4',
     title: 'Candle Ritual — Luce Calda',
     category: TreatmentType.MANUAL,
-    description: 'Una candela si scioglie lentamente. La cera diventa olio caldo, profumato, che scorre sul tuo corpo come una carezza liquida. Il silenzio fa il resto. Chiudi gli occhi.',
+    description: 'Una candela si scioglie lentamente. La cera diventa olio caldo, profumato, che scorre sul tuo corpo come una carezza liquida. Il silenzio fa il resto.',
     duration: '45 min',
     price: '€70',
-    imageUrl: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?q=80&w=800&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1602607316744-803274944474?q=80&w=800&auto=format&fit=crop' // Luxury candle image
   },
 
-  // ── TIER 2: Strumenti Naturali ────────────────────────
+  // ── TIER 2: Ancient Tools (Profondità) ────────────────────────
   {
     id: '5',
     title: 'Wood Therapy Sculpt',
@@ -56,46 +56,46 @@ export const SERVICES: Service[] = [
     description: 'L\'intelligenza del legno contro la stasi della materia. Rimodella non solo la silhouette, ma la tua percezione di leggerezza.',
     duration: '45 min',
     price: '€70',
-    imageUrl: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=800&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1598901865264-463778a1705d?q=80&w=800&auto=format&fit=crop'
   },
   {
     id: '6',
     title: 'Hot Stone Volcanic Journey',
     category: TreatmentType.TOOLS,
-    description: 'Pietre laviche di basalto, levigate dal tempo. Posate lungo i meridiani del corpo, il calore vulcanico parla direttamente al tuo sistema nervoso. Silenzio totale. Abbandono puro.',
+    description: 'Pietre laviche di basalto, levigate dal tempo. Posate lungo i meridiani, il calore vulcanico parla direttamente al sistema nervoso.',
     duration: '75 min',
     price: '€95',
-    imageUrl: 'https://images.unsplash.com/photo-1519824145371-296894a0daa9?q=80&w=800&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1533261642879-88544e5bc52a?q=80&w=800&auto=format&fit=crop'
   },
   {
     id: '7',
     title: 'Himalayan Salt Stone Ritual',
     category: TreatmentType.TOOLS,
-    description: 'Sfere di puro sale rosa, scaldate dalla terra. Il calore minerale penetra nei tessuti, scioglie le tensioni profonde e riequilibra l\'energia. Un rituale che viene dall\'Himalaya.',
+    description: 'Sfere di puro sale rosa, scaldate dalla terra. Il calore minerale penetra nei tessuti, scioglie le tensioni e riequilibra l\'energia.',
     duration: '60 min',
     price: '€90',
-    imageUrl: 'https://images.unsplash.com/photo-1600334129128-685c5582fd35?q=80&w=800&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1591343395902-1ad8b07050fa?q=80&w=800&auto=format&fit=crop'
   },
   {
     id: '8',
     title: 'Crystal Gua Sha — Rituale Viso',
     category: TreatmentType.TOOLS,
-    description: 'Un viaggio sensoriale per il tuo viso. Quarzo rosa e giada naturale rilasciano la tensione che non sapevi di trattenere. Il volto si distende, lo sguardo cambia. Rinascita silenziosa.',
+    description: 'Un viaggio sensoriale per il tuo viso. Quarzo rosa e giada naturale rilasciano la tensione. Il volto si distende, lo sguardo cambia.',
     duration: '40 min',
     price: '€65',
-    imageUrl: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=800&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1631730486784-5456113f6947?q=80&w=800&auto=format&fit=crop' // Luxury detailed Gua Sha
   },
   {
     id: '9',
     title: 'Coppettazione Olistica',
     category: TreatmentType.TOOLS,
-    description: 'Una tecnica che il mondo orientale conosce da millenni. Le coppette creano un vuoto gentile che risveglia la circolazione profonda e scioglie le tensioni che nemmeno le mani raggiungono.',
+    description: 'Una tecnica che il mondo orientale conosce da millenni. Le coppette creano un vuoto gentile che risveglia la circolazione profonda.',
     duration: '40 min',
     price: '€60',
-    imageUrl: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=800&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1635889240428-3e4b3e817c18?q=80&w=800&auto=format&fit=crop' // Cupping detail
   },
 
-  // ── TIER 3: Rituali Premium / Pacchetti Luxury ────────
+  // ── TIER 3: The Sovereignty (Rituali Luxury) ────────────────────────
   {
     id: '10',
     title: 'Ayurveda Soul Connection',
@@ -103,25 +103,25 @@ export const SERVICES: Service[] = [
     description: 'Il lusso supremo. Oli caldi colati a filo, silenzio assoluto, tempo sospeso. Non è un trattamento, è un viaggio astrale.',
     duration: '90 min',
     price: '€120',
-    imageUrl: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=800&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=800&auto=format&fit=crop'
   },
   {
     id: '11',
     title: 'Rituale delle Origini',
     category: TreatmentType.RITUAL,
-    description: 'Un viaggio di due ore che ripercorre le radici di Yuli. Si parte dal Thai ancestrale, si attraversa il calore delle pietre vulcaniche, si arriva all\'abbraccio degli oli aromatici. Non è un trattamento. È una rinascita.',
+    description: 'Un viaggio di due ore che ripercorre le radici di Yuli. Si parte dal Thai ancestrale, si attraversa il calore delle pietre vulcaniche, si arriva all\'abbraccio degli oli aromatici.',
     duration: '120 min',
     price: '€160',
-    imageUrl: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=800&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop' // Abstract origin/oil
   },
   {
     id: '12',
     title: 'Yuli Signature — L\'Esperienza Totale',
     category: TreatmentType.RITUAL,
-    description: 'L\'esperienza che solo Yuli può darti. Scrub minerale per liberare la pelle. Olio caldo colato lungo i meridiani. Pietre vulcaniche posate con intenzione. Rituale viso con quarzo rosa. Quando torni nel mondo, non sei la stessa persona.',
+    description: 'L\'esperienza che solo Yuli può darti. Scrub minerale, olio caldo, pietre vulcaniche, rituale viso. Quando torni nel mondo, non sei la stessa persona.',
     duration: '150 min',
     price: '€200',
-    imageUrl: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=800&auto=format&fit=crop'
+    imageUrl: 'https://images.unsplash.com/photo-1616394585067-d3d0411a7fd9?q=80&w=800&auto=format&fit=crop' // High end spa dark moody
   }
 ];
 
