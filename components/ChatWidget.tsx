@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getChatResponse } from '../services/geminiService';
 
 interface Message {
   id: number;
@@ -9,10 +8,12 @@ interface Message {
   sender: 'user' | 'bot';
 }
 
+const STATIC_RESPONSE = "Grazie per il tuo messaggio! 🌿 Per una risposta rapida, scrivimi direttamente a yuliolistico@gmail.com o chiamami al 320 198 26 29. Ti ricontatterò entro 24h! 💌";
+
 const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { id: 0, text: "Namasté! Sono Aura, l'assistente di Yuli. Come posso guidarti nel tuo percorso di benessere oggi?", sender: 'bot' }
+    { id: 0, text: "Ciao! 🌿 Al momento rispondo personalmente. Scrivimi qui il tuo messaggio oppure contattami a yuliolistico@gmail.com e ti ricontatterò entro 24h.", sender: 'bot' }
   ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -26,7 +27,7 @@ const ChatWidget: React.FC = () => {
     scrollToBottom();
   }, [messages, isOpen]);
 
-  const handleSend = async () => {
+  const handleSend = () => {
     if (!inputText.trim()) return;
 
     const userMsg: Message = { id: Date.now(), text: inputText, sender: 'user' };
@@ -34,15 +35,12 @@ const ChatWidget: React.FC = () => {
     setInputText('');
     setIsTyping(true);
 
-    try {
-      const responseText = await getChatResponse(inputText);
-      const botMsg: Message = { id: Date.now() + 1, text: responseText, sender: 'bot' };
+    // Static response after brief delay (no API call)
+    setTimeout(() => {
+      const botMsg: Message = { id: Date.now() + 1, text: STATIC_RESPONSE, sender: 'bot' };
       setMessages(prev => [...prev, botMsg]);
-    } catch (error) {
-      console.error(error);
-    } finally {
       setIsTyping(false);
-    }
+    }, 1200);
   };
 
   return (
@@ -59,7 +57,7 @@ const ChatWidget: React.FC = () => {
             <div className="bg-[#292524] p-4 flex justify-between items-center text-white">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-[#d4af37]" />
-                <span className="font-serif tracking-wide">Aura Assistant</span>
+                <span className="font-serif tracking-wide">Yuli Olistico</span>
               </div>
               <button onClick={() => setIsOpen(false)} className="hover:text-[#c07a60]">
                 <X className="w-5 h-5" />
@@ -103,7 +101,7 @@ const ChatWidget: React.FC = () => {
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Chiedi qualcosa..."
+                placeholder="Scrivi un messaggio..."
                 className="flex-grow bg-[#faf9f6] border border-[#e7e5e4] rounded-full px-4 py-2 text-sm focus:outline-none focus:border-[#849b87]"
               />
               <button

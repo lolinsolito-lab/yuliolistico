@@ -3,13 +3,85 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Yuli Olistico - Benessere Naturale</title>
+    
+    <!-- SEO Primary -->
+    <title>Yuli Olistico | Esperienze di Benessere Premium a Bergamo</title>
+    <meta name="description" content="Esperienze olistiche esclusive a Bergamo e Milano. Massaggio Thai, Ayurveda, Maderoterapia, trattamenti personalizzati. Solo su appuntamento. Prenota ora." />
+    <meta name="keywords" content="massaggio olistico Bergamo, trattamenti benessere Bergamo, massaggio Thai Milano, operatrice olistica Lombardia, massaggio ayurvedico, maderoterapia, benessere naturale" />
+    <meta name="author" content="Yuli Olistico" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://yuliolistico.vercel.app/" />
+    
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Yuli Olistico | Esperienze di Benessere Premium a Bergamo" />
+    <meta property="og:description" content="Esperienze olistiche esclusive a Bergamo e Milano. Solo su appuntamento. Non è per tutti." />
+    <meta property="og:url" content="https://yuliolistico.vercel.app/" />
+    <meta property="og:site_name" content="Yuli Olistico" />
+    <meta property="og:locale" content="it_IT" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Yuli Olistico | Benessere Naturale" />
+    <meta name="twitter:description" content="Esperienze olistiche esclusive a Bergamo. Non è per tutti." />
+    
+    <!-- Geo Tags SEO -->
+    <meta name="geo.region" content="IT-BG" />
+    <meta name="geo.placename" content="Bergamo" />
+    <meta name="geo.position" content="45.6983;9.6773" />
+    <meta name="ICBM" content="45.6983, 9.6773" />
+    
+    <!-- Schema.org LocalBusiness -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HealthAndBeautyBusiness",
+      "name": "Yuli Olistico",
+      "description": "Esperienze olistiche esclusive a Bergamo. Massaggio Thai, Ayurveda, Maderoterapia e trattamenti personalizzati per il benessere naturale.",
+      "url": "https://yuliolistico.vercel.app",
+      "telephone": "+393201982629",
+      "email": "yuliolistico@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bergamo",
+        "addressRegion": "Lombardia",
+        "addressCountry": "IT"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Bergamo" },
+        { "@type": "City", "name": "Milano" },
+        { "@type": "State", "name": "Lombardia" }
+      ],
+      "priceRange": "€€-€€€",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "description": "Solo su appuntamento"
+      },
+      "sameAs": [
+        "https://instagram.com/yuli_olistico"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Esperienze Olistiche",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Thai Royal Flow", "description": "Massaggio thailandese tradizionale" }},
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Rituale Olistico Drenante", "description": "Trattamento olistico drenante" }},
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Wood Therapy Sculpt", "description": "Maderoterapia rimodellante" }},
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Ayurveda Soul Connection", "description": "Rituale ayurvedico premium" }}
+        ]
+      }
+    }
+    </script>
+
+    <!-- Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
     <!-- Favicon SVG -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+    
     <style>
       body {
         font-family: 'Lato', sans-serif;
@@ -18,6 +90,10 @@
       }
       h1, h2, h3, h4, h5, h6 {
         font-family: 'Playfair Display', serif;
+      }
+      /* Smooth Scroll */
+      html {
+        scroll-behavior: smooth;
       }
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
@@ -32,6 +108,11 @@
       }
       ::-webkit-scrollbar-thumb:hover {
         background: #588157;
+      }
+      /* Anti right-click on images */
+      img {
+        -webkit-user-drag: none;
+        user-select: none;
       }
     </style>
 

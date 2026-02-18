@@ -1,75 +1,215 @@
-import React from 'react';
-import { Instagram, Mail, Phone } from 'lucide-react';
+import React, { useState } from 'react';
+import { Instagram, Mail, Phone, X } from 'lucide-react';
 import Logo from './Logo';
+import { AnimatePresence, motion } from 'framer-motion';
+
+// Legal popup modal content
+const LEGAL_CONTENT: Record<string, { title: string; content: string }> = {
+  privacy: {
+    title: 'Privacy Policy',
+    content: `INFORMATIVA SULLA PRIVACY — Yuli Olistico
+
+Titolare del Trattamento: Yuliantini Yuliantini
+Email: yuliolistico@gmail.com
+
+1. DATI RACCOLTI
+Raccogliamo solo i dati necessari per gestire le prenotazioni: nome, cognome, email, numero di telefono. Non raccogliamo dati sensibili relativi alla salute.
+
+2. FINALITÀ DEL TRATTAMENTO
+I dati personali sono trattati per:
+• Gestione delle prenotazioni e comunicazioni relative al servizio
+• Invio di comunicazioni promozionali (solo con consenso esplicito)
+• Adempimenti di legge
+
+3. BASE GIURIDICA
+Il trattamento si basa sul consenso dell'interessato e sull'esecuzione del contratto di servizio.
+
+4. CONSERVAZIONE DEI DATI
+I dati vengono conservati per il tempo strettamente necessario alle finalità per cui sono stati raccolti e comunque non oltre 24 mesi dall'ultimo contatto.
+
+5. DIRITTI DELL'INTERESSATO
+Ai sensi degli artt. 15-22 del GDPR (Reg. UE 2016/679), hai diritto di: accesso, rettifica, cancellazione, limitazione del trattamento, portabilità dei dati e opposizione al trattamento. Per esercitare i tuoi diritti, scrivi a yuliolistico@gmail.com.
+
+6. SICUREZZA
+Adottiamo misure tecniche e organizzative appropriate per proteggere i tuoi dati personali.
+
+Ultimo aggiornamento: Febbraio 2026`
+  },
+  cookies: {
+    title: 'Cookie Policy',
+    content: `COOKIE POLICY — Yuli Olistico
+
+Questo sito utilizza esclusivamente cookie tecnici necessari per il corretto funzionamento del sito. Non utilizziamo cookie di profilazione o di terze parti a fini pubblicitari.
+
+COOKIE TECNICI UTILIZZATI:
+• Cookie di sessione: necessari per la navigazione
+• Cookie di preferenza: per memorizzare le tue scelte
+
+Non è richiesto il consenso per i cookie tecnici ai sensi dell'art. 122 del Codice Privacy (D.Lgs. 196/2003) come modificato dal D.Lgs. 101/2018.
+
+Per qualsiasi domanda, contattaci a yuliolistico@gmail.com.
+
+Ultimo aggiornamento: Febbraio 2026`
+  },
+  terms: {
+    title: 'Termini e Condizioni',
+    content: `TERMINI E CONDIZIONI — Yuli Olistico
+
+1. NATURA DEI SERVIZI
+I servizi offerti da Yuli Olistico sono di natura olistica e del benessere, ai sensi della Legge 4/2013 (Disposizioni in materia di professioni non organizzate). NON sono prestazioni sanitarie, mediche, fisioterapiche o estetiche e non sostituiscono in alcun modo il parere, la diagnosi o il trattamento medico.
+
+2. PRENOTAZIONI E CANCELLAZIONI
+• Le prenotazioni si intendono confermate previo contatto diretto
+• Cancellazione gratuita entro 24 ore prima dell'appuntamento
+• Cancellazione tardiva (< 24h) o mancata presentazione: addebito del 50% del costo del servizio
+• In caso di ritardo superiore a 15 minuti, il trattamento potrebbe essere ridotto o annullato
+
+3. PAGAMENTI
+• Il pagamento avviene al termine del trattamento
+• Metodi accettati: contanti, bonifico bancario, Satispay
+• I prezzi esposti sono comprensivi di IVA ove applicabile
+
+4. RESPONSABILITÀ DEL CLIENTE
+• Il cliente è tenuto a comunicare eventuali condizioni di salute, allergie o patologie prima del trattamento
+• L'operatrice si riserva il diritto di rifiutare o interrompere il trattamento se ritiene che possa essere inappropriato per la persona
+• Yuli Olistico non è responsabile per eventuali reazioni individuali ai trattamenti
+
+5. SERVIZIO A DOMICILIO
+• Per i servizi a domicilio è previsto un supplemento di €20
+• L'area di copertura è limitata a Bergamo e provincia
+• È necessario garantire uno spazio adeguato e pulito per il trattamento
+
+6. PROPRIETÀ INTELLETTUALE
+Tutti i contenuti del sito (testi, immagini, design) sono di proprietà di Yuli Olistico e non possono essere riprodotti senza autorizzazione.
+
+7. FORO COMPETENTE
+Per qualsiasi controversia è competente il Foro di Bergamo.
+
+Ultimo aggiornamento: Febbraio 2026`
+  }
+};
+
+// Legal Popup Component
+const LegalPopup: React.FC<{ type: string; onClose: () => void }> = ({ type, onClose }) => {
+  const content = LEGAL_CONTENT[type];
+  if (!content) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        className="bg-[#faf9f6] max-w-2xl w-full max-h-[80vh] overflow-y-auto rounded-lg shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="sticky top-0 bg-[#292524] text-white p-5 flex justify-between items-center">
+          <h3 className="font-serif text-lg">{content.title}</h3>
+          <button onClick={onClose} className="hover:text-[#c07a60] transition-colors">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        <div className="p-6 md:p-8 text-[#57534e] text-sm leading-relaxed whitespace-pre-line font-light">
+          {content.content}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
 
 const Footer: React.FC = () => {
+  const [activePopup, setActivePopup] = useState<string | null>(null);
+
   return (
-    <footer className="bg-[#292524] text-[#a8a29e] py-16 px-6 border-t border-[#44403c]">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-        
-        <div className="col-span-1 md:col-span-2">
-          <div className="flex items-center gap-2 mb-6">
-            <Logo className="w-8 h-8 text-[#849b87]" color="currentColor" />
-            <h3 className="text-white font-serif text-2xl">Yuli Olistico</h3>
-          </div>
-          <p className="font-light text-sm leading-relaxed max-w-sm mb-6">
-            "L'arte del tocco, l'equilibrio dell'anima."
-            <br/><br/>
-            Un rifugio per ritrovare armonia tra corpo e mente attraverso trattamenti olistici personalizzati.
-          </p>
-          <div className="text-xs opacity-60 max-w-md">
-            <p className="mb-2 font-bold uppercase tracking-wider text-[#c07a60]">Note Legali</p>
-            <p>
-              Attività professionale disciplinata ai sensi della Legge 4/2013. 
-              I trattamenti offerti sono di natura olistica e finalizzati al benessere psicofisico. 
-              Non sono prestazioni sanitarie, mediche o estetiche e non si sostituiscono in alcun modo al parere medico.
+    <>
+      <footer className="bg-[#292524] text-[#a8a29e] py-10 px-6 border-t border-[#44403c]">
+        {/* Main Footer Content - Compact 3 columns */}
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+
+          {/* Brand + Quote */}
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <Logo className="w-6 h-6 text-[#849b87]" color="currentColor" />
+              <h3 className="text-white font-serif text-lg">Yuli Olistico</h3>
+            </div>
+            <p className="font-light text-xs leading-relaxed max-w-xs opacity-80">
+              "L'arte del tocco, l'equilibrio dell'anima."
             </p>
           </div>
+
+          {/* Contacts */}
+          <div className="space-y-2 text-sm font-light">
+            <p className="text-white text-xs uppercase tracking-widest mb-3 font-bold">Contatti</p>
+            <a href="mailto:yuliolistico@gmail.com" className="flex items-center gap-2 hover:text-white transition-colors">
+              <Mail className="w-3.5 h-3.5" /> yuliolistico@gmail.com
+            </a>
+            <a href="tel:+393201982629" className="flex items-center gap-2 hover:text-white transition-colors">
+              <Phone className="w-3.5 h-3.5" /> +39 320 198 26 29
+            </a>
+            <a href="https://instagram.com/yuli_olistico" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition-colors">
+              <Instagram className="w-3.5 h-3.5" /> @yuli_olistico
+            </a>
+          </div>
+
+          {/* Info */}
+          <div className="space-y-2 text-sm font-light">
+            <p className="text-white text-xs uppercase tracking-widest mb-3 font-bold">Info</p>
+            <p className="opacity-80">📍 Bergamo e provincia</p>
+            <p className="opacity-80">🗓️ Solo su appuntamento</p>
+            <p className="opacity-80">🚗 Servizio a domicilio disponibile</p>
+          </div>
+
         </div>
 
-        <div>
-          <h4 className="text-white font-serif text-lg mb-6">Contatti</h4>
-          <div className="space-y-4 text-sm font-light">
-            <div className="flex items-center gap-3 hover:text-white transition-colors cursor-pointer">
-              <Mail className="w-4 h-4" />
-              <span>info@yuliolistico.com</span>
-            </div>
-            <div className="flex items-center gap-3 hover:text-white transition-colors cursor-pointer">
-              <Phone className="w-4 h-4" />
-              <span>+39 333 000 0000</span>
-            </div>
-            <div className="flex items-center gap-3 hover:text-white transition-colors cursor-pointer">
-              <Instagram className="w-4 h-4" />
-              <span>@yuli_olistico</span>
+        {/* Legal disclaimer + links */}
+        <div className="max-w-7xl mx-auto mt-8 pt-6 border-t border-white/10">
+          <p className="text-[10px] text-white/40 leading-relaxed max-w-3xl mb-4">
+            Attività professionale disciplinata ai sensi della Legge 4/2013. I trattamenti offerti sono di natura olistica
+            e finalizzati al benessere psicofisico. Non sono prestazioni sanitarie, mediche o estetiche e non si sostituiscono
+            in alcun modo al parere medico.
+          </p>
+
+          <div className="flex flex-col md:flex-row justify-between items-center gap-3 text-[10px] uppercase tracking-widest opacity-50">
+            <span>© 2026 Yuli Olistico. Tutti i diritti riservati.</span>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setActivePopup('privacy')}
+                className="hover:text-white hover:opacity-100 transition-all cursor-pointer bg-transparent border-none text-[#a8a29e] uppercase tracking-widest text-[10px]"
+              >
+                Privacy Policy
+              </button>
+              <span className="text-white/20">|</span>
+              <button
+                onClick={() => setActivePopup('cookies')}
+                className="hover:text-white hover:opacity-100 transition-all cursor-pointer bg-transparent border-none text-[#a8a29e] uppercase tracking-widest text-[10px]"
+              >
+                Cookie Policy
+              </button>
+              <span className="text-white/20">|</span>
+              <button
+                onClick={() => setActivePopup('terms')}
+                className="hover:text-white hover:opacity-100 transition-all cursor-pointer bg-transparent border-none text-[#a8a29e] uppercase tracking-widest text-[10px]"
+              >
+                Termini e Condizioni
+              </button>
             </div>
           </div>
         </div>
+      </footer>
 
-        <div>
-          <h4 className="text-white font-serif text-lg mb-6">Orari Studio</h4>
-          <ul className="space-y-2 text-sm font-light">
-            <li className="flex justify-between max-w-[200px]">
-              <span>Lun - Ven</span>
-              <span>09:00 - 19:00</span>
-            </li>
-            <li className="flex justify-between max-w-[200px]">
-              <span>Sabato</span>
-              <span>10:00 - 17:00</span>
-            </li>
-            <li className="flex justify-between max-w-[200px]">
-              <span>Domenica</span>
-              <span>Riposo</span>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-      
-      <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs uppercase tracking-widest opacity-50">
-        <span>© 2024 Yuli Olistico. All rights reserved.</span>
-        <span>P.IVA 00000000000</span>
-      </div>
-    </footer>
+      {/* Legal Popups */}
+      <AnimatePresence>
+        {activePopup && (
+          <LegalPopup type={activePopup} onClose={() => setActivePopup(null)} />
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

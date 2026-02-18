@@ -72,10 +72,11 @@ export const TESTIMONIALS: Testimonial[] = [
   }
 ];
 
+// Collaborazioni REALI dal CV di Yuliantini
 export const COLLABORATIONS = [
-  "Baan Thai Exclusive",
-  "San Marco Wellness",
-  "HG Luxury Retreat"
+  "Baan Thai",
+  "I Club San Marco Spa & Wellness",
+  "HG Abetone & Piramidi Resort"
 ];
 
 export const JOURNAL_POSTS = [

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 const Journal: React.FC = () => {
   return (
-    <section className="py-32 bg-white px-6 border-t border-[#292524]/5">
+    <section id="journal" className="py-32 bg-white px-6 border-t border-[#292524]/5">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16">
           <motion.div
@@ -18,11 +18,11 @@ const Journal: React.FC = () => {
               Parole per l'Anima.
             </h2>
           </motion.div>
-          <motion.button 
-             initial={{ opacity: 0 }}
-             whileInView={{ opacity: 1 }}
-             viewport={{ once: true }}
-             className="hidden md:flex items-center gap-2 text-[#c07a60] uppercase tracking-widest text-xs font-bold border-b border-[#c07a60] pb-1 hover:text-[#292524] hover:border-[#292524] transition-all"
+          <motion.button
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="hidden md:flex items-center gap-2 text-[#c07a60] uppercase tracking-widest text-xs font-bold border-b border-[#c07a60] pb-1 hover:text-[#292524] hover:border-[#292524] transition-all"
           >
             Leggi l'Editoriale <ArrowUpRight className="w-4 h-4" />
           </motion.button>
@@ -30,7 +30,7 @@ const Journal: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {JOURNAL_POSTS.map((post, index) => (
-            <motion.article 
+            <motion.article
               key={post.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -40,10 +40,10 @@ const Journal: React.FC = () => {
             >
               <div className="overflow-hidden mb-6 aspect-[3/2] relative">
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10" />
-                <img 
-                  src={post.image} 
-                  alt={post.title} 
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" 
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
               <div className="flex flex-col gap-3">
