@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabaseClient';
 import { migrateData } from '../utils/dataMigration';
+import ServicesEditor from '../components/admin/ServicesEditor';
 import { LogOut, LayoutDashboard, Sparkles, BookOpen, Settings, Loader, Database } from 'lucide-react';
 
 const AdminDashboard: React.FC = () => {
@@ -10,6 +11,7 @@ const AdminDashboard: React.FC = () => {
     const navigate = useNavigate();
     const [servicesCount, setServicesCount] = useState<number | null>(null);
     const [isMigrating, setIsMigrating] = useState(false);
+    const [activeView, setActiveView] = useState<'overview' | 'services' | 'journal' | 'settings'>('overview');
 
     useEffect(() => {
         if (!loading && !user) {
@@ -20,7 +22,6 @@ const AdminDashboard: React.FC = () => {
     }, [user, loading, navigate]);
 
     async function checkDatabase() {
-        // Check if services table has data
         const { count } = await supabase.from('services').select('*', { count: 'exact', head: true });
         setServicesCount(count);
     }
@@ -43,6 +44,17 @@ const AdminDashboard: React.FC = () => {
 
     if (loading) return <div className="min-h-screen bg-[#faf9f6] flex items-center justify-center">Loading...</div>;
 
+    const NavItem = ({ id, label, icon: Icon }: any) => (
+        <div
+            onClick={() => setActiveView(id)}
+            className={`px-4 py-3 rounded-lg cursor-pointer flex items-center gap-3 transition-colors ${activeView === id ? 'bg-[#c07a60]/20 text-[#c07a60]' : 'text-white/70 hover:bg-white/5'
+                }`}
+        >
+            <Icon className="w-5 h-5" />
+            <span className="text-sm font-medium">{label}</span>
+        </div>
+    );
+
     return (
         <div className="min-h-screen bg-[#faf9f6] flex">
             {/* Sidebar */}
@@ -53,25 +65,10 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 <nav className="flex-grow p-4 space-y-2">
-                    <div className="px-4 py-3 bg-[#c07a60]/20 text-[#c07a60] rounded-lg cursor-pointer flex items-center gap-3">
-                        <LayoutDashboard className="w-5 h-5" />
-                        <span className="text-sm font-medium">Panoramica</span>
-                    </div>
-
-                    <div className="px-4 py-3 text-white/70 hover:bg-white/5 rounded-lg cursor-pointer flex items-center gap-3 transition-colors">
-                        <Sparkles className="w-5 h-5" />
-                        <span className="text-sm font-medium">Servizi & Rituali</span>
-                    </div>
-
-                    <div className="px-4 py-3 text-white/70 hover:bg-white/5 rounded-lg cursor-pointer flex items-center gap-3 transition-colors">
-                        <BookOpen className="w-5 h-5" />
-                        <span className="text-sm font-medium">Journal & Blog</span>
-                    </div>
-
-                    <div className="px-4 py-3 text-white/70 hover:bg-white/5 rounded-lg cursor-pointer flex items-center gap-3 transition-colors">
-                        <Settings className="w-5 h-5" />
-                        <span className="text-sm font-medium">Configurazione</span>
-                    </div>
+                    <NavItem id="overview" label="Panoramica" icon={LayoutDashboard} />
+                    <NavItem id="services" label="Servizi & Rituali" icon={Sparkles} />
+                    <NavItem id="journal" label="Journal & Blog" icon={BookOpen} />
+                    <NavItem id="settings" label="Configurazione" icon={Settings} />
                 </nav>
 
                 <div className="p-4 border-t border-white/10">
@@ -89,68 +86,84 @@ const AdminDashboard: React.FC = () => {
                 <header className="flex justify-between items-center mb-10">
                     <div>
                         <h2 className="font-serif text-3xl text-[#292524] mb-1">Benvenuta, Yuli</h2>
-                        <p className="text-[#57534e]">Ecco cosa succede nel tuo Impero oggi.</p>
+                        <p className="text-[#57534e]">
+                            {activeView === 'overview' && "Ecco cosa succede nel tuo Impero oggi."}
+                            {activeView === 'services' && "Gestisci il listino e la visibilità dei rituali."}
+                            {activeView === 'journal' && "Condividi la tua saggezza con l'Impero."}
+                            {activeView === 'settings' && "Configurazioni tecniche del sistema."}
+                        </p>
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <div className="px-4 py-1 bg-[#849b87]/10 text-[#849b87] rounded-full text-xs font-bold uppercase tracking-wider">
+                        <div className="px-4 py-1 bg-[#849b87]/10 text-[#849b87] rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-[#849b87] animate-pulse" />
                             System Online
                         </div>
                     </div>
                 </header>
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                    <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
-                        <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Servizi Attivi</div>
-                        <div className="text-4xl font-serif text-[#292524]">
-                            {servicesCount !== null ? servicesCount : <Loader className="animate-spin w-6 h-6" />}
-                        </div>
-                    </div>
-                    <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
-                        <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Articoli Blog</div>
-                        <div className="text-4xl font-serif text-[#292524]">3</div>
-                    </div>
-                    <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
-                        <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Stato Database</div>
-                        <div className="text-4xl font-serif text-[#849b87] flex items-center gap-2">
-                            <Database className="w-6 h-6" /> Connesso
-                        </div>
-                    </div>
-                </div>
+                {/* ── VIEWS ── */}
 
-                {/* MIGRATION ALERT 🚨 */}
-                {servicesCount === 0 && (
-                    <div className="bg-amber-50 border border-amber-200 p-6 rounded-xl mb-8 flex flex-col md:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 duration-700">
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shadow-sm">
-                                <Settings className="w-6 h-6" />
+                {activeView === 'overview' && (
+                    <>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                                <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Servizi Attivi</div>
+                                <div className="text-4xl font-serif text-[#292524]">
+                                    {servicesCount !== null ? servicesCount : <Loader className="animate-spin w-6 h-6" />}
+                                </div>
                             </div>
-                            <div>
-                                <h4 className="font-serif text-lg text-amber-900 mb-1">Database Vuoto</h4>
-                                <p className="text-sm text-amber-800/80">Il sistema è pronto ma non ci sono dati. <br />Vuoi importare i 13 servizi e gli articoli di default?</p>
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                                <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Articoli Blog</div>
+                                <div className="text-4xl font-serif text-[#292524]">3</div>
+                            </div>
+                            <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
+                                <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Stato Database</div>
+                                <div className="text-4xl font-serif text-[#849b87] flex items-center gap-2">
+                                    <Database className="w-6 h-6" /> Connesso
+                                </div>
                             </div>
                         </div>
-                        <button
-                            onClick={handleMigration}
-                            disabled={isMigrating}
-                            className="px-6 py-3 bg-amber-600 text-white font-bold text-xs uppercase tracking-widest rounded-lg hover:bg-amber-700 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                        >
-                            {isMigrating ? <Loader className="animate-spin w-4 h-4" /> : <Database className="w-4 h-4" />}
-                            {isMigrating ? 'Importazione in corso...' : 'Inizializza Database'}
-                        </button>
-                    </div>
+
+                        {/* MIGRATION ALERT 🚨 */}
+                        {servicesCount === 0 && (
+                            <div className="bg-amber-50 border border-amber-200 p-6 rounded-xl mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shadow-sm">
+                                        <Settings className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-serif text-lg text-amber-900 mb-1">Database Vuoto</h4>
+                                        <p className="text-sm text-amber-800/80">Il sistema è pronto ma non ci sono dati. <br />Vuoi importare i 13 servizi e gli articoli di default?</p>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={handleMigration}
+                                    disabled={isMigrating}
+                                    className="px-6 py-3 bg-amber-600 text-white font-bold text-xs uppercase tracking-widest rounded-lg hover:bg-amber-700 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                >
+                                    {isMigrating ? <Loader className="animate-spin w-4 h-4" /> : <Database className="w-4 h-4" />}
+                                    {isMigrating ? 'Importazione in corso...' : 'Inizializza Database'}
+                                </button>
+                            </div>
+                        )}
+                    </>
                 )}
 
-                <div className="bg-white rounded-xl shadow-sm border border-stone-100 p-8 text-center min-h-[300px] flex flex-col items-center justify-center">
-                    <div className="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mb-4">
-                        <LayoutDashboard className="w-6 h-6 text-stone-400" />
+                {activeView === 'services' && <ServicesEditor />}
+
+                {/* Placeholders for other views */}
+                {(activeView === 'journal' || activeView === 'settings') && (
+                    <div className="bg-white rounded-xl shadow-sm border border-stone-100 p-12 text-center flex flex-col items-center justify-center">
+                        <div className="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mb-4">
+                            <Settings className="w-6 h-6 text-stone-400" />
+                        </div>
+                        <h3 className="font-serif text-xl text-[#292524] mb-2">Modulo in Costruzione</h3>
+                        <p className="text-stone-500 max-w-md mx-auto">
+                            La sezione {activeView} sarà disponibile nella prossima release (Phase 7B).
+                        </p>
                     </div>
-                    <p className="text-stone-500 max-w-md mx-auto mb-6">
-                        Seleziona una voce dal menu laterale per iniziare a gestire i contenuti.
-                        <br />(Funzionalità Editors in arrivo nella Phase 5C)
-                    </p>
-                </div>
+                )}
             </main>
         </div>
     );
