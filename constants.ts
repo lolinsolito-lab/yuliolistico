@@ -50,10 +50,37 @@ export const SERVICES: Service[] = [
     id: '5',
     title: 'Ayurveda Soul Connection',
     category: TreatmentType.RITUAL,
-    description: 'Il lusso supremo. Oli caldi colati a filo, silenzio assoluto, tempo sospeso. Non è un massaggio, è un viaggio astrale.',
+    description: 'Il lusso supremo. Oli caldi colati a filo, silenzio assoluto, tempo sospeso. Non è un trattamento, è un viaggio astrale.',
     duration: '90 min',
     price: '€120',
     imageUrl: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    id: '6',
+    title: 'Himalayan Salt Stone Ritual',
+    category: TreatmentType.TOOLS,
+    description: 'Sfere di puro sale rosa, scaldate dalla terra. Il calore minerale penetra nei tessuti, scioglie le tensioni profonde e riequilibra l\'energia. Un rituale che viene dall\'Himalaya.',
+    duration: '60 min',
+    price: '€90',
+    imageUrl: 'https://images.unsplash.com/photo-1600334129128-685c5582fd35?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    id: '7',
+    title: 'Crystal Gua Sha — Rituale Viso',
+    category: TreatmentType.RITUAL,
+    description: 'Un viaggio sensoriale per il tuo viso. Quarzo rosa e giada naturale rilasciano la tensione che non sapevi di trattenere. Il volto si distende, lo sguardo cambia. Rinascita silenziosa.',
+    duration: '40 min',
+    price: '€65',
+    imageUrl: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    id: '8',
+    title: 'Hot Stone Volcanic Journey',
+    category: TreatmentType.TOOLS,
+    description: 'Pietre laviche di basalto, levigaste dal tempo. Posate lungo i meridiani del corpo, il calore vulcanico parla direttamente al tuo sistema nervoso. Silenzio totale. Abbandono puro.',
+    duration: '75 min',
+    price: '€95',
+    imageUrl: 'https://images.unsplash.com/photo-1519824145371-296894a0daa9?q=80&w=800&auto=format&fit=crop'
   }
 ];
 
@@ -62,13 +89,13 @@ export const TESTIMONIALS: Testimonial[] = [
     id: '1',
     name: 'Elena R.',
     role: 'CEO & Founder',
-    text: '"Non vado da Yuli per farmi massaggiare. Vado per ricordarmi chi sono. Vale ogni singolo euro."'
+    text: '"Non vado da Yuli per farmi trattare. Vado per ricordarmi chi sono. Vale ogni singolo euro."'
   },
   {
     id: '2',
     name: 'Marco B.',
     role: 'Atleta Pro',
-    text: '"Ho girato fisioterapisti in tutta Europa. Nessuno ha la sua sensibilità. È un livello superiore."'
+    text: '"Ho girato professionisti in tutta Europa. Nessuno ha la sua sensibilità. È un livello superiore."'
   }
 ];
 

@@ -209,39 +209,39 @@ const Footer: React.FC = () => {
         <div className="mt-6 -mx-6 -mb-10 overflow-hidden bg-[#1c1917] py-2.5 border-t border-white/5">
           <div className="ticker-track">
             <div className="ticker-content">
-              <span>Il lusso del silenzio</span>
+              <span>Il silenzio è il vero lusso</span>
+              <span className="ticker-dot">✦</span>
+              <span>Esperienze su misura</span>
               <span className="ticker-dot">✦</span>
               <span>Solo su appuntamento</span>
               <span className="ticker-dot">✦</span>
-              <span>Olistico non è estetico</span>
+              <span>Non è per tutti. È per te</span>
               <span className="ticker-dot">✦</span>
-              <span>Rituali su misura</span>
+              <span>Ogni corpo racconta</span>
               <span className="ticker-dot">✦</span>
-              <span>Yuli Olistico © 2026</span>
+              <span>8+ anni di eccellenza</span>
               <span className="ticker-dot">✦</span>
-              <span>Bergamo & Milano</span>
+              <span>Bergamo &amp; Milano</span>
               <span className="ticker-dot">✦</span>
-              <span>Ogni corpo ha una storia</span>
-              <span className="ticker-dot">✦</span>
-              <span>Non è per tutti</span>
+              <span>Benessere, mai estetica</span>
               <span className="ticker-dot">✦</span>
             </div>
             <div className="ticker-content" aria-hidden="true">
-              <span>Il lusso del silenzio</span>
+              <span>Il silenzio è il vero lusso</span>
+              <span className="ticker-dot">✦</span>
+              <span>Esperienze su misura</span>
               <span className="ticker-dot">✦</span>
               <span>Solo su appuntamento</span>
               <span className="ticker-dot">✦</span>
-              <span>Olistico non è estetico</span>
+              <span>Non è per tutti. È per te</span>
               <span className="ticker-dot">✦</span>
-              <span>Rituali su misura</span>
+              <span>Ogni corpo racconta</span>
               <span className="ticker-dot">✦</span>
-              <span>Yuli Olistico © 2026</span>
+              <span>8+ anni di eccellenza</span>
               <span className="ticker-dot">✦</span>
-              <span>Bergamo & Milano</span>
+              <span>Bergamo &amp; Milano</span>
               <span className="ticker-dot">✦</span>
-              <span>Ogni corpo ha una storia</span>
-              <span className="ticker-dot">✦</span>
-              <span>Non è per tutti</span>
+              <span>Benessere, mai estetica</span>
               <span className="ticker-dot">✦</span>
             </div>
           </div>

@@ -31,7 +31,7 @@ const Philosophy: React.FC = () => {
               Qui è diverso. O ci tieni alla qualità del tempo che dedichi a te stessa, o questo non è il posto per te.
             </p>
             <p>
-              Yuli Olistico non vende "massaggi". Vende un ritorno al corpo.
+              Yuli Olistico non vende "trattamenti". Vende un ritorno al corpo.
               Ogni rituale è un'opera unica, disegnata sulla tua energia del momento.
               Non seguiamo protocolli standard. Seguiamo te.
             </p>

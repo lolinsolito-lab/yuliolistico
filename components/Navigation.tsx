@@ -66,7 +66,7 @@ const Navigation: React.FC = () => {
             </span>
             <span className={`text-[0.6rem] tracking-[0.2em] uppercase mt-1 ${isScrolled ? 'text-[#849b87]' : 'text-[#849b87] md:text-[#f3e9d2]'
               }`}>
-              Benessere Naturale
+              L'arte del tocco consapevole
             </span>
           </div>
         </button>
@@ -86,8 +86,8 @@ const Navigation: React.FC = () => {
           <Link
             to="/booking"
             className={`px-6 py-2 border transition-all duration-300 ${isScrolled
-                ? 'border-[#849b87] text-[#849b87] hover:bg-[#849b87] hover:text-white'
-                : 'border-white text-white hover:bg-white hover:text-[#849b87]'
+              ? 'border-[#849b87] text-[#849b87] hover:bg-[#849b87] hover:text-white'
+              : 'border-white text-white hover:bg-white hover:text-[#849b87]'
               }`}
           >
             Prenota

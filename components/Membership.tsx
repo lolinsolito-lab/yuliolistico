@@ -42,12 +42,12 @@ const Membership: React.FC = () => {
             <div className="flex flex-col gap-3 p-6 bg-white/5 border border-white/10 hover:border-[#d4af37]/50 transition-colors">
               <Key className="w-6 h-6 text-[#d4af37]" />
               <h4 className="font-serif text-lg">Secret Menu</h4>
-              <p className="text-sm text-white/60">Accesso a trattamenti antichi non disponibili al pubblico.</p>
+              <p className="text-sm text-white/60">Accesso a rituali ancestrali non disponibili al pubblico.</p>
             </div>
             <div className="flex flex-col gap-3 p-6 bg-white/5 border border-white/10 hover:border-[#d4af37]/50 transition-colors">
               <Crown className="w-6 h-6 text-[#d4af37]" />
               <h4 className="font-serif text-lg">Yuli Signature</h4>
-              <p className="text-sm text-white/60">Sessione di consulenza trimestrale per mappare la tua evoluzione.</p>
+              <p className="text-sm text-white/60">Sessione di ascolto profondo trimestrale per mappare la tua evoluzione.</p>
             </div>
           </div>
 
