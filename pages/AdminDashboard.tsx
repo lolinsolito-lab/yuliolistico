@@ -1,17 +1,45 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, LayoutDashboard, Sparkles, BookOpen, Settings } from 'lucide-react';
+import { supabase } from '../lib/supabaseClient';
+import { migrateData } from '../utils/dataMigration';
+import { LogOut, LayoutDashboard, Sparkles, BookOpen, Settings, Loader, Database } from 'lucide-react';
 
 const AdminDashboard: React.FC = () => {
     const { user, signOut, loading } = useAuth();
     const navigate = useNavigate();
+    const [servicesCount, setServicesCount] = useState<number | null>(null);
+    const [isMigrating, setIsMigrating] = useState(false);
 
     useEffect(() => {
         if (!loading && !user) {
             navigate('/login');
+        } else if (user) {
+            checkDatabase();
         }
     }, [user, loading, navigate]);
+
+    async function checkDatabase() {
+        // Check if services table has data
+        const { count } = await supabase.from('services').select('*', { count: 'exact', head: true });
+        setServicesCount(count);
+    }
+
+    async function handleMigration() {
+        if (!window.confirm("Attenzione: Stai per inizializzare il database con i dati di default. Continuare?")) return;
+
+        setIsMigrating(true);
+        const result = await migrateData();
+
+        if (result.errors.length > 0) {
+            alert(`Errore durante la migrazione:\n${result.errors.join('\n')}`);
+        } else {
+            alert(`✅ Migrazione Completata!\n\n• ${result.services} Servizi importati\n• ${result.posts} Articoli importati\n• Settings configurati`);
+        }
+
+        await checkDatabase();
+        setIsMigrating(false);
+    }
 
     if (loading) return <div className="min-h-screen bg-[#faf9f6] flex items-center justify-center">Loading...</div>;
 
@@ -75,7 +103,9 @@ const AdminDashboard: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                     <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
                         <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Servizi Attivi</div>
-                        <div className="text-4xl font-serif text-[#292524]">13</div>
+                        <div className="text-4xl font-serif text-[#292524]">
+                            {servicesCount !== null ? servicesCount : <Loader className="animate-spin w-6 h-6" />}
+                        </div>
                     </div>
                     <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
                         <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Articoli Blog</div>
@@ -83,9 +113,34 @@ const AdminDashboard: React.FC = () => {
                     </div>
                     <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100">
                         <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Stato Database</div>
-                        <div className="text-4xl font-serif text-[#849b87]">Connesso</div>
+                        <div className="text-4xl font-serif text-[#849b87] flex items-center gap-2">
+                            <Database className="w-6 h-6" /> Connesso
+                        </div>
                     </div>
                 </div>
+
+                {/* MIGRATION ALERT 🚨 */}
+                {servicesCount === 0 && (
+                    <div className="bg-amber-50 border border-amber-200 p-6 rounded-xl mb-8 flex flex-col md:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-top-4 duration-700">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 shadow-sm">
+                                <Settings className="w-6 h-6" />
+                            </div>
+                            <div>
+                                <h4 className="font-serif text-lg text-amber-900 mb-1">Database Vuoto</h4>
+                                <p className="text-sm text-amber-800/80">Il sistema è pronto ma non ci sono dati. <br />Vuoi importare i 13 servizi e gli articoli di default?</p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={handleMigration}
+                            disabled={isMigrating}
+                            className="px-6 py-3 bg-amber-600 text-white font-bold text-xs uppercase tracking-widest rounded-lg hover:bg-amber-700 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        >
+                            {isMigrating ? <Loader className="animate-spin w-4 h-4" /> : <Database className="w-4 h-4" />}
+                            {isMigrating ? 'Importazione in corso...' : 'Inizializza Database'}
+                        </button>
+                    </div>
+                )}
 
                 <div className="bg-white rounded-xl shadow-sm border border-stone-100 p-8 text-center min-h-[300px] flex flex-col items-center justify-center">
                     <div className="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mb-4">
