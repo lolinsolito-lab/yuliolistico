@@ -31,10 +31,10 @@ const About: React.FC = () => {
             </h2>
             <div className="space-y-6 text-[#57534e] text-lg leading-relaxed font-light">
               <p>
-                Ogni cammino ha un'origine silenziosa. Il mio inizia in Indonesia, dove il tocco è considerato sacro, una forma di cura tramandata attraverso le generazioni.
+                Ogni cammino ha un'origine silenziosa. Il mio inizia in Indonesia, dove il tocco è considerato sacro, un linguaggio antico che precede la parola.
               </p>
               <p>
-                Da oltre 8 anni, ho portato questa eredità in Italia, fondendo la saggezza orientale con le tecniche occidentali apprese tra Bergamo e Bologna.
+                Da oltre 8 anni, porto questa eredità in Italia. Non ho solo applicato tecniche; ho fuso l'istinto ancestrale d'Oriente con i più rigorosi protocolli occidentali, perfezionati a fianco di Maestri internazionali.
               </p>
               <p>
                 Io sono <button
@@ -46,7 +46,7 @@ const About: React.FC = () => {
                     <Sparkles className="w-3 h-3" />
                   </span>
                 </button>.
-                Non offro solo un trattamento, ma uno spazio sacro. Qui, il tempo rallenta. Le mani ascoltano ciò che la voce non dice.
+                Non offro solo un trattamento, ma un tempio di ascolto. Qui, il tempo non esiste. Le mani sentono ciò che la mente nasconde. È una fusione unica: rigore tecnico e sensibilità invisibile.
               </p>
               <p className="font-medium text-[#292524]">
                 Scegliamo sempre l'eccellenza.
@@ -101,17 +101,17 @@ const About: React.FC = () => {
 
               <div className="w-full md:w-3/5 p-10 md:p-14 flex flex-col justify-center">
                 <span className="text-[#c07a60] uppercase tracking-[0.2em] text-xs font-bold mb-2">La Visione</span>
-                <h3 className="text-4xl font-serif text-[#292524] mb-6">L'Arte del Tocco</h3>
+                <h3 className="text-4xl font-serif text-[#292524] mb-6">Sentire oltre la pelle.</h3>
 
-                <div className="space-y-4 text-[#57534e] font-light leading-relaxed">
+                <div className="space-y-4 text-[#57534e] font-light leading-relaxed italic">
                   <p>
-                    "Sono nata in una terra dove il massaggio non è un lusso, ma una medicina quotidiana. In Indonesia, impariamo a toccare prima ancora di imparare a parlare."
+                    "Nella mia terra, non impariamo a massaggiare. Impariamo a sentire. Prima ancora che le mie mani ti tocchino, la mia energia ti ha già accolto."
                   </p>
                   <p>
-                    "Il mio metodo non segue protocolli rigidi. Segue l'energia. Ogni seduta è un dialogo silenzioso tra le mie mani e la tua storia. Non cerco di 'aggiustare' il corpo, ma di ricordargli la sua perfezione originale."
+                    "Il corpo non mente mai. Trattiene il freddo delle parole non dette, il calore delle emozioni vissute, il peso dei giorni frenetici. Io non 'lavoro' sui muscoli. Io dialogo con quelle memorie."
                   </p>
                   <p>
-                    "L'eccellenza non è un atto, è un'abitudine. È la scelta quotidiana di non accontentarsi della superficie."
+                    "Il mio rituale è restituirti al tuo silenzio originale. Dove non sei madre, non sei manager, non sei ruolo. Sei solo vita che scorre. Pura. Intatta."
                   </p>
                 </div>
 
