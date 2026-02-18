@@ -204,6 +204,84 @@ const Footer: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Scrolling Ticker Bar */}
+        <div className="mt-6 -mx-6 -mb-10 overflow-hidden bg-[#1c1917] py-2.5 border-t border-white/5">
+          <div className="ticker-track">
+            <div className="ticker-content">
+              <span>Il lusso del silenzio</span>
+              <span className="ticker-dot">✦</span>
+              <span>Solo su appuntamento</span>
+              <span className="ticker-dot">✦</span>
+              <span>Olistico non è estetico</span>
+              <span className="ticker-dot">✦</span>
+              <span>Rituali su misura</span>
+              <span className="ticker-dot">✦</span>
+              <span>Yuli Olistico © 2026</span>
+              <span className="ticker-dot">✦</span>
+              <span>Bergamo & Milano</span>
+              <span className="ticker-dot">✦</span>
+              <span>Ogni corpo ha una storia</span>
+              <span className="ticker-dot">✦</span>
+              <span>Non è per tutti</span>
+              <span className="ticker-dot">✦</span>
+            </div>
+            <div className="ticker-content" aria-hidden="true">
+              <span>Il lusso del silenzio</span>
+              <span className="ticker-dot">✦</span>
+              <span>Solo su appuntamento</span>
+              <span className="ticker-dot">✦</span>
+              <span>Olistico non è estetico</span>
+              <span className="ticker-dot">✦</span>
+              <span>Rituali su misura</span>
+              <span className="ticker-dot">✦</span>
+              <span>Yuli Olistico © 2026</span>
+              <span className="ticker-dot">✦</span>
+              <span>Bergamo & Milano</span>
+              <span className="ticker-dot">✦</span>
+              <span>Ogni corpo ha una storia</span>
+              <span className="ticker-dot">✦</span>
+              <span>Non è per tutti</span>
+              <span className="ticker-dot">✦</span>
+            </div>
+          </div>
+          <style>{`
+            .ticker-track {
+              display: flex;
+              width: max-content;
+              animation: ticker-scroll 30s linear infinite;
+            }
+            .ticker-content {
+              display: flex;
+              align-items: center;
+              gap: 0;
+              white-space: nowrap;
+              flex-shrink: 0;
+            }
+            .ticker-content span {
+              font-size: 10px;
+              text-transform: uppercase;
+              letter-spacing: 0.15em;
+              color: rgba(168, 162, 158, 0.5);
+              padding: 0 12px;
+              font-family: 'Lato', sans-serif;
+              font-weight: 300;
+            }
+            .ticker-dot {
+              color: rgba(132, 155, 135, 0.4) !important;
+              font-size: 6px !important;
+              padding: 0 4px !important;
+            }
+            @keyframes ticker-scroll {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+            .ticker-track:hover {
+              animation-play-state: paused;
+            }
+          `}</style>
+        </div>
+
       </footer>
 
       {/* Legal Popups */}
