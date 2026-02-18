@@ -1,29 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Star } from 'lucide-react';
 import { useBooking } from '../context/BookingContext';
+import { supabase } from '../lib/supabaseClient';
 
-
-const tickerPhrases = [
-  'Il silenzio è il vero lusso',
-  'Esperienze su misura',
-  'Solo su appuntamento',
-  'Non è per tutti. È per te',
-  'Ogni corpo racconta',
-  '8+ anni di eccellenza',
-  'Bergamo & Milano',
-  'Benessere, mai estetica',
-];
+const defaultContent = {
+  title: "NON È <br />PER TUTTI.",
+  subtitle: "Se cerchi un trattamento veloce, scorri oltre. <br />Se cerchi di <span class='text-[#d4af37] italic font-serif'>riconnetterti</span> con la parte più profonda di te, sei arrivata a casa.",
+  backgroundImage: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1920&auto=format&fit=crop",
+  tickerPhrases: [
+    'Il silenzio è il vero lusso',
+    'Esperienze su misura',
+    'Solo su appuntamento',
+    'Non è per tutti. È per te',
+    'Ogni corpo racconta',
+    '8+ anni di eccellenza',
+    'Bergamo & Milano',
+    'Benessere, mai estetica',
+  ]
+};
 
 const Hero: React.FC = () => {
   const { openBooking } = useBooking();
+  const [content, setContent] = useState(defaultContent);
+
+  useEffect(() => {
+    fetchContent();
+  }, []);
+
+  const fetchContent = async () => {
+    const { data } = await supabase
+      .from('site_content')
+      .select('content')
+      .eq('section', 'hero')
+      .single();
+
+    if (data?.content) {
+      setContent({ ...defaultContent, ...data.content });
+    }
+  };
 
   return (
     <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
       {/* Background Layer - Cinematic Dark Tone */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1920&auto=format&fit=crop"
+          src={content.backgroundImage}
           alt="Luxury Ritual Atmosphere"
           className="w-full h-full object-cover opacity-80 scale-105 filter contrast-110 brightness-75"
         />
@@ -52,20 +74,16 @@ const Hero: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
           className="text-6xl md:text-8xl lg:text-9xl font-serif text-[#f3e9d2] leading-[0.9] tracking-tighter mb-8 mix-blend-overlay"
-        >
-          NON È <br />
-          PER TUTTI.
-        </motion.h1>
+          dangerouslySetInnerHTML={{ __html: content.title }}
+        />
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.6 }}
           className="text-lg md:text-2xl font-light text-white/90 mb-12 max-w-xl leading-relaxed"
-        >
-          Se cerchi un trattamento veloce, scorri oltre. <br />
-          Se cerchi di <span className="text-[#d4af37] italic font-serif">riconnetterti</span> con la parte più profonda di te, sei arrivata a casa.
-        </motion.p>
+          dangerouslySetInnerHTML={{ __html: content.subtitle }}
+        />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -99,7 +117,7 @@ const Hero: React.FC = () => {
       <div className="absolute bottom-0 left-0 w-full bg-black/30 backdrop-blur-md border-t border-white/10 py-4 overflow-hidden">
         <div className="hero-ticker-track">
           <div className="hero-ticker-content">
-            {tickerPhrases.map((phrase, i) => (
+            {content.tickerPhrases.map((phrase, i) => (
               <React.Fragment key={i}>
                 <span>{phrase}</span>
                 <span className="hero-ticker-dot">✦</span>
@@ -107,7 +125,7 @@ const Hero: React.FC = () => {
             ))}
           </div>
           <div className="hero-ticker-content" aria-hidden="true">
-            {tickerPhrases.map((phrase, i) => (
+            {content.tickerPhrases.map((phrase, i) => (
               <React.Fragment key={`dup-${i}`}>
                 <span>{phrase}</span>
                 <span className="hero-ticker-dot">✦</span>

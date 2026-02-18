@@ -1,8 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
+import { supabase } from '../lib/supabaseClient';
+
+const defaultContent = {
+  badgeText: "Il Manifesto 2026",
+  titleLine1: "Siamo l'antidoto",
+  titleLine2: "alla fretta.",
+  text1: "Là fuori è una catena di montaggio. Corpi trattati come oggetti da riparare in 30 minuti. Rumore. Luci al neon. Freddezza.",
+  quote: "Qui è diverso. O ci tieni alla qualità del tempo che dedichi a te stessa, o questo non è il posto per te.",
+  text2: "Yuli Olistico non vende \"trattamenti\". Vende un ritorno al corpo. Ogni rituale è un'opera unica, disegnata sulla tua energia del momento. Non seguiamo protocolli standard. Seguiamo te.",
+  imageOverlayQuote: "La qualità non ha fretta. La tua anima ringrazia.",
+  imageOverlayAuthor: "Yuliantini",
+  imageUrl: "https://images.unsplash.com/photo-1591343395082-e120087004b4?q=80&w=800&auto=format&fit=crop"
+};
 
 const Philosophy: React.FC = () => {
+  const [content, setContent] = useState(defaultContent);
+
+  useEffect(() => {
+    fetchContent();
+  }, []);
+
+  const fetchContent = async () => {
+    const { data } = await supabase
+      .from('site_content')
+      .select('content')
+      .eq('section', 'philosophy')
+      .single();
+
+    if (data?.content) {
+      setContent({ ...defaultContent, ...data.content });
+    }
+  };
+
   return (
     <section id="filosofia" className="py-32 bg-[#292524] text-[#faf9f6] relative overflow-hidden">
 
@@ -37,28 +68,25 @@ const Philosophy: React.FC = () => {
           >
             <div className="flex items-center gap-3 mb-6">
               <Sparkles className="w-4 h-4 text-[#d4af37] animate-pulse" />
-              <span className="text-[#849b87] uppercase tracking-[0.3em] text-xs font-bold">Il Manifesto 2026</span>
+              <span className="text-[#849b87] uppercase tracking-[0.3em] text-xs font-bold">{content.badgeText}</span>
             </div>
 
             <h2 className="text-5xl md:text-6xl font-serif mt-6 leading-tight">
-              Siamo l'antidoto <br />
-              alla <span className="italic text-[#d4af37] drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]">fretta</span>.
+              {content.titleLine1} <br />
+              <span className="italic text-[#d4af37] drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]">{content.titleLine2}</span>
             </h2>
           </motion.div>
 
           <div className="space-y-6 text-lg font-light text-white/80 leading-relaxed">
             <p>
-              Là fuori è una catena di montaggio. Corpi trattati come oggetti da riparare in 30 minuti.
-              Rumore. Luci al neon. Freddezza.
+              {content.text1}
             </p>
             <p className="text-xl text-white font-normal border-l-2 border-[#d4af37] pl-6 py-2 relative">
               <span className="absolute -left-[9px] -top-2 text-[#d4af37] text-4xl leading-none opacity-50">"</span>
-              Qui è diverso. O ci tieni alla qualità del tempo che dedichi a te stessa, o questo non è il posto per te.
+              {content.quote}
             </p>
             <p>
-              Yuli Olistico non vende "trattamenti". Vende un ritorno al corpo.
-              Ogni rituale è un'opera unica, disegnata sulla tua energia del momento.
-              Non seguiamo protocolli standard. Seguiamo te.
+              {content.text2}
             </p>
           </div>
         </div>
@@ -75,7 +103,7 @@ const Philosophy: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-[#292524] via-transparent to-transparent opacity-60 z-10" />
 
             <motion.img
-              src="https://images.unsplash.com/photo-1591343395082-e120087004b4?q=80&w=800&auto=format&fit=crop"
+              src={content.imageUrl}
               alt="Artistic Touch"
               className="w-full h-full object-cover opacity-90"
               animate={{ scale: [1, 1.05, 1] }}
@@ -91,9 +119,9 @@ const Philosophy: React.FC = () => {
             transition={{ delay: 0.3 }}
             className="absolute -bottom-10 -left-10 bg-[#faf9f6]/10 backdrop-blur-xl border border-white/20 p-8 max-w-xs shadow-2xl hidden md:block z-20 group-hover:bg-[#faf9f6]/20 transition-all duration-500"
           >
-            <p className="font-serif italic text-xl text-[#f3e9d2]">"La qualità non ha fretta. La tua anima ringrazia."</p>
+            <p className="font-serif italic text-xl text-[#f3e9d2]">"{content.imageOverlayQuote}"</p>
             <div className="w-10 h-[1px] bg-[#d4af37] mt-6 mb-2"></div>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[#d4af37] font-bold">Yuliantini</p>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-[#d4af37] font-bold">{content.imageOverlayAuthor}</p>
           </motion.div>
         </div>
 

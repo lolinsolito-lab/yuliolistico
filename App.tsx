@@ -57,7 +57,7 @@ const App: React.FC = () => {
 
             {/* 👑 ADMIN EMPIRE (No Layout) */}
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/*" element={<AdminDashboard />} />
           </Routes>
         </Router>
       </BookingProvider>
