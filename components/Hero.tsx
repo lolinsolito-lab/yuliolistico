@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Star } from 'lucide-react';
-import { Link } from 'react-router-dom';
+
 
 const tickerPhrases = [
   'Il silenzio è il vero lusso',
@@ -70,19 +70,25 @@ const Hero: React.FC = () => {
           transition={{ duration: 1, delay: 0.8 }}
           className="flex flex-col md:flex-row gap-6 items-center"
         >
-          <Link
-            to="/booking"
+          <a
+            href="/booking"
             className="group relative px-12 py-5 bg-[#f3e9d2] text-[#292524] overflow-hidden rounded-none"
           >
             <span className="relative z-10 uppercase tracking-[0.2em] text-xs font-bold group-hover:text-white transition-colors duration-300">
               Prenota l'Esclusiva
             </span>
             <div className="absolute inset-0 bg-[#c07a60] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-          </Link>
+          </a>
 
-          <Link to="/about" className="text-white/80 hover:text-[#d4af37] transition-colors uppercase tracking-widest text-xs border-b border-transparent hover:border-[#d4af37] pb-1">
+          <button
+            onClick={() => {
+              const el = document.getElementById('filosofia');
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="text-white/80 hover:text-[#d4af37] transition-colors uppercase tracking-widest text-xs border-b border-transparent hover:border-[#d4af37] pb-1 bg-transparent border-none cursor-pointer"
+          >
             Scopri la Filosofia
-          </Link>
+          </button>
         </motion.div>
       </div>
 

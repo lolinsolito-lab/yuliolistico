@@ -16,7 +16,7 @@ const printConsoleSignature = () => {
 ━━━━━━━━━━━━━━━━━━━━━━━━
 "L'arte del tocco, l'equilibrio dell'anima."
 
-Benessere Naturale • Bergamo, Italia
+Dove il silenzio diventa lusso • Bergamo, Italia
 yuliolistico@gmail.com
 
 Ogni corpo ha una storia.

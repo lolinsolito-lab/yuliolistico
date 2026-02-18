@@ -16,7 +16,7 @@ const About: React.FC = () => {
               className="relative z-10 w-full h-[600px] object-cover grayscale hover:grayscale-0 transition-all duration-1000 shadow-xl"
             />
             <div className="absolute -bottom-6 -right-6 bg-white p-6 shadow-lg z-20 max-w-xs hidden md:block">
-              <p className="font-serif italic text-lg text-[#c07a60]">"Il massaggio come lingua senza parole."</p>
+              <p className="font-serif italic text-lg text-[#c07a60]">"Il tocco come lingua senza parole."</p>
             </div>
           </div>
 
@@ -30,7 +30,7 @@ const About: React.FC = () => {
                 Ogni cammino ha un'origine silenziosa. Il mio inizia in Indonesia, dove il tocco è considerato sacro, una forma di cura tramandata attraverso le generazioni.
               </p>
               <p>
-                Da oltre 7 anni, ho portato questa eredità in Italia, fondendo la saggezza orientale con le tecniche occidentali apprese tra Bergamo e Bologna.
+                Da oltre 8 anni, ho portato questa eredità in Italia, fondendo la saggezza orientale con le tecniche occidentali apprese tra Bergamo e Bologna.
               </p>
               <p>
                 Non offro solo un trattamento, ma uno spazio sacro. Qui, il tempo rallenta. Le mani ascoltano ciò che la voce non dice. È una fusione unica: una danza lenta tra respiro, energia e presenza.

@@ -66,7 +66,7 @@ const Navigation: React.FC = () => {
             </span>
             <span className={`text-[0.6rem] tracking-[0.2em] uppercase mt-1 ${isScrolled ? 'text-[#849b87]' : 'text-[#849b87] md:text-[#f3e9d2]'
               }`}>
-              L'arte del tocco consapevole
+              Dove il silenzio diventa lusso
             </span>
           </div>
         </button>

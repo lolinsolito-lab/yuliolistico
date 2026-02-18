@@ -29,8 +29,8 @@ const Membership: React.FC = () => {
           </h2>
 
           <p className="text-lg md:text-xl font-light text-white/70 max-w-2xl mx-auto mb-12 leading-relaxed">
-            Per chi ha scelto il benessere come priorità non negoziabile.
-            Accedi a slot riservati, rituali fuori menù ed esperienze stagionali esclusive.
+            Alcune cose non si comprano. Si meritano. <br />
+            Un cerchio ristretto per chi ha scelto il benessere come stile di vita, non come capriccio occasionale.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 text-left max-w-3xl mx-auto">
