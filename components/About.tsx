@@ -54,7 +54,7 @@ const About: React.FC = () => {
             </div>
 
             <div className="mt-12 pt-12 border-t border-[#e7e5e4]">
-              <span className="block text-xs uppercase tracking-widest text-[#a8a29e] mb-6">Un percorso d'eccellenza condiviso con</span>
+              <span className="block text-xs uppercase tracking-widest text-[#a8a29e] mb-6">Le radici della mia esperienza — Hanno scelto le mie mani</span>
               <div className="flex flex-wrap gap-8 items-center opacity-80 hover:opacity-100 transition-all duration-500">
                 {COLLABORATIONS.map((collab) => (
                   <span key={collab} className="text-xl font-serif text-[#c07a60] hover:text-[#d4af37] border-b border-transparent hover:border-[#d4af37] transition-all cursor-default">
