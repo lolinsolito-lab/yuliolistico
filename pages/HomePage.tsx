@@ -9,6 +9,8 @@ import Membership from '../components/Membership';
 import Newsletter from '../components/Newsletter';
 import GiftCards from '../components/GiftCards';
 
+import AcademyTeaserSection from '../components/AcademyTeaserSection';
+
 const HomePage: React.FC = () => {
   return (
     <>
@@ -16,6 +18,7 @@ const HomePage: React.FC = () => {
       <Philosophy /> {/* The Hook: Why we exist */}
       <WellnessQuiz /> {/* The Lead Magnet: AI Consultant */}
       <Services /> {/* The Product: What we do */}
+      <AcademyTeaserSection /> {/* The Authority: Psychological Upsell */}
       <GiftCards /> {/* The Revenue: Vouchers */}
       <Membership /> {/* The Retention/Upsell: High Ticket Club */}
       <About /> {/* The Trust: Who is Yuli */}

@@ -180,7 +180,16 @@ const Footer: React.FC = () => {
 
           <div className="flex flex-col md:flex-row justify-between items-center gap-3 text-[10px] uppercase tracking-widest opacity-50">
             <span>© 2026 Yuli Olistico. Tutti i diritti riservati.</span>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              <a
+                href="https://www.michaelluminels.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[10px] uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1"
+              >
+                Created by <span className="font-bold text-[#d4af37]">Insolito Experiences</span>
+              </a>
+              <span className="hidden md:inline text-white/20">|</span>
               <button
                 onClick={() => setActivePopup('privacy')}
                 className="hover:text-white hover:opacity-100 transition-all cursor-pointer bg-transparent border-none text-[#a8a29e] uppercase tracking-widest text-[10px]"
