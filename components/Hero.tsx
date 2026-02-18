@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Star } from 'lucide-react';
+import { useBooking } from '../context/BookingContext';
 
 
 const tickerPhrases = [
@@ -15,6 +16,8 @@ const tickerPhrases = [
 ];
 
 const Hero: React.FC = () => {
+  const { openBooking } = useBooking();
+
   return (
     <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
       {/* Background Layer - Cinematic Dark Tone */}
@@ -70,15 +73,15 @@ const Hero: React.FC = () => {
           transition={{ duration: 1, delay: 0.8 }}
           className="flex flex-col md:flex-row gap-6 items-center"
         >
-          <a
-            href="/booking"
-            className="group relative px-12 py-5 bg-[#f3e9d2] text-[#292524] overflow-hidden rounded-none"
+          <button
+            onClick={openBooking}
+            className="group relative px-12 py-5 bg-[#f3e9d2] text-[#292524] overflow-hidden rounded-none cursor-pointer border-none"
           >
             <span className="relative z-10 uppercase tracking-[0.2em] text-xs font-bold group-hover:text-white transition-colors duration-300">
               Prenota l'Esclusiva
             </span>
             <div className="absolute inset-0 bg-[#c07a60] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-          </a>
+          </button>
 
           <button
             onClick={() => {

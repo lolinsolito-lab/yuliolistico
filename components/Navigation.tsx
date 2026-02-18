@@ -3,11 +3,14 @@ import { Menu, X } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 
+import { useBooking } from '../context/BookingContext';
+
 const Navigation: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { openBooking } = useBooking();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,15 +86,15 @@ const Navigation: React.FC = () => {
               {link.name}
             </button>
           ))}
-          <Link
-            to="/booking"
-            className={`px-6 py-2 border transition-all duration-300 ${isScrolled
+          <button
+            onClick={openBooking}
+            className={`px-6 py-2 border transition-all duration-300 cursor-pointer ${isScrolled
               ? 'border-[#849b87] text-[#849b87] hover:bg-[#849b87] hover:text-white'
               : 'border-white text-white hover:bg-white hover:text-[#849b87]'
               }`}
           >
             Prenota
-          </Link>
+          </button>
         </div>
 
         {/* Mobile Toggle */}
@@ -115,13 +118,15 @@ const Navigation: React.FC = () => {
               {link.name}
             </button>
           ))}
-          <Link
-            to="/booking"
-            className="text-center w-full py-3 bg-[#849b87] text-white uppercase tracking-widest mt-4"
-            onClick={() => setIsMobileMenuOpen(false)}
+          <button
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              openBooking();
+            }}
+            className="text-center w-full py-3 bg-[#849b87] text-white uppercase tracking-widest mt-4 cursor-pointer"
           >
             Prenota Ora
-          </Link>
+          </button>
         </div>
       )}
     </nav>

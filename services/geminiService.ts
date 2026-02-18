@@ -2,29 +2,63 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { AiRecommendation } from "../types";
 import { SERVICES } from "../constants";
 
-// Initialize Gemini Client
-// IMPORTANT: The API key must be provided in the environment variable.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Safe initialization
+// In production, this comes from your .env file
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
-const modelName = "gemini-3-flash-preview";
+// Mock Recommendations for Demo Mode (when no API key is present)
+const MOCK_RECOMMENDATIONS: AiRecommendation[] = [
+  {
+    treatment: "Massaggio Ayurvedico",
+    reasoning: "Il tuo corpo segnala un eccesso di Vata (aria/movimento). Hai bisogno di radicamento, olio caldo e movimenti avvolgenti per fermare il turbinio mentale.",
+    oilRecommendation: "Sesamo caldo e sandalo"
+  },
+  {
+    treatment: "Thai Royal Flow",
+    reasoning: "Sento blocchi energetici nelle linee Sen. Il tuo corpo non è solo stanco, è stagnante. Chiede di essere sbloccato con pressioni ritmiche e stretching profondo.",
+    oilRecommendation: "Balsamo di tigre e lemongrass"
+  },
+  {
+    treatment: "Tibetan Sound Bath",
+    reasoning: "Il disordine non è nei muscoli, è nelle frequenze. Le vibrazioni delle campane riporteranno l'armonia cellulare dove ora c'è caos.",
+    oilRecommendation: "Incenso puro Olibano"
+  },
+  {
+    treatment: "Deep Tissue & Cupping",
+    reasoning: "Porti il peso del mondo sulle trapezi. Non serve una carezza, serve un intervento deciso per liberare le tossine emotive intrappolate nei tessuti.",
+    oilRecommendation: "Arnica e Ginepro"
+  }
+];
 
 export const getWellnessRecommendation = async (feeling: string): Promise<AiRecommendation> => {
+  // DEMO MODE: If no API Key is set, return a random mock result to simulate the experience
+  if (!API_KEY) {
+    console.warn("⚠️ Gemini API Key missing. Running in DEMO MODE.");
+    // Simulate network delay for realism
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Return random recommendation
+    return MOCK_RECOMMENDATIONS[Math.floor(Math.random() * MOCK_RECOMMENDATIONS.length)];
+  }
+
+  const ai = new GoogleGenAI({ apiKey: API_KEY });
+  const modelName = "gemini-1.5-flash"; // Use a stable model name
+
   const prompt = `
-    Sei Yuliantini, una operatrice olistica esperta e massaggiatrice professionale con origini indonesiane.
-    Il tuo tono di voce è empatico, solare, profondo e leggermente poetico.
+    Sei Yuliantini, una operatrice olistica esperta.
+    Il tuo tono è empatico, solare, profondo e leggermente poetico.
     
     Un cliente ti dice che si sente: "${feeling}".
     
-    Basandoti su questo stato d'animo/fisico, suggerisci UNO dei seguenti trattamenti:
+    Basandoti su questo, suggerisci UNO dei seguenti trattamenti:
     - Massaggio Thailandese
     - Linfodrenante
     - Decontratturante
     - Maderoterapia
     - Massaggio Ayurvedico
     - Bamboo Massage
+    - Campane Tibetane
 
-    Fornisci anche un consiglio su un olio essenziale o aromaterapia da abbinare.
-
+    Fornisci anche un consiglio su un olio essenziale e una motivazione profonda.
     Rispondi rigorosamente in formato JSON.
   `;
 
@@ -37,61 +71,53 @@ export const getWellnessRecommendation = async (feeling: string): Promise<AiReco
         responseSchema: {
           type: Type.OBJECT,
           properties: {
-            treatment: { type: Type.STRING, description: "Nome del trattamento suggerito" },
-            reasoning: { type: Type.STRING, description: "Spiegazione breve e poetica del perché (max 30 parole)" },
-            oilRecommendation: { type: Type.STRING, description: "Olio essenziale consigliato" }
-          },
-          required: ["treatment", "reasoning", "oilRecommendation"]
+            treatment: { type: Type.STRING },
+            reasoning: { type: Type.STRING },
+            oilRecommendation: { type: Type.STRING }
+          }
         }
       }
     });
 
     const text = response.text;
-    if (!text) {
-      throw new Error("Nessuna risposta generata dall'AI.");
-    }
-
+    if (!text) throw new Error("No response");
     return JSON.parse(text) as AiRecommendation;
 
   } catch (error) {
-    console.error("Errore durante la consultazione dell'Oracolo:", error);
-    // Fallback in case of error
-    return {
-      treatment: "Massaggio Ayurvedico",
-      reasoning: "Per ritrovare l'equilibrio universale quando la tecnologia fallisce, torniamo alle origini.",
-      oilRecommendation: "Lavanda e Sandalo"
-    };
+    console.error("AI Error:", error);
+    // Fallback to random mock on error too
+    return MOCK_RECOMMENDATIONS[0];
   }
 };
 
 export const getChatResponse = async (userMessage: string): Promise<string> => {
-    // Construct context from services
-    const servicesContext = SERVICES.map(s => `- ${s.title} (${s.duration}, ${s.price}): ${s.description}`).join('\n');
-    
-    const prompt = `
-      Sei l'assistente virtuale di "Yuli Olistico", un centro benessere olistico.
-      Ti chiami "Aura". Il tuo tono è gentile, calmo, professionale e accogliente (Zen).
+  if (!API_KEY) {
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    return "✨ Modalità Demo: La mia connessione spirituale è in fase di calibrazione. Ma sento che hai bisogno di relax. (API Key non configurata)";
+  }
+
+  const servicesContext = SERVICES.map(s => `- ${s.title} (${s.duration}, ${s.price}): ${s.description}`).join('\n');
+  const ai = new GoogleGenAI({ apiKey: API_KEY });
+  const modelName = "gemini-1.5-flash";
+
+  const prompt = `
+      Sei l'assistente virtuale di "Yuli Olistico". Ti chiami "Aura".
+      Tono: Zen, calma, professionale.
       
-      Informazioni sui servizi:
+      Servizi:
       ${servicesContext}
       
-      Regole Importanti:
-      1. Non dare consigli medici o sanitari. Usa termini come "benessere", "armonia", "distensione", "riequilibrio".
-      2. Non usare parole come "curare", "terapia medica", "paziente". Usa "trattare", "rituale", "cliente".
-      3. Se ti chiedono di prenotare, invitali ad usare la sezione "Prenota" del sito o a cliccare sul tasto calendario.
-      4. Rispondi in modo conciso ma cordiale (max 3 frasi).
-      
+      Rispondi in modo conciso.
       Messaggio utente: "${userMessage}"
     `;
-  
-    try {
-      const response = await ai.models.generateContent({
-        model: modelName,
-        contents: prompt,
-      });
-      return response.text || "Mi dispiace, la mia energia è bassa al momento. Riprova tra poco.";
-    } catch (error) {
-      console.error("Chat Error:", error);
-      return "Mi dispiace, non riesco a connettermi al momento. Per favore riprova.";
-    }
-  };
+
+  try {
+    const response = await ai.models.generateContent({
+      model: modelName,
+      contents: prompt,
+    });
+    return response.text || "Energia in ascolto...";
+  } catch (error) {
+    return "Il silenzio è una risposta. (Errore di connessione)";
+  }
+};

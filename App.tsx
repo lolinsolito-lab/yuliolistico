@@ -33,25 +33,31 @@ Ogni rituale la ascolta.
   );
 };
 
+import { BookingProvider } from './context/BookingContext';
+import BookingModal from './components/BookingModal';
+
 const App: React.FC = () => {
   useEffect(() => {
     printConsoleSignature();
   }, []);
 
   return (
-    <Router>
-      <div className="min-h-screen flex flex-col font-sans relative">
-        <Navigation />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/booking" element={<BookingPage />} />
-          </Routes>
-        </main>
-        <Footer />
-        <ChatWidget />
-      </div>
-    </Router>
+    <BookingProvider>
+      <Router>
+        <div className="min-h-screen flex flex-col font-sans relative">
+          <Navigation />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/booking" element={<BookingPage />} />
+            </Routes>
+          </main>
+          <Footer />
+          <ChatWidget />
+          <BookingModal /> {/* The Smart Popup */}
+        </div>
+      </Router>
+    </BookingProvider>
   );
 };
 
