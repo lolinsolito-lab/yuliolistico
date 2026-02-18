@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
-import { SERVICES } from '../constants';
+import React from 'react';
+import { useServices } from '../hooks/useServices';
 import { TreatmentType } from '../types';
-import { ArrowRight, Sparkles, Flame, Crown } from 'lucide-react';
+import { ArrowRight, Sparkles, Flame, Crown, Loader } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Services: React.FC = () => {
-  const manualServices = SERVICES.filter(s => s.category === TreatmentType.MANUAL);
-  const toolServices = SERVICES.filter(s => s.category === TreatmentType.TOOLS);
-  const ritualServices = SERVICES.filter(s => s.category === TreatmentType.RITUAL);
+  const { services, loading } = useServices();
+
+  const manualServices = services.filter(s => s.category === TreatmentType.MANUAL);
+  const toolServices = services.filter(s => s.category === TreatmentType.TOOLS);
+  const ritualServices = services.filter(s => s.category === TreatmentType.RITUAL);
+
+  if (loading) {
+    return (
+      <section id="esperienze" className="bg-[#faf9f6] min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader className="w-8 h-8 text-[#c07a60] animate-spin" />
+          <p className="text-[#57534e] font-serif tracking-widest text-sm">CARICAMENTO ESPERIENZE...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="esperienze" className="bg-[#faf9f6]">
