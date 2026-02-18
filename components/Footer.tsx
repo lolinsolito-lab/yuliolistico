@@ -138,8 +138,11 @@ const Footer: React.FC = () => {
               <Logo className="w-6 h-6 text-[#849b87]" color="currentColor" />
               <h3 className="text-white font-serif text-lg">Yuli Olistico</h3>
             </div>
-            <p className="font-light text-xs leading-relaxed max-w-xs opacity-80">
-              "L'arte del tocco, l'equilibrio dell'anima."
+            <p className="font-light text-xs leading-relaxed max-w-xs opacity-80 italic">
+              "Ogni corpo ha una storia. Ogni rituale la ascolta."
+            </p>
+            <p className="font-light text-[10px] leading-relaxed max-w-xs opacity-50 mt-2">
+              Benessere naturale • Bergamo, Italia
             </p>
           </div>
 
