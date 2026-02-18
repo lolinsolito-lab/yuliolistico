@@ -7,9 +7,9 @@ const defaultContent = {
   badgeText: "Il Manifesto 2026",
   titleLine1: "Siamo l'antidoto",
   titleLine2: "alla fretta.",
-  text1: "Là fuori è una catena di montaggio. Corpi trattati come oggetti da riparare in 30 minuti. Rumore. Luci al neon. Freddezza.",
-  quote: "Qui è diverso. O ci tieni alla qualità del tempo che dedichi a te stessa, o questo non è il posto per te.",
-  text2: "Yuli Olistico non vende \"trattamenti\". Vende un ritorno al corpo. Ogni rituale è un'opera unica, disegnata sulla tua energia del momento. Non seguiamo protocolli standard. Seguiamo te.",
+  text1: "In un mondo che corre veloce, fermarsi è l'atto più rivoluzionario. Il tuo corpo non è una macchina da riparare in 30 minuti, ma un tempio da onorare con lentezza.",
+  quote: "Qui il tempo si dilata. O ci tieni alla qualità del respiro che dedichi a te stessa, o questo non è il posto per te.",
+  text2: "Yuli Olistico non vende \"trattamenti\". Custodisce il tuo ritorno all'essenziale. Ogni rituale è un'opera unica, disegnata sulla tua energia del momento. Non seguiamo protocolli standard. Ascoltiamo il tuo silenzio.",
   imageOverlayQuote: "La qualità non ha fretta. La tua anima ringrazia.",
   imageOverlayAuthor: "Yuliantini",
   imageUrl: "https://images.unsplash.com/photo-1591343395082-e120087004b4?q=80&w=800&auto=format&fit=crop"

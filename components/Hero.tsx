@@ -5,7 +5,7 @@ import { useBooking } from '../context/BookingContext';
 import { supabase } from '../lib/supabaseClient';
 
 const defaultContent = {
-  title: "NON È <br />PER TUTTI.",
+  title: "IL TEMPO <br />È LUSSO.",
   subtitle: "Se cerchi un trattamento veloce, scorri oltre. <br />Se cerchi di <span class='text-[#d4af37] italic font-serif'>riconnetterti</span> con la parte più profonda di te, sei arrivata a casa.",
   backgroundImage: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1920&auto=format&fit=crop",
   tickerPhrases: [

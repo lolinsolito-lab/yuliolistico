@@ -76,24 +76,66 @@ const WellnessQuiz: React.FC = () => {
             </div>
           </div>
 
-          {/* Right: The Result Card - Glassmorphism */}
-          <div className="relative min-h-[400px] flex items-center justify-center">
+          {/* Right: The Result Card - Glassmorphism & Examples */}
+          <div className="relative min-h-[500px] flex items-center justify-center">
             {/* Background Blob */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-[#f3e9d2] rounded-full blur-[80px] opacity-60"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#f3e9d2] rounded-full blur-[100px] opacity-40 pointer-events-none"></div>
 
             <AnimatePresence mode='wait'>
               {!result && !loading && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="text-center relative z-10"
-                >
-                  <h3 className="text-9xl font-serif text-[#292524]/5 select-none">ZEN</h3>
-                  <p className="font-serif italic text-2xl text-[#292524] -mt-10">L'algoritmo attende.</p>
-                </motion.div>
+                <div className="relative z-10 w-full h-full flex flex-col justify-center">
+
+                  {/* Floating Tags - Marquee Effect */}
+                  <div className="absolute top-0 right-0 w-full overflow-hidden opacity-30 pointer-events-none fade-mask-y h-full">
+                    {[1, 2, 3].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        animate={{ y: [0, -1000] }}
+                        transition={{ duration: 20 + i * 5, repeat: Infinity, ease: "linear" }}
+                        className="flex flex-col gap-8 items-end p-4"
+                      >
+                        {["Ansia", "Blocco Scapolare", "Insonnia", "Fame d'Aria", "Peso allo stomaco", "Mente piena", "Gambe pesanti", "Cuore chiuso"].map((tag, j) => (
+                          <span key={j} className="text-4xl font-serif text-[#292524] whitespace-nowrap opacity-20">{tag}</span>
+                        ))}
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* Example Cards Stack */}
+                  <div className="relative ml-auto max-w-sm mr-10 space-y-4">
+                    <motion.div
+                      initial={{ x: 50, opacity: 0 }}
+                      whileInView={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="bg-white p-6 shadow-sm border border-[#292524]/5 rounded-sm opacity-60 scale-95 origin-bottom-right"
+                    >
+                      <p className="text-xs text-stone-400 mb-2 italic">Input: "Ho un nodo alla gola e non dormo bene"</p>
+                      <div className="flex items-center gap-2 text-[#c07a60] font-bold text-xs uppercase tracking-widest">
+                        <Sparkles className="w-3 h-3" /> Rituale Rilascio Emotivo
+                      </div>
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ x: 50, opacity: 0 }}
+                      whileInView={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.4 }}
+                      className="bg-white p-6 shadow-lg border border-[#292524]/10 rounded-sm"
+                    >
+                      <p className="text-xs text-stone-400 mb-2 italic">Input: "Mi sento prosciugata, ho bisogno di terra"</p>
+                      <div className="flex items-center gap-2 text-[#c07a60] font-bold text-xs uppercase tracking-widest">
+                        <Sparkles className="w-3 h-3" /> Rituale Radicamento
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  <div className="text-right mr-10 mt-10">
+                    <h3 className="text-5xl font-serif text-[#292524]/10 select-none">AI</h3>
+                    <p className="font-serif italic text-xl text-[#292524] opacity-50">L'algoritmo impara dal tuo silenzio.</p>
+                  </div>
+                </div>
               )}
 
+              {/* ... Loading and Result states remain the same ... */}
               {loading && (
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -112,8 +154,9 @@ const WellnessQuiz: React.FC = () => {
                 <motion.div
                   initial={{ opacity: 0, y: 50, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  className="bg-white/80 backdrop-blur-xl p-10 shadow-2xl border border-white/50 w-full max-w-md relative z-10 text-center"
+                  className="bg-white/95 backdrop-blur-xl p-10 shadow-2xl border border-white/50 w-full max-w-md relative z-10 text-center"
                 >
+                  {/* ... Result Card Content ... */}
                   <div className="inline-block bg-[#292524] text-white px-4 py-1 text-[10px] uppercase tracking-[0.3em] mb-6">
                     Match Trovato
                   </div>
@@ -140,7 +183,6 @@ const WellnessQuiz: React.FC = () => {
               )}
             </AnimatePresence>
           </div>
-
         </div>
       </div>
     </section>
