@@ -1,7 +1,7 @@
 import React from 'react';
 import Hero from '../components/Hero';
 import Philosophy from '../components/Philosophy';
-import WellnessQuiz from '../components/WellnessQuiz';
+// import WellnessQuiz from '../components/WellnessQuiz'; // DEFERRED - Fase 3
 import About from '../components/About';
 import Services from '../components/Services';
 import Journal from '../components/Journal';
@@ -13,7 +13,7 @@ const HomePage: React.FC = () => {
     <>
       <Hero />
       <Philosophy /> {/* The Hook: Why we exist */}
-      <WellnessQuiz /> {/* The Viral Tool: Engagement */}
+      {/* <WellnessQuiz /> - DEFERRED Fase 3 */}
       <Services /> {/* The Product: What we do */}
       <Membership /> {/* The Retention/Upsell: High Ticket Club */}
       <About /> {/* The Trust: Who is Yuli */}

@@ -2,13 +2,13 @@ import React from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
-import ChatWidget from './components/ChatWidget';
+// import ChatWidget from './components/ChatWidget'; // DEFERRED - Fase 3
 
 // Pages
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ServicesPage from './pages/ServicesPage';
-import DashboardPage from './pages/DashboardPage';
+// import DashboardPage from './pages/DashboardPage'; // DEFERRED - Fase 3
 import BookingPage from './pages/BookingPage';
 
 const App: React.FC = () => {
@@ -21,12 +21,12 @@ const App: React.FC = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/services" element={<ServicesPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
+            {/* <Route path="/dashboard" element={<DashboardPage />} /> */}
             <Route path="/booking" element={<BookingPage />} />
           </Routes>
         </main>
         <Footer />
-        <ChatWidget />
+        {/* <ChatWidget /> - DEFERRED */}
       </div>
     </Router>
   );
