@@ -33,8 +33,11 @@ Ogni rituale la ascolta.
   );
 };
 
+import { AuthProvider } from './context/AuthContext';
 import { BookingProvider } from './context/BookingContext';
-import BookingModal from './components/BookingModal';
+import PublicLayout from './components/PublicLayout';
+import LoginPage from './pages/LoginPage';
+import AdminDashboard from './pages/AdminDashboard';
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -42,22 +45,23 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <BookingProvider>
-      <Router>
-        <div className="min-h-screen flex flex-col font-sans relative">
-          <Navigation />
-          <main className="flex-grow">
-            <Routes>
+    <AuthProvider>
+      <BookingProvider>
+        <Router>
+          <Routes>
+            {/* 🌍 PUBLIC SITE (Wrapped in Layout) */}
+            <Route element={<PublicLayout />}>
               <Route path="/" element={<HomePage />} />
               <Route path="/booking" element={<BookingPage />} />
-            </Routes>
-          </main>
-          <Footer />
-          <ChatWidget />
-          <BookingModal /> {/* The Smart Popup */}
-        </div>
-      </Router>
-    </BookingProvider>
+            </Route>
+
+            {/* 👑 ADMIN EMPIRE (No Layout) */}
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+          </Routes>
+        </Router>
+      </BookingProvider>
+    </AuthProvider>
   );
 };
 
