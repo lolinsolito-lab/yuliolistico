@@ -83,8 +83,8 @@ const AcademyTeaserSection: React.FC = () => {
                         </div>
 
                         <img
-                            src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80"
-                            alt="Academy Training"
+                            src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&q=80"
+                            alt="Luxury Oil Texture"
                             className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700 scale-100 group-hover:scale-110"
                         />
 
