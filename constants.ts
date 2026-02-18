@@ -10,6 +10,7 @@ export const BRAND_COLORS = {
 };
 
 export const SERVICES: Service[] = [
+  // ── TIER 1: Tecniche Manuali ──────────────────────────
   {
     id: '1',
     title: 'Thai Royal Flow',
@@ -30,6 +31,26 @@ export const SERVICES: Service[] = [
   },
   {
     id: '3',
+    title: 'Bamboo Deep Force',
+    category: TreatmentType.MANUAL,
+    description: 'Per chi porta il peso del mondo sulle spalle. La forza del bamboo penetra dove le mani non arrivano. Liberatorio.',
+    duration: '50 min',
+    price: '€75',
+    imageUrl: 'https://images.unsplash.com/photo-1632920202241-118833909e7d?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    id: '4',
+    title: 'Candle Ritual — Luce Calda',
+    category: TreatmentType.MANUAL,
+    description: 'Una candela si scioglie lentamente. La cera diventa olio caldo, profumato, che scorre sul tuo corpo come una carezza liquida. Il silenzio fa il resto. Chiudi gli occhi.',
+    duration: '45 min',
+    price: '€70',
+    imageUrl: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?q=80&w=800&auto=format&fit=crop'
+  },
+
+  // ── TIER 2: Strumenti Naturali ────────────────────────
+  {
+    id: '5',
     title: 'Wood Therapy Sculpt',
     category: TreatmentType.TOOLS,
     description: 'L\'intelligenza del legno contro la stasi della materia. Rimodella non solo la silhouette, ma la tua percezione di leggerezza.',
@@ -38,25 +59,16 @@ export const SERVICES: Service[] = [
     imageUrl: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=800&auto=format&fit=crop'
   },
   {
-    id: '4',
-    title: 'Bamboo Deep Force',
-    category: TreatmentType.TOOLS,
-    description: 'Per chi porta il peso del mondo sulle spalle. La forza del bamboo penetra dove le mani non arrivano. Liberatorio.',
-    duration: '50 min',
-    price: '€75',
-    imageUrl: 'https://images.unsplash.com/photo-1632920202241-118833909e7d?q=80&w=800&auto=format&fit=crop'
-  },
-  {
-    id: '5',
-    title: 'Ayurveda Soul Connection',
-    category: TreatmentType.RITUAL,
-    description: 'Il lusso supremo. Oli caldi colati a filo, silenzio assoluto, tempo sospeso. Non è un trattamento, è un viaggio astrale.',
-    duration: '90 min',
-    price: '€120',
-    imageUrl: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=800&auto=format&fit=crop'
-  },
-  {
     id: '6',
+    title: 'Hot Stone Volcanic Journey',
+    category: TreatmentType.TOOLS,
+    description: 'Pietre laviche di basalto, levigate dal tempo. Posate lungo i meridiani del corpo, il calore vulcanico parla direttamente al tuo sistema nervoso. Silenzio totale. Abbandono puro.',
+    duration: '75 min',
+    price: '€95',
+    imageUrl: 'https://images.unsplash.com/photo-1519824145371-296894a0daa9?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    id: '7',
     title: 'Himalayan Salt Stone Ritual',
     category: TreatmentType.TOOLS,
     description: 'Sfere di puro sale rosa, scaldate dalla terra. Il calore minerale penetra nei tessuti, scioglie le tensioni profonde e riequilibra l\'energia. Un rituale che viene dall\'Himalaya.',
@@ -65,22 +77,51 @@ export const SERVICES: Service[] = [
     imageUrl: 'https://images.unsplash.com/photo-1600334129128-685c5582fd35?q=80&w=800&auto=format&fit=crop'
   },
   {
-    id: '7',
+    id: '8',
     title: 'Crystal Gua Sha — Rituale Viso',
-    category: TreatmentType.RITUAL,
+    category: TreatmentType.TOOLS,
     description: 'Un viaggio sensoriale per il tuo viso. Quarzo rosa e giada naturale rilasciano la tensione che non sapevi di trattenere. Il volto si distende, lo sguardo cambia. Rinascita silenziosa.',
     duration: '40 min',
     price: '€65',
     imageUrl: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=800&auto=format&fit=crop'
   },
   {
-    id: '8',
-    title: 'Hot Stone Volcanic Journey',
+    id: '9',
+    title: 'Coppettazione Olistica',
     category: TreatmentType.TOOLS,
-    description: 'Pietre laviche di basalto, levigaste dal tempo. Posate lungo i meridiani del corpo, il calore vulcanico parla direttamente al tuo sistema nervoso. Silenzio totale. Abbandono puro.',
-    duration: '75 min',
-    price: '€95',
-    imageUrl: 'https://images.unsplash.com/photo-1519824145371-296894a0daa9?q=80&w=800&auto=format&fit=crop'
+    description: 'Una tecnica che il mondo orientale conosce da millenni. Le coppette creano un vuoto gentile che risveglia la circolazione profonda e scioglie le tensioni che nemmeno le mani raggiungono.',
+    duration: '40 min',
+    price: '€60',
+    imageUrl: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=800&auto=format&fit=crop'
+  },
+
+  // ── TIER 3: Rituali Premium / Pacchetti Luxury ────────
+  {
+    id: '10',
+    title: 'Ayurveda Soul Connection',
+    category: TreatmentType.RITUAL,
+    description: 'Il lusso supremo. Oli caldi colati a filo, silenzio assoluto, tempo sospeso. Non è un trattamento, è un viaggio astrale.',
+    duration: '90 min',
+    price: '€120',
+    imageUrl: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    id: '11',
+    title: 'Rituale delle Origini',
+    category: TreatmentType.RITUAL,
+    description: 'Un viaggio di due ore che ripercorre le radici di Yuli. Si parte dal Thai ancestrale, si attraversa il calore delle pietre vulcaniche, si arriva all\'abbraccio degli oli aromatici. Non è un trattamento. È una rinascita.',
+    duration: '120 min',
+    price: '€160',
+    imageUrl: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=800&auto=format&fit=crop'
+  },
+  {
+    id: '12',
+    title: 'Yuli Signature — L\'Esperienza Totale',
+    category: TreatmentType.RITUAL,
+    description: 'L\'esperienza che solo Yuli può darti. Scrub minerale per liberare la pelle. Olio caldo colato lungo i meridiani. Pietre vulcaniche posate con intenzione. Rituale viso con quarzo rosa. Quando torni nel mondo, non sei la stessa persona.',
+    duration: '150 min',
+    price: '€200',
+    imageUrl: 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=800&auto=format&fit=crop'
   }
 ];
 
