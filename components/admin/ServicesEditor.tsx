@@ -37,24 +37,19 @@ const ServicesEditor: React.FC = () => {
     const handleSave = async () => {
         if (!editingService || !editingService.id) return;
 
-        // Use pure Supabase update
         const { error } = await supabase
             .from('services')
             .update({
                 title: editingService.title,
                 price: editingService.price,
                 duration: editingService.duration,
-                description: editingService.description, // Added description
+                description: editingService.description,
+                soul_description: editingService.soul_description,
+                benefits: editingService.benefits,
                 category: editingService.category,
-                image_url: editingService.imageUrl // handle mapping if needed, but assuming DB uses snake_case and local might use camel. Warning here.
-                // Actually, editingService comes from DB so it has snake_case keys if I set it directly?
-                // Let's check fetchServices. It returns data with snake_case.
+                image_url: editingService.imageUrl || editingService.image_url
             })
             .eq('id', editingService.id);
-
-        // Fix: The editingService state might have camelCase if I typed it as Service, but fetched data is snake_case.
-        // To be safe, let's map it or just use the keys as they are in the EditModal inputs.
-        // I will fix this in the Modal logic below.
 
         if (!error) {
             setIsModalOpen(false);
@@ -145,17 +140,17 @@ const ServicesEditor: React.FC = () => {
                             <div className="flex items-center gap-4 text-xs text-stone-500">
                                 <span className="uppercase tracking-wider">{service.category}</span>
                                 <span className="w-1 h-1 bg-stone-300 rounded-full" />
+                                <span className="font-mono">{service.price}</span>
+                                <span className="w-1 h-1 bg-stone-300 rounded-full" />
                                 <span>{service.duration}</span>
                             </div>
                         </div>
 
-                        {/* Price & Actions */}
+                        {/* Actions */}
                         <div className="text-right flex items-center gap-6">
-                            <div className="font-serif text-xl text-[#c07a60]">{service.price}</div>
-
                             <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <button
-                                    onClick={(e) => toggleActive(service.id, service.active, e)}
+                                    onClick={(e) => toggleActive(service.id, service.active || false, e)}
                                     className="p-2 hover:bg-stone-100 rounded-full text-stone-400 hover:text-[#292524]"
                                     title={service.active ? "Nascondi" : "Pubblica"}
                                 >
@@ -225,14 +220,70 @@ const ServicesEditor: React.FC = () => {
                                     </div>
                                 </div>
 
-                                {/* Description */}
+                                {/* Deep Dive Fields: Soul Description */}
                                 <div className="space-y-2">
-                                    <label className="text-xs font-bold uppercase tracking-widest text-stone-400">Descrizione Esperienza</label>
+                                    <div className="flex justify-between items-center">
+                                        <label className="text-xs font-bold uppercase tracking-widest text-[#849b87]">L'Anima del Rituale</label>
+                                        <span className="text-[10px] uppercase text-stone-400">Deep Dive Experience</span>
+                                    </div>
                                     <textarea
-                                        rows={4}
-                                        value={editingService.description}
+                                        rows={3}
+                                        value={editingService.soul_description || ''}
+                                        onChange={(e) => setEditingService({ ...editingService, soul_description: e.target.value })}
+                                        className="w-full p-3 bg-[#f3e9d2]/30 border border-[#849b87]/30 rounded-lg focus:border-[#849b87] outline-none text-[#57534e] italic placeholder-stone-400/50"
+                                        placeholder="Scrivi qui la descrizione emozionale che spiega il PERCHÉ di questo rituale..."
+                                    />
+                                </div>
+
+                                {/* Deep Dive Fields: Benefits (Array) */}
+                                <div className="space-y-2">
+                                    <div className="flex justify-between items-center">
+                                        <label className="text-xs font-bold uppercase tracking-widest text-[#849b87]">I Doni (Benefici)</label>
+                                        <span className="text-[10px] uppercase text-stone-400">Bullet Points</span>
+                                    </div>
+                                    <div className="space-y-2 bg-white p-4 rounded-lg border border-stone-100">
+                                        {(editingService.benefits || []).map((benefit: string, idx: number) => (
+                                            <div key={idx} className="flex gap-2 items-center">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-[#849b87]" />
+                                                <input
+                                                    type="text"
+                                                    value={benefit}
+                                                    onChange={(e) => {
+                                                        const newBenefits = [...(editingService.benefits || [])];
+                                                        newBenefits[idx] = e.target.value;
+                                                        setEditingService({ ...editingService, benefits: newBenefits });
+                                                    }}
+                                                    className="flex-grow p-2 bg-stone-50 border-b border-stone-200 focus:border-[#849b87] outline-none text-sm"
+                                                    placeholder="Beneficio specifico..."
+                                                />
+                                                <button
+                                                    onClick={() => {
+                                                        const newBenefits = (editingService.benefits || []).filter((_, i) => i !== idx);
+                                                        setEditingService({ ...editingService, benefits: newBenefits });
+                                                    }}
+                                                    className="p-2 text-stone-300 hover:text-red-400 transition-colors"
+                                                >
+                                                    <X className="w-4 h-4" />
+                                                </button>
+                                            </div>
+                                        ))}
+                                        <button
+                                            onClick={() => setEditingService({ ...editingService, benefits: [...(editingService.benefits || []), ''] })}
+                                            className="mt-2 text-xs text-[#849b87] font-bold uppercase tracking-widest hover:underline flex items-center gap-1"
+                                        >
+                                            <Plus className="w-3 h-3" /> Aggiungi Beneficio
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Description (Short) */}
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-stone-400">Descrizione Breve (Card)</label>
+                                    <textarea
+                                        rows={2}
+                                        value={editingService.description || ''}
                                         onChange={(e) => setEditingService({ ...editingService, description: e.target.value })}
-                                        className="w-full p-3 bg-white border border-stone-200 rounded-lg focus:border-[#c07a60] outline-none text-[#57534e] leading-relaxed resize-none"
+                                        className="w-full p-3 bg-white border border-stone-200 rounded-lg focus:border-[#c07a60] outline-none text-[#57534e] text-sm"
                                     />
                                 </div>
 
@@ -258,7 +309,7 @@ const ServicesEditor: React.FC = () => {
                                     </div>
                                 </div>
 
-                                {/* Image URL (Simple input for now, Upload later) */}
+                                {/* Image URL */}
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold uppercase tracking-widest text-stone-400">URL Immagine</label>
                                     <div className="flex gap-4">
@@ -268,7 +319,7 @@ const ServicesEditor: React.FC = () => {
                                         <input
                                             type="text"
                                             value={editingService.image_url || editingService.imageUrl}
-                                            onChange={(e) => setEditingService({ ...editingService, image_url: e.target.value, imageUrl: e.target.value })} // Handle both for safety
+                                            onChange={(e) => setEditingService({ ...editingService, image_url: e.target.value, imageUrl: e.target.value })}
                                             className="flex-grow p-3 bg-white border border-stone-200 rounded-lg focus:border-[#c07a60] outline-none text-xs text-stone-500 font-mono"
                                         />
                                     </div>

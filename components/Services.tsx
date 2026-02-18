@@ -2,10 +2,19 @@ import React from 'react';
 import { useServices } from '../hooks/useServices';
 import { TreatmentType } from '../types';
 import { ArrowRight, Sparkles, Flame, Crown, Loader } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import ServiceModal from './ServiceModal';
+import { Service } from '../types';
 
 const Services: React.FC = () => {
   const { services, loading } = useServices();
+  const [selectedService, setSelectedService] = React.useState<Service | null>(null);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  const handleServiceClick = (service: Service) => {
+    setSelectedService(service);
+    setIsModalOpen(true);
+  };
 
   const manualServices = services.filter(s => s.category === TreatmentType.MANUAL);
   const toolServices = services.filter(s => s.category === TreatmentType.TOOLS);
@@ -41,7 +50,7 @@ const Services: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {manualServices.map((service, index) => (
-              <ServiceCard key={service.id} service={service} index={index} tier="essential" />
+              <ServiceCard key={service.id} service={service} index={index} tier="essential" onClick={() => handleServiceClick(service)} />
             ))}
           </div>
         </div>
@@ -64,7 +73,7 @@ const Services: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
             {toolServices.map((service, index) => (
-              <ServiceCard key={service.id} service={service} index={index} tier="advanced" />
+              <ServiceCard key={service.id} service={service} index={index} tier="advanced" onClick={() => handleServiceClick(service)} />
             ))}
           </div>
         </div>
@@ -91,16 +100,23 @@ const Services: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {ritualServices.map((service, index) => (
-              <ServiceCard key={service.id} service={service} index={index} tier="luxury" />
+              <ServiceCard key={service.id} service={service} index={index} tier="luxury" onClick={() => handleServiceClick(service)} />
             ))}
           </div>
         </div>
       </div>
-    </section>
+
+
+      <ServiceModal
+        service={selectedService}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </section >
   );
 };
 
-const ServiceCard = ({ service, index, tier }: { service: any, index: number, tier: 'essential' | 'advanced' | 'luxury' }) => {
+const ServiceCard = ({ service, index, tier, onClick }: { service: any, index: number, tier: 'essential' | 'advanced' | 'luxury', onClick: () => void }) => {
   const isLuxury = tier === 'luxury';
 
   return (
@@ -111,6 +127,7 @@ const ServiceCard = ({ service, index, tier }: { service: any, index: number, ti
       transition={{ delay: index * 0.1 }}
       className={`group relative overflow-hidden cursor-pointer h-full flex flex-col ${isLuxury ? 'border border-[#d4af37]/30 hover:border-[#d4af37]/80' : 'bg-white'
         } transition-all duration-500`}
+      onClick={onClick}
     >
       <div className="aspect-[4/5] overflow-hidden relative">
         <div className={`absolute inset-0 z-10 transition-colors duration-500 ${isLuxury ? 'bg-black/20 group-hover:bg-transparent' : 'bg-black/10 group-hover:bg-transparent'
@@ -143,10 +160,10 @@ const ServiceCard = ({ service, index, tier }: { service: any, index: number, ti
           <span className={`font-serif text-lg ${isLuxury ? 'text-[#d4af37]' : 'text-[#292524]'}`}>
             {service.price}
           </span>
-          <a href="/booking" className={`uppercase text-[10px] tracking-widest font-bold flex items-center gap-2 group-hover:gap-3 transition-all ${isLuxury ? 'text-white group-hover:text-[#d4af37]' : 'text-[#c07a60] group-hover:text-[#292524]'
+          <button className={`uppercase text-[10px] tracking-widest font-bold flex items-center gap-2 group-hover:gap-3 transition-all ${isLuxury ? 'text-white group-hover:text-[#d4af37]' : 'text-[#c07a60] group-hover:text-[#292524]'
             }`}>
-            Prenota <ArrowRight className="w-3 h-3" />
-          </a>
+            Scopri <ArrowRight className="w-3 h-3" />
+          </button>
         </div>
       </div>
     </motion.div>

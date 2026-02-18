@@ -7,6 +7,7 @@ import ChatWidget from './components/ChatWidget';
 // Pages
 import HomePage from './pages/HomePage';
 import BookingPage from './pages/BookingPage';
+import AcademyPage from './pages/AcademyPage';
 
 // Console Signature Easter Egg
 const printConsoleSignature = () => {
@@ -52,7 +53,9 @@ const App: React.FC = () => {
             {/* 🌍 PUBLIC SITE (Wrapped in Layout) */}
             <Route element={<PublicLayout />}>
               <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<HomePage />} />
               <Route path="/booking" element={<BookingPage />} />
+              <Route path="/academy" element={<AcademyPage />} />
             </Route>
 
             {/* 👑 ADMIN EMPIRE (No Layout) */}

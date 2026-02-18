@@ -12,6 +12,12 @@ export interface Service {
   duration: string;
   price: string;
   imageUrl: string;
+  // Deep Dive Fields
+  subtitle?: string;
+  soul_description?: string;
+  benefits?: string[]; // Simplified for FE typing, though DB is JSONB
+  program_details?: any; // JSONB
+  active?: boolean;
 }
 
 export interface Testimonial {

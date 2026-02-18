@@ -48,6 +48,7 @@ const Navigation: React.FC = () => {
     { name: 'Home', action: () => scrollToTop() },
     { name: 'Esperienze', action: () => scrollToSection('esperienze') },
     { name: 'Chi Sono', action: () => scrollToSection('chi-sono') },
+    { name: 'Academy', action: () => navigate('/academy') },
   ];
 
   return (
