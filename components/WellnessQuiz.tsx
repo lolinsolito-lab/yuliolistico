@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ArrowRight, RefreshCcw, Cpu, Lock, CheckCircle } from 'lucide-react';
 import { analyzeSymptom } from '../services/diagnosticEngine';
 import { saveLead } from '../services/supabaseService';
+import { sendLeadEmail } from '../services/emailService'; // Import Email Service
 import { AiRecommendation } from '../types';
 
 const WellnessQuiz: React.FC = () => {
@@ -49,6 +50,7 @@ const WellnessQuiz: React.FC = () => {
 
     try {
       if (result) {
+        // 1. Save to Database
         await saveLead({
           name,
           email,
@@ -57,6 +59,14 @@ const WellnessQuiz: React.FC = () => {
           result_treatment: result.treatment
         });
         console.log("Lead Saved to Supabase");
+
+        // 2. Trigger Email (Simulated for now)
+        try {
+          await sendLeadEmail(email, name, result);
+          console.log("Email trigger sent");
+        } catch (emailError) {
+          console.error("Failed to trigger email", emailError);
+        }
       }
     } catch (error) {
       console.error("Failed to save lead", error);

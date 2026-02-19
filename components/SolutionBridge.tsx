@@ -26,8 +26,10 @@ const SolutionBridge: React.FC = () => {
                             È FINITA.
                         </h2>
                         <p className="text-[#57534e] text-xl md:text-2xl font-light leading-relaxed max-w-2xl mx-auto">
-                            Non sei qui per farti "coccolare". Sei qui per farti <span className="font-semibold text-[#292524]">ricalibrare</span>.
-                            <br />Benvenuta nell'era della <span className="italic font-serif text-[#c07a60]">Bio-Architettura Emotiva.</span>
+                            Il vero lusso non è l'evasione, ma la riconnessione profonda.
+                            <br />Qui non trattiamo il corpo: onoriamo la sua storia.
+                            <br /><br />
+                            Benvenuta nell'era della <span className="italic font-serif text-[#c07a60]">Bio-Architettura Emotiva.</span>
                         </p>
                     </motion.div>
                 </div>
@@ -44,7 +46,8 @@ const SolutionBridge: React.FC = () => {
                             subtitle: "Physical",
                             desc: "Non scogliamo solo i nodi. Riscriviamo la postura profonda. Disinneschiamo il dolore cronico alla radice.",
                             icon: Activity,
-                            delay: 0
+                            delay: 0,
+                            image: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=2070&auto=format&fit=crop" // Marble/Stone
                         },
                         {
                             id: "02",
@@ -52,7 +55,8 @@ const SolutionBridge: React.FC = () => {
                             subtitle: "Emotional",
                             desc: "Il corpo tiene il conto di ogni trauma. Qui saldiamo il debito. Spazio sicuro per lasciar andare ciò che ti appesantisce.",
                             icon: Heart,
-                            delay: 0.2
+                            delay: 0.2,
+                            image: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=2070&auto=format&fit=crop" // Water ripples
                         },
                         {
                             id: "03",
@@ -60,7 +64,8 @@ const SolutionBridge: React.FC = () => {
                             subtitle: "Mental",
                             desc: "Spegniamo il rumore di fondo. Un reset completo del sistema nervoso per tornare a pensare con chiarezza cristallina.",
                             icon: BrainCircuit,
-                            delay: 0.4
+                            delay: 0.4,
+                            image: "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?q=80&w=2074&auto=format&fit=crop" // Ethereal light
                         }
                     ].map((item, idx) => (
                         <motion.div
@@ -72,9 +77,15 @@ const SolutionBridge: React.FC = () => {
                             className="group relative bg-white/40 backdrop-blur-md border border-white/60 p-10 h-[450px] flex flex-col justify-between overflow-hidden hover:bg-white/80 transition-all duration-500 shadow-sm hover:shadow-2xl rounded-sm"
                         >
                             {/* Hover Gradient */}
-                            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#c07a60]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#c07a60]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10"></div>
 
-                            <div className="relative z-10">
+                            {/* Hover Background Image Reveal - Disruptive Luxury */}
+                            <div
+                                className="absolute inset-0 bg-cover bg-center opacity-0 group-hover:opacity-30 transition-opacity duration-700 transform scale-105 group-hover:scale-100"
+                                style={{ backgroundImage: `url(${item.image})` }}
+                            ></div>
+
+                            <div className="relative z-20">
                                 <div className="flex justify-between items-start mb-8">
                                     <span className="text-6xl font-serif text-[#e7e5e4] group-hover:text-[#c07a60]/20 transition-colors duration-500">{item.id}</span>
                                     <item.icon className="w-8 h-8 text-[#292524] group-hover:text-[#c07a60] transition-colors duration-300 stroke-1" />

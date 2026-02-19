@@ -1,17 +1,18 @@
 
+import { supabase } from '../lib/supabaseClient';
 import { AiRecommendation } from "../types";
 
 // 1. Define the 4 Archetypes
-type Archetype = 'PIETRA' | 'RUMORE_BIANCO' | 'ACQUA_FERMA' | 'ESAURIMENTO';
+export type Archetype = 'PIETRA' | 'RUMORE_BIANCO' | 'ACQUA_FERMA' | 'ESAURIMENTO';
 
-interface DiagnosisRule {
+export interface DiagnosisRule {
     archetype: Archetype;
     keywords: string[];
     priority: number; // Higher number = more weight
 }
 
 // 2. The Keyword Database (The "Brain")
-const RULES: DiagnosisRule[] = [
+export const DEFAULT_RULES: DiagnosisRule[] = [
     {
         archetype: 'PIETRA', // Tensione, Dolore, Blocchi
         keywords: ['spalle', 'schiena', 'collo', 'cervicale', 'dolore', 'male', 'contrattura', 'blocc', 'rigid', 'pc', 'sedut', 'tensione', 'muscol', 'nodo', 'marmo', 'pezzo di legno'],
@@ -34,8 +35,11 @@ const RULES: DiagnosisRule[] = [
     }
 ];
 
+// Exporting Mutable Variables for the App to use
+export let RULES = [...DEFAULT_RULES];
+
 // 3. The Ritual Prescriptions (The "Solution")
-const PRESCRIPTIONS: Record<Archetype, AiRecommendation[]> = {
+export const DEFAULT_PRESCRIPTIONS: Record<Archetype, AiRecommendation[]> = {
     PIETRA: [
         {
             treatment: "Bamboo Deep Force",
@@ -84,6 +88,74 @@ const PRESCRIPTIONS: Record<Archetype, AiRecommendation[]> = {
             oilRecommendation: "Pietre Basaltiche & Olii Caldi"
         }
     ]
+};
+
+export let PRESCRIPTIONS = { ...DEFAULT_PRESCRIPTIONS };
+
+// --- DYNAMIC CONFIGURATION ENGINE ---
+
+// 1. Fetch Config from DB (Called on App Init)
+export const fetchQuizConfig = async () => {
+    try {
+        const { data, error } = await supabase
+            .from('quiz_config')
+            .select('rules, prescriptions')
+            .eq('is_active', true)
+            .single();
+
+        if (error) {
+            console.warn("⚠️ Using Default Quiz Logic (DB Error or Offline):", error.message);
+            return false;
+        }
+
+        if (data) {
+            console.log("🧠 Yuli AI: Logic Updated from Database.");
+            RULES = data.rules;
+            PRESCRIPTIONS = data.prescriptions;
+            return { rules: RULES, prescriptions: PRESCRIPTIONS };
+        }
+    } catch (err) {
+        console.error("Critical Diagnostic Engine Error:", err);
+    }
+    return false;
+};
+
+// 2. Save Config to DB (Called by Admin Editor)
+export const saveQuizConfig = async (newRules: DiagnosisRule[], newPrescriptions: Record<Archetype, AiRecommendation[]>) => {
+    // Basic validation could go here
+    const { data, error } = await supabase
+        .from('quiz_config')
+        .update({
+            rules: newRules,
+            prescriptions: newPrescriptions,
+            updated_at: new Date()
+        })
+        .eq('is_active', true);
+
+    // If update fails (maybe row doesn't exist yet?), try insert for the first time
+    if (error || !data) {
+        // Fallback: Check if ANY row exists, if not insert.
+        const { count } = await supabase.from('quiz_config').select('*', { count: 'exact', head: true });
+        if (count === 0) {
+            const { error: insertError } = await supabase.from('quiz_config').insert([{
+                rules: newRules,
+                prescriptions: newPrescriptions,
+                is_active: true
+            }]);
+            if (insertError) return { success: false, error: insertError };
+            // Update local state and return success
+            RULES = newRules;
+            PRESCRIPTIONS = newPrescriptions;
+            return { success: true };
+        }
+        return { success: false, error };
+    }
+
+    // Update local state immediately so app feels fast
+    RULES = newRules;
+    PRESCRIPTIONS = newPrescriptions;
+
+    return { success: true };
 };
 
 // 4. The Diagnostic Logic
