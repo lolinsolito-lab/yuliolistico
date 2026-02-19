@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import AdminLayout from '../components/admin/AdminLayout';
 import ContentsManager from '../components/admin/cms/ContentsManager';
 import ServicesEditor from '../components/admin/ServicesEditor';
+import AcademyEditor from '../components/admin/AcademyEditor'; // Restore import
 import LeadsViewer from '../components/admin/LeadsViewer';
 import { Construction, Loader, Users } from 'lucide-react';
 
