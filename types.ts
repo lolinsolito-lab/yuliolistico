@@ -50,3 +50,35 @@ export interface Lead {
   result_treatment: string;
   status?: 'new' | 'contacted' | 'converted';
 }
+
+export interface Course {
+  id: string;
+  created_at: string;
+  title: string;
+  description?: string;
+  thumbnail_url?: string;
+  price_eur: number; // 0 = Free
+  is_published: boolean;
+  slug?: string;
+  modules?: Module[];
+}
+
+export interface Module {
+  id: string;
+  course_id: string;
+  title: string;
+  description?: string;
+  type: 'VIDEO' | 'PDF' | 'AUDIO';
+  content_url: string;
+  thumbnail_url?: string;
+  duration?: number;
+  sort_order: number;
+}
+
+export interface Enrollment {
+  id: string;
+  user_id: string;
+  course_id: string;
+  status: 'active' | 'revoked' | 'expired';
+  created_at: string;
+}

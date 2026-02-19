@@ -117,9 +117,19 @@ const SolutionBridge: React.FC = () => {
                             Valore Reale: 1 Rituale Yuli = 4 Massaggi Standard
                         </span>
                     </div>
-                    <p className="mt-4 text-xs text-[#a8a29e] uppercase tracking-widest">
-                        Non paghi per un'ora. Paghi per il risultato che dura settimane.
-                    </p>
+
+                    {/* PRE-SUASION TRANSITION */}
+                    <div className="mt-12 max-w-lg mx-auto relative">
+                        <div className="absolute left-1/2 -top-12 bottom-0 w-[1px] bg-gradient-to-b from-[#292524] to-transparent h-12 transform -translate-x-1/2 opacity-20"></div>
+                        <h3 className="text-2xl font-serif text-[#292524] mb-4">
+                            Il vero valore del tuo tempo.
+                        </h3>
+                        <p className="text-sm text-[#57534e] font-light leading-relaxed italic">
+                            "Siamo abituati a correre credendo che il tempo sia denaro. In realtà, è l'unica cosa che non torna indietro. <br /><br />
+                            I rituali che stai per scoprire non servono a riempire un'ora della tua giornata, <strong>ma a svuotare la tua mente da tutto il resto.</strong> <br /><br />
+                            Lascia l'orologio fuori dalla porta, smetti di contare i minuti e inizia a contare i battiti che rallentano."
+                        </p>
+                    </div>
                 </motion.div>
 
             </div>
