@@ -30,6 +30,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
         { id: 'overview', label: 'Panoramica', icon: LayoutDashboard, path: '/admin' },
         { id: 'website', label: 'Sito Web (CMS)', icon: Globe, path: '/admin/cms' },
         { id: 'services', label: 'Servizi & Rituali', icon: Sparkles, path: '/admin/services' },
+        { id: 'quiz', label: 'Logica Quiz', icon: BrainCircuit, path: '/admin/quiz-logic' }, // Added here
         { id: 'academy', label: 'Accademia (LMS)', icon: GraduationCap, path: '/admin/academy' },
         { id: 'clients', label: 'Clienti (CRM)', icon: Users, path: '/admin/crm' },
         { id: 'settings', label: 'Impostazioni', icon: Settings, path: '/admin/settings' },
@@ -123,6 +124,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
                             {activeSection === 'overview' && "Bentornata al Comando."}
                             {activeSection === 'website' && "Gestione Contenuti Digitali."}
                             {activeSection === 'services' && "Catalogo Esperienze & Rituali."}
+                            {activeSection === 'quiz' && "Configurazione Motore Diagnostico."}
                             {activeSection === 'academy' && "Accademia Imperiale."}
                             {activeSection === 'clients' && "Registro Clienti Olistici."}
                             {activeSection === 'settings' && "Configurazione Sistema."}
