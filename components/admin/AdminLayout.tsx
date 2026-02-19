@@ -13,7 +13,8 @@ import {
     BrainCircuit,
     ChevronRight,
     Sparkles,
-    UserCircle
+    UserCircle,
+    BookOpen
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -34,6 +35,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
         { id: 'quiz', label: 'Logica Quiz', icon: BrainCircuit, path: '/admin/quiz-logic' }, // Added here
         { id: 'academy', label: 'Accademia (LMS)', icon: GraduationCap, path: '/admin/academy' },
         { id: 'clients', label: 'Clienti (CRM)', icon: Users, path: '/admin/crm' },
+        { id: 'archivio', label: "L'Archivio", icon: BookOpen, path: '/admin/archivio' },
         { id: 'profile', label: 'Profilo', icon: UserCircle, path: '/admin/profile' },
         { id: 'settings', label: 'Impostazioni', icon: Settings, path: '/admin/settings' },
     ];

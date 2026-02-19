@@ -8,6 +8,7 @@ import ChatWidget from './components/ChatWidget';
 import HomePage from './pages/HomePage';
 import BookingPage from './pages/BookingPage';
 import AcademyPage from './pages/AcademyPage';
+import ArchivePage from './pages/ArchivePage';
 
 // Console Signature Easter Egg
 const printConsoleSignature = () => {
@@ -55,6 +56,7 @@ const App: React.FC = () => {
               <Route path="/" element={<HomePage />} />
               <Route path="/booking" element={<BookingPage />} />
               <Route path="/academy" element={<AcademyPage />} />
+              <Route path="/archivio" element={<ArchivePage />} />
             </Route>
 
             {/* 👑 ADMIN EMPIRE (No Layout) */}
