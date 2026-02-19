@@ -1,7 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Instagram, Mail, Phone, X } from 'lucide-react';
 import Logo from './Logo';
 import { AnimatePresence, motion } from 'framer-motion';
+import { supabase } from '../lib/supabaseClient';
+
+// Default footer data (fallback)
+const FOOTER_DEFAULTS = {
+  brand_name: 'Yuli Olistico',
+  email: 'yuliolistico@gmail.com',
+  phone: '+39 320 198 26 29',
+  address: 'Bergamo e provincia',
+  social_links: { instagram: '@yuli_olistico' } as Record<string, string>,
+};
 
 // Legal popup modal content
 const LEGAL_CONTENT: Record<string, { title: string; content: string }> = {
@@ -125,6 +135,37 @@ const LegalPopup: React.FC<{ type: string; onClose: () => void }> = ({ type, onC
 
 const Footer: React.FC = () => {
   const [activePopup, setActivePopup] = useState<string | null>(null);
+  const [footerData, setFooterData] = useState(FOOTER_DEFAULTS);
+
+  useEffect(() => {
+    const fetchFooterData = async () => {
+      try {
+        const { data } = await supabase
+          .from('business_profile')
+          .select('brand_name, email, phone, address, social_links')
+          .limit(1)
+          .maybeSingle();
+
+        if (data) {
+          setFooterData(prev => ({
+            ...prev,
+            ...Object.fromEntries(Object.entries(data).filter(([_, v]) => v != null && v !== '')),
+            social_links: data.social_links && Object.keys(data.social_links).length > 0
+              ? data.social_links
+              : prev.social_links,
+          }));
+        }
+      } catch (err) {
+        console.warn('Footer: using fallback data');
+      }
+    };
+    fetchFooterData();
+  }, []);
+
+  const igHandle = footerData.social_links.instagram || '@yuli_olistico';
+  const igUrl = igHandle.startsWith('http')
+    ? igHandle
+    : `https://instagram.com/${igHandle.replace('@', '')}`;
 
   return (
     <>
@@ -136,7 +177,7 @@ const Footer: React.FC = () => {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <Logo className="w-6 h-6 text-[#849b87]" color="currentColor" />
-              <h3 className="text-white font-serif text-lg">Yuli Olistico</h3>
+              <h3 className="text-white font-serif text-lg">{footerData.brand_name}</h3>
             </div>
             <p className="font-light text-xs leading-relaxed max-w-xs opacity-80 italic">
               "Ogni corpo ha una storia. Ogni rituale la ascolta."
@@ -149,21 +190,21 @@ const Footer: React.FC = () => {
           {/* Contacts */}
           <div className="space-y-2 text-sm font-light">
             <p className="text-white text-xs uppercase tracking-widest mb-3 font-bold">Contatti</p>
-            <a href="mailto:yuliolistico@gmail.com" className="flex items-center gap-2 hover:text-white transition-colors">
-              <Mail className="w-3.5 h-3.5" /> yuliolistico@gmail.com
+            <a href={`mailto:${footerData.email}`} className="flex items-center gap-2 hover:text-white transition-colors">
+              <Mail className="w-3.5 h-3.5" /> {footerData.email}
             </a>
-            <a href="tel:+393201982629" className="flex items-center gap-2 hover:text-white transition-colors">
-              <Phone className="w-3.5 h-3.5" /> +39 320 198 26 29
+            <a href={`tel:${footerData.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 hover:text-white transition-colors">
+              <Phone className="w-3.5 h-3.5" /> {footerData.phone}
             </a>
-            <a href="https://instagram.com/yuli_olistico" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition-colors">
-              <Instagram className="w-3.5 h-3.5" /> @yuli_olistico
+            <a href={igUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition-colors">
+              <Instagram className="w-3.5 h-3.5" /> {igHandle}
             </a>
           </div>
 
           {/* Info */}
           <div className="space-y-2 text-sm font-light">
             <p className="text-white text-xs uppercase tracking-widest mb-3 font-bold">Info</p>
-            <p className="opacity-80">📍 Bergamo e provincia</p>
+            <p className="opacity-80">📍 {footerData.address}</p>
             <p className="opacity-80">🗓️ Solo su appuntamento</p>
             <p className="opacity-80">🚗 Servizio a domicilio disponibile</p>
           </div>

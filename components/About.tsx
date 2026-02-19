@@ -1,10 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { COLLABORATIONS } from '../constants';
 import { Sparkles, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { supabase } from '../lib/supabaseClient';
+
+// Default values (fallback if no business_profile row exists)
+const DEFAULTS = {
+  full_name: 'Yuli Yuliantini',
+  role: 'Founder & CEO',
+  profile_image_url: '/images/yuli-profile.png',
+  signature_image_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Signature_sample.svg/1200px-Signature_sample.svg.png',
+  bio_long: '',
+};
 
 const About: React.FC = () => {
   const [isBioOpen, setIsBioOpen] = useState(false);
+  const [profile, setProfile] = useState(DEFAULTS);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const { data } = await supabase
+          .from('business_profile')
+          .select('full_name, role, profile_image_url, signature_image_url, bio_long')
+          .limit(1)
+          .maybeSingle();
+
+        if (data) {
+          setProfile(prev => ({
+            ...prev,
+            ...Object.fromEntries(Object.entries(data).filter(([_, v]) => v != null && v !== ''))
+          }));
+        }
+      } catch (err) {
+        console.warn('About: using fallback profile data');
+      }
+    };
+    fetchProfile();
+  }, []);
+
+  // Parse bio_long into paragraphs (split by double newline or newline)
+  const visionParagraphs = profile.bio_long
+    ? profile.bio_long.split(/\n\n|\n/).filter(p => p.trim())
+    : [
+      '"Nella mia terra, non impariamo a massaggiare. Impariamo a sentire. Prima ancora che le mie mani ti tocchino, la mia energia ti ha già accolto."',
+      '"Il corpo non mente mai. Trattiene il freddo delle parole non dette, il calore delle emozioni vissute, il peso dei giorni frenetici. Io non \'lavoro\' sui muscoli. Io dialogo con quelle memorie."',
+      '"Il mio rituale è restituirti al tuo silenzio originale. Dove non sei madre, non sei manager, non sei ruolo. Sei solo vita che scorre. Pura. Intatta."',
+    ];
 
   return (
     <section id="chi-sono" className="py-24 bg-[#faf9f6] relative overflow-hidden">
@@ -41,7 +83,7 @@ const About: React.FC = () => {
                   onClick={() => setIsBioOpen(true)}
                   className="font-serif italic text-[#c07a60] hover:text-[#d4af37] border-b border-[#c07a60]/30 hover:border-[#d4af37] transition-all duration-300 relative group"
                 >
-                  Yuli Yuliantini
+                  {profile.full_name}
                   <span className="absolute -top-1 -right-2 text-[#d4af37] opacity-0 group-hover:opacity-100 transition-opacity">
                     <Sparkles className="w-3 h-3" />
                   </span>
@@ -94,8 +136,8 @@ const About: React.FC = () => {
 
               <div className="w-full md:w-2/5 relative overflow-hidden group">
                 <img
-                  src="/images/yuli-profile.png"
-                  alt="Yuli Yuliantini Portrait"
+                  src={profile.profile_image_url}
+                  alt={`${profile.full_name} Portrait`}
                   className="w-full h-full object-cover min-h-[300px] grayscale brightness-110 contrast-125 transition-all duration-700 group-hover:grayscale-0"
                 />
                 {/* Mystic Fog Effect - Left Side */}
@@ -111,24 +153,20 @@ const About: React.FC = () => {
                 <h3 className="text-4xl font-serif text-[#292524] mb-6">Sentire oltre la pelle.</h3>
 
                 <div className="space-y-4 text-[#57534e] font-light leading-relaxed italic">
-                  <p>
-                    "Nella mia terra, non impariamo a massaggiare. Impariamo a sentire. Prima ancora che le mie mani ti tocchino, la mia energia ti ha già accolto."
-                  </p>
-                  <p>
-                    "Il corpo non mente mai. Trattiene il freddo delle parole non dette, il calore delle emozioni vissute, il peso dei giorni frenetici. Io non 'lavoro' sui muscoli. Io dialogo con quelle memorie."
-                  </p>
-                  <p>
-                    "Il mio rituale è restituirti al tuo silenzio originale. Dove non sei madre, non sei manager, non sei ruolo. Sei solo vita che scorre. Pura. Intatta."
-                  </p>
+                  {visionParagraphs.map((p, i) => (
+                    <p key={i}>{p}</p>
+                  ))}
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-[#292524]/10">
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Signature_sample.svg/1200px-Signature_sample.svg.png"
-                    alt="Signature"
-                    className="h-12 opacity-50"
-                  />
-                  <p className="mt-2 text-xs uppercase tracking-widest text-[#a8a29e]">Yuliantini Yuliantini</p>
+                  {profile.signature_image_url && (
+                    <img
+                      src={profile.signature_image_url}
+                      alt="Signature"
+                      className="h-12 opacity-50"
+                    />
+                  )}
+                  <p className="mt-2 text-xs uppercase tracking-widest text-[#a8a29e]">{profile.full_name}</p>
                 </div>
               </div>
 
