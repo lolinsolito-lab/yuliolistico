@@ -10,6 +10,7 @@ import {
     LogOut,
     Menu,
     X,
+    BrainCircuit,
     ChevronRight,
     Sparkles
 } from 'lucide-react';

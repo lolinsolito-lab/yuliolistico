@@ -1,31 +1,65 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, ArrowRight, RefreshCcw, Cpu } from 'lucide-react';
-import { getWellnessRecommendation } from '../services/geminiService';
+import { Sparkles, ArrowRight, RefreshCcw, Cpu, Lock, CheckCircle } from 'lucide-react';
+import { analyzeSymptom } from '../services/diagnosticEngine';
+import { saveLead } from '../services/supabaseService';
 import { AiRecommendation } from '../types';
 
 const WellnessQuiz: React.FC = () => {
-  const [input, setInput] = useState('');
+  const [step, setStep] = useState<'INPUT' | 'LEAD_GEN' | 'RESULT'>('INPUT');
   const [loading, setLoading] = useState(false);
+
+  // Form State
+  const [symptom, setSymptom] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
   const [result, setResult] = useState<AiRecommendation | null>(null);
 
-  const handleConsult = async () => {
-    if (!input.trim()) return;
+  // Step 1: Analyze Symptom & Fake Processing
+  const handleAnalyze = async () => {
+    if (!symptom.trim() || !name.trim()) return;
     setLoading(true);
-    setResult(null);
+
+    // Simulate AI "Thinking"
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    const diagnosis = analyzeSymptom(symptom);
+    setResult(diagnosis);
+    setLoading(false);
+    setStep('LEAD_GEN');
+  };
+
+  // Step 2: Unlock Result (Lead Gen)
+  const handleUnlock = async () => {
+    if (!email.trim() || !phone.trim()) return;
+    setLoading(true);
 
     try {
-      const recommendation = await getWellnessRecommendation(input);
-      setResult(recommendation);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
+      if (result) {
+        await saveLead({
+          name,
+          email,
+          phone,
+          symptom,
+          result_treatment: result.treatment
+        });
+        console.log("Lead Saved to Supabase");
+      }
+    } catch (error) {
+      console.error("Failed to save lead", error);
+      // Continue anyway to show result to user
     }
+
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setLoading(false);
+    setStep('RESULT');
   };
 
   return (
-    <section className="py-32 mb-20 border-b border-[#292524]/5 bg-[#faf9f6] px-6 relative overflow-hidden">
+    <section className="py-32 mb-20 border-b border-[#292524]/5 bg-[#faf9f6] px-6 relative overflow-hidden" id="diagnostic">
       {/* Tech/Organic Fusion Background */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div className="absolute top-10 right-10 w-96 h-96 border border-[#292524] rounded-full"></div>
@@ -35,154 +69,168 @@ const WellnessQuiz: React.FC = () => {
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
 
-          {/* Left: Introduction */}
+          {/* Left: Introduction & Instructions */}
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Cpu className="w-4 h-4 text-[#849b87]" />
-              <span className="text-[#849b87] uppercase tracking-[0.2em] text-xs font-bold">Yuli AI • Diagnostic</span>
+              <span className="text-[#849b87] uppercase tracking-[0.2em] text-xs font-bold">Yuli • Diagnostic Engine</span>
             </div>
             <h2 className="text-5xl md:text-7xl font-serif text-[#292524] mb-8 leading-none">
               Cosa chiede <br />
               la tua <span className="text-[#c07a60] italic">Anima?</span>
             </h2>
             <p className="text-[#57534e] text-xl mb-10 leading-relaxed font-light">
-              Non scegliere a caso. Lascia che la tecnologia interpreti il linguaggio del tuo corpo.
-              Scrivi come ti senti. Sii onesta. Sii vulnerabile.
-              <br /><br />
-              <span className="text-sm font-bold uppercase tracking-widest text-[#292524]">Esempio:</span> <span className="italic">"Mi sento prosciugata dal lavoro e ho le spalle di pietra."</span>
+              Non scegliere a caso. L'algoritmo di Yuli decodifica il linguaggio del tuo corpo per trovare l'unico rituale di cui hai bisogno oggi.
             </p>
 
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#849b87] to-[#c07a60] rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-              <div className="relative bg-white p-2">
-                <textarea
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Digita qui il tuo stato d'animo..."
-                  className="w-full bg-white p-6 outline-none min-h-[120px] text-lg text-[#292524] placeholder:text-stone-300 font-serif resize-none"
-                />
-                <div className="flex justify-between items-center px-6 pb-4">
-                  <span className="text-xs text-stone-400 uppercase tracking-widest">AI Powered</span>
-                  <button
-                    onClick={handleConsult}
-                    disabled={loading || !input}
-                    className="flex items-center gap-3 bg-[#292524] text-white px-8 py-3 hover:bg-[#c07a60] transition-colors disabled:opacity-50 uppercase tracking-widest text-xs font-bold"
-                  >
-                    {loading ? <RefreshCcw className="animate-spin w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
-                    {loading ? "Analisi..." : "Genera Rituale"}
-                  </button>
-                </div>
-              </div>
-            </div>
+            <AnimatePresence mode='wait'>
+              {step === 'INPUT' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="relative group bg-white/50 backdrop-blur-sm p-8 border border-[#292524]/10 rounded-sm"
+                >
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-xs uppercase tracking-widest text-[#a8a29e] mb-2">Come ti chiami?</label>
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Il tuo nome..."
+                        className="w-full bg-white p-4 border-b border-[#292524]/20 outline-none font-serif text-xl placeholder:text-[#d6d3d1]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs uppercase tracking-widest text-[#a8a29e] mb-2">Come ti senti oggi? (Sii onesta)</label>
+                      <textarea
+                        value={symptom}
+                        onChange={(e) => setSymptom(e.target.value)}
+                        placeholder="Es: 'Ho le spalle di marmo e non dormo da due notti...'"
+                        className="w-full bg-white p-4 border-b border-[#292524]/20 outline-none h-32 resize-none font-serif text-xl placeholder:text-[#d6d3d1]"
+                      />
+                    </div>
+                    <button
+                      onClick={handleAnalyze}
+                      disabled={loading || !symptom || !name}
+                      className="w-full bg-[#292524] text-white py-4 uppercase text-xs tracking-[0.2em] font-bold hover:bg-[#c07a60] transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      {loading ? <RefreshCcw className="animate-spin w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
+                      {loading ? "Decodifica in corso..." : "Avvia Diagnostica"}
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {step === 'LEAD_GEN' && (
+                <motion.div
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  className="relative bg-white/80 backdrop-blur-md p-8 border border-[#c07a60]/30 shadow-2xl rounded-sm text-center"
+                >
+                  <div className="w-16 h-16 bg-[#faf9f6] rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Lock className="w-6 h-6 text-[#c07a60]" />
+                  </div>
+                  <h3 className="text-2xl font-serif text-[#292524] mb-2">Analisi Completata.</h3>
+                  <p className="text-[#57534e] mb-8">
+                    Abbiamo identificato il blocco. <br />
+                    Per sbloccare il tuo <span className="font-bold text-[#c07a60]">Protocollo Personalizzato</span> e ricevere il consiglio dell'esperta, inserisci i tuoi contatti.
+                  </p>
+
+                  <div className="space-y-4 text-left">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="La tua Email migliore..."
+                      className="w-full bg-white p-4 border border-[#292524]/10 outline-none"
+                    />
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="Il tuo Numero (Solo per conferme)..."
+                      className="w-full bg-white p-4 border border-[#292524]/10 outline-none"
+                    />
+                    <button
+                      onClick={handleUnlock}
+                      disabled={loading || !email || !phone}
+                      className="w-full bg-[#c07a60] text-white py-4 uppercase text-xs tracking-[0.2em] font-bold hover:bg-[#292524] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 shadow-lg"
+                    >
+                      {loading ? "Sblocco..." : "Sblocca il Risultato"} <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-[#a8a29e] mt-4 uppercase tracking-widest">Nessuno spam. Solo benessere.</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
           </div>
 
-          {/* Right: The Result Card - Glassmorphism & Examples */}
+          {/* Right: The Result Card (Locked/Unlocked State) */}
           <div className="relative min-h-[500px] flex items-center justify-center">
             {/* Background Blob */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#f3e9d2] rounded-full blur-[100px] opacity-40 pointer-events-none"></div>
 
             <AnimatePresence mode='wait'>
-              {!result && !loading && (
-                <div className="relative z-10 w-full h-full flex flex-col justify-center">
-
-                  {/* Floating Tags - Marquee Effect */}
-                  <div className="absolute top-0 right-0 w-full overflow-hidden opacity-30 pointer-events-none fade-mask-y h-full">
-                    {[1, 2, 3].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        animate={{ y: [0, -1000] }}
-                        transition={{ duration: 20 + i * 5, repeat: Infinity, ease: "linear" }}
-                        className="flex flex-col gap-8 items-end p-4"
-                      >
-                        {["Ansia", "Blocco Scapolare", "Insonnia", "Fame d'Aria", "Peso allo stomaco", "Mente piena", "Gambe pesanti", "Cuore chiuso"].map((tag, j) => (
-                          <span key={j} className="text-4xl font-serif text-[#292524] whitespace-nowrap opacity-20">{tag}</span>
-                        ))}
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  {/* Example Cards Stack */}
-                  <div className="relative ml-auto max-w-sm mr-10 space-y-4">
-                    <motion.div
-                      initial={{ x: 50, opacity: 0 }}
-                      whileInView={{ x: 0, opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                      className="bg-white p-6 shadow-sm border border-[#292524]/5 rounded-sm opacity-60 scale-95 origin-bottom-right"
-                    >
-                      <p className="text-xs text-stone-400 mb-2 italic">Input: "Ho un nodo alla gola e non dormo bene"</p>
-                      <div className="flex items-center gap-2 text-[#c07a60] font-bold text-xs uppercase tracking-widest">
-                        <Sparkles className="w-3 h-3" /> Rituale Rilascio Emotivo
-                      </div>
-                    </motion.div>
-
-                    <motion.div
-                      initial={{ x: 50, opacity: 0 }}
-                      whileInView={{ x: 0, opacity: 1 }}
-                      transition={{ delay: 0.4 }}
-                      className="bg-white p-6 shadow-lg border border-[#292524]/10 rounded-sm"
-                    >
-                      <p className="text-xs text-stone-400 mb-2 italic">Input: "Mi sento prosciugata, ho bisogno di terra"</p>
-                      <div className="flex items-center gap-2 text-[#c07a60] font-bold text-xs uppercase tracking-widest">
-                        <Sparkles className="w-3 h-3" /> Rituale Radicamento
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  <div className="text-right mr-10 mt-10">
-                    <h3 className="text-5xl font-serif text-[#292524]/10 select-none">AI</h3>
-                    <p className="font-serif italic text-xl text-[#292524] opacity-50">L'algoritmo impara dal tuo silenzio.</p>
-                  </div>
-                </div>
-              )}
-
-              {/* ... Loading and Result states remain the same ... */}
-              {loading && (
+              {/* Result Card */}
+              {step === 'RESULT' && result && (
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex flex-col items-center gap-6 relative z-10"
-                >
-                  <div className="w-24 h-24 border-t-2 border-b-2 border-[#292524] rounded-full animate-spin flex items-center justify-center">
-                    <div className="w-16 h-16 border-l-2 border-r-2 border-[#c07a60] rounded-full animate-spin direction-reverse"></div>
-                  </div>
-                  <p className="text-[#292524] font-serif text-xl tracking-wide">Connessione...</p>
-                </motion.div>
-              )}
-
-              {result && (
-                <motion.div
-                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
                   className="bg-white/95 backdrop-blur-xl p-10 shadow-2xl border border-white/50 w-full max-w-md relative z-10 text-center"
                 >
-                  {/* ... Result Card Content ... */}
-                  <div className="inline-block bg-[#292524] text-white px-4 py-1 text-[10px] uppercase tracking-[0.3em] mb-6">
-                    Match Trovato
+                  <div className="inline-flex items-center gap-2 bg-[#292524] text-white px-4 py-1 text-[10px] uppercase tracking-[0.3em] mb-6">
+                    <CheckCircle className="w-3 h-3 text-[#c07a60]" /> Match Confermato
                   </div>
 
-                  <h3 className="text-4xl font-serif text-[#292524] mb-6">
+                  <div className="mb-2 text-xs text-[#a8a29e] uppercase tracking-widest">Rituale Suggerito</div>
+                  <h3 className="text-4xl font-serif text-[#292524] mb-6 leading-tight">
                     {result.treatment}
                   </h3>
 
-                  <div className="mb-8">
-                    <p className="text-[#57534e] text-lg font-light italic leading-relaxed">
-                      "{result.reasoning}"
+                  <div className="mb-8 relative">
+                    <span className="absolute -top-4 -left-2 text-6xl text-[#c07a60]/20 font-serif">"</span>
+                    <p className="text-[#57534e] text-lg font-light italic leading-relaxed relative z-10">
+                      {result.reasoning}
                     </p>
                   </div>
 
-                  <div className="border-t border-[#292524]/10 pt-6 mb-8">
-                    <span className="block text-xs uppercase tracking-widest text-[#a8a29e] mb-2">Prescrizione Olfattiva</span>
+                  <div className="bg-[#faf9f6] p-6 mb-8 border border-[#292524]/5">
+                    <span className="block text-xs uppercase tracking-widest text-[#a8a29e] mb-2">Consiglio Sensoriale</span>
                     <p className="text-[#c07a60] font-serif text-xl">{result.oilRecommendation}</p>
                   </div>
 
-                  <button className="w-full bg-[#292524] text-white py-4 uppercase text-xs tracking-[0.2em] font-bold hover:bg-[#c07a60] transition-colors flex items-center justify-center gap-2 group">
-                    Prenota Ora <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <button className="w-full bg-[#292524] text-white py-4 uppercase text-xs tracking-[0.2em] font-bold hover:bg-[#c07a60] transition-colors flex items-center justify-center gap-2 group shadow-xl">
+                    Prenota Questo Rituale <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </motion.div>
               )}
+
+              {/* Locked State Visualization (When NOT in Result) */}
+              {step !== 'RESULT' && (
+                <div className="relative z-10 w-full h-full flex flex-col justify-center pointer-events-none select-none opacity-50 grayscale-[0.5]">
+                  {/* Fake Result Card - Blurred */}
+                  <div className="bg-white p-10 shadow-sm border border-[#292524]/5 rounded-sm blur-sm transform scale-95">
+                    <div className="h-4 w-24 bg-gray-200 mb-6 mx-auto"></div>
+                    <div className="h-8 w-48 bg-gray-200 mb-6 mx-auto"></div>
+                    <div className="space-y-2 mb-8">
+                      <div className="h-4 w-full bg-gray-100"></div>
+                      <div className="h-4 w-full bg-gray-100"></div>
+                      <div className="h-4 w-2/3 bg-gray-100 mx-auto"></div>
+                    </div>
+                    <div className="h-12 w-full bg-[#292524] opacity-20"></div>
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Lock className="w-12 h-12 text-[#292524]/30" />
+                  </div>
+                </div>
+              )}
             </AnimatePresence>
           </div>
+
         </div>
       </div>
     </section>

@@ -33,8 +33,20 @@ export interface UserState {
   feeling: string;
 }
 
+
 export interface AiRecommendation {
   treatment: string;
   reasoning: string;
   oilRecommendation: string;
+}
+
+export interface Lead {
+  id?: string;
+  created_at?: string;
+  name: string;
+  email: string;
+  phone: string;
+  symptom: string;
+  result_treatment: string;
+  status?: 'new' | 'contacted' | 'converted';
 }
