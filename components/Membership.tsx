@@ -133,15 +133,15 @@ const Membership: React.FC = () => {
                   className="text-center py-8"
                 >
                   <CheckCircle className="w-12 h-12 text-[#d4af37] mx-auto mb-4" />
-                  <h3 className="text-2xl font-serif mb-2">Candidatura Ricevuta</h3>
-                  <p className="text-sm text-white/50">Ti contatteremo entro 48 ore.</p>
+                  <h3 className="text-2xl font-serif mb-2">Sei nella Lista Riservata</h3>
+                  <p className="text-sm text-white/50 leading-relaxed">Sarai tra i primi a sapere quando<br />il Sanctuary aprirà le porte.</p>
                 </motion.div>
               ) : (
                 /* Form */
                 <>
                   <div className="flex items-center gap-3 mb-6">
                     <Crown className="w-5 h-5 text-[#d4af37]" />
-                    <h3 className="text-xl font-serif">Candidatura Sanctuary</h3>
+                    <h3 className="text-xl font-serif">Entra nella Lista Riservata</h3>
                   </div>
 
                   <form onSubmit={handleSubmit} className="space-y-4">
