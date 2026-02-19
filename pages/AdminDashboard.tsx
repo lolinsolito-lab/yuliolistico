@@ -5,7 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import AdminLayout from '../components/admin/AdminLayout';
 import ContentsManager from '../components/admin/cms/ContentsManager';
 import ServicesEditor from '../components/admin/ServicesEditor';
-import AcademyEditor from '../components/admin/AcademyEditor'; // Restore import
+import AcademyEditor from '../components/admin/AcademyEditor';
+import QuizConfig from '../components/admin/QuizConfig'; // Import new config page
 import LeadsViewer from '../components/admin/LeadsViewer';
 import { Construction, Loader, Users } from 'lucide-react';
 
@@ -20,6 +21,7 @@ const AdminDashboard: React.FC = () => {
         if (path.includes('/cms')) return 'website';
         if (path.includes('/services')) return 'services';
         if (path.includes('/academy')) return 'academy';
+        if (path.includes('/quiz-logic')) return 'quiz'; // Add logic mapping
         if (path.includes('/leads')) return 'clients'; // Redirect 'leads' to the clients/CRM tab visually
         if (path.includes('/settings')) return 'settings';
         return 'overview';
@@ -87,6 +89,7 @@ const AdminDashboard: React.FC = () => {
                 <Route path="/cms" element={<ContentsManager />} />
                 <Route path="/services" element={<ServicesEditor />} />
                 <Route path="/academy" element={<AcademyEditor />} />
+                <Route path="/quiz-logic" element={<QuizConfig />} /> {/* Add Route */}
                 <Route path="/leads" element={<LeadsViewer />} />
                 <Route path="/crm" element={<LeadsViewer />} /> {/* CRM acts as alias for now */}
                 <Route path="/settings" element={<SettingsPlaceholder />} />

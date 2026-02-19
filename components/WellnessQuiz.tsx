@@ -9,6 +9,7 @@ import { AiRecommendation } from '../types';
 const WellnessQuiz: React.FC = () => {
   const [step, setStep] = useState<'INPUT' | 'LEAD_GEN' | 'RESULT'>('INPUT');
   const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState(""); // For "Wisdom Pill"
 
   // Form State
   const [symptom, setSymptom] = useState('');
@@ -23,8 +24,17 @@ const WellnessQuiz: React.FC = () => {
     if (!symptom.trim() || !name.trim()) return;
     setLoading(true);
 
-    // Simulate AI "Thinking"
+    // Sequence 1: Listening
+    setLoadingMessage("Ascolto il ritmo del tuo respiro...");
     await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // Sequence 2: Connecting
+    setLoadingMessage("Connetto con gli antichi elementi...");
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // Sequence 3: Decoding
+    setLoadingMessage("L'universo ha una risposta per te...");
+    await new Promise(resolve => setTimeout(resolve, 1500));
 
     const diagnosis = analyzeSymptom(symptom);
     setResult(diagnosis);
@@ -85,42 +95,74 @@ const WellnessQuiz: React.FC = () => {
 
             <AnimatePresence mode='wait'>
               {step === 'INPUT' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="relative group bg-white/50 backdrop-blur-sm p-8 border border-[#292524]/10 rounded-sm"
-                >
-                  <div className="space-y-6">
-                    <div>
-                      <label className="block text-xs uppercase tracking-widest text-[#a8a29e] mb-2">Come ti chiami?</label>
-                      <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Il tuo nome..."
-                        className="w-full bg-white p-4 border-b border-[#292524]/20 outline-none font-serif text-xl placeholder:text-[#d6d3d1]"
-                      />
+                <div className="relative">
+                  {/* Wisdom Loader Overlay */}
+                  <AnimatePresence>
+                    {loading && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 z-20 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center text-center p-8 rounded-sm"
+                      >
+                        <motion.div
+                          key={loadingMessage}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.5 }}
+                          className="font-serif text-2xl text-[#c07a60] italic"
+                        >
+                          "{loadingMessage}"
+                        </motion.div>
+                        <div className="mt-6 flex gap-1">
+                          <div className="w-2 h-2 bg-[#292524] rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+                          <div className="w-2 h-2 bg-[#292524] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                          <div className="w-2 h-2 bg-[#292524] rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="relative group bg-white/50 backdrop-blur-sm p-8 border border-[#292524]/10 rounded-sm"
+                  >
+                    <div className="space-y-6">
+                      <div>
+                        <label className="block text-xs uppercase tracking-widest text-[#a8a29e] mb-2">Come ti chiami?</label>
+                        <input
+                          type="text"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="Il tuo nome..."
+                          className="w-full bg-white p-4 border-b border-[#292524]/20 outline-none font-serif text-xl placeholder:text-[#d6d3d1]"
+                          disabled={loading}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs uppercase tracking-widest text-[#a8a29e] mb-2">Come ti senti oggi? (Sii onesta)</label>
+                        <textarea
+                          value={symptom}
+                          onChange={(e) => setSymptom(e.target.value)}
+                          placeholder="Es: 'Ho le spalle di marmo e non dormo da due notti...'"
+                          className="w-full bg-white p-4 border-b border-[#292524]/20 outline-none h-32 resize-none font-serif text-xl placeholder:text-[#d6d3d1]"
+                          disabled={loading}
+                        />
+                      </div>
+                      <button
+                        onClick={handleAnalyze}
+                        disabled={loading || !symptom || !name}
+                        className="w-full bg-[#292524] text-white py-4 uppercase text-xs tracking-[0.2em] font-bold hover:bg-[#c07a60] transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                      >
+                        {loading ? <RefreshCcw className="animate-spin w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
+                        {loading ? "Decodifica in corso..." : "Avvia Diagnostica"}
+                      </button>
                     </div>
-                    <div>
-                      <label className="block text-xs uppercase tracking-widest text-[#a8a29e] mb-2">Come ti senti oggi? (Sii onesta)</label>
-                      <textarea
-                        value={symptom}
-                        onChange={(e) => setSymptom(e.target.value)}
-                        placeholder="Es: 'Ho le spalle di marmo e non dormo da due notti...'"
-                        className="w-full bg-white p-4 border-b border-[#292524]/20 outline-none h-32 resize-none font-serif text-xl placeholder:text-[#d6d3d1]"
-                      />
-                    </div>
-                    <button
-                      onClick={handleAnalyze}
-                      disabled={loading || !symptom || !name}
-                      className="w-full bg-[#292524] text-white py-4 uppercase text-xs tracking-[0.2em] font-bold hover:bg-[#c07a60] transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
-                    >
-                      {loading ? <RefreshCcw className="animate-spin w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
-                      {loading ? "Decodifica in corso..." : "Avvia Diagnostica"}
-                    </button>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </div>
               )}
 
               {step === 'LEAD_GEN' && (
@@ -133,7 +175,7 @@ const WellnessQuiz: React.FC = () => {
                   <div className="w-16 h-16 bg-[#faf9f6] rounded-full flex items-center justify-center mx-auto mb-6">
                     <Lock className="w-6 h-6 text-[#c07a60]" />
                   </div>
-                  <h3 className="text-2xl font-serif text-[#292524] mb-2">Analisi Completata.</h3>
+                  <h3 className="text-2xl font-serif text-[#292524] mb-2">Analisi Completata, {name}.</h3>
                   <p className="text-[#57534e] mb-8">
                     Abbiamo identificato il blocco. <br />
                     Per sbloccare il tuo <span className="font-bold text-[#c07a60]">Protocollo Personalizzato</span> e ricevere il consiglio dell'esperta, inserisci i tuoi contatti.
@@ -186,7 +228,7 @@ const WellnessQuiz: React.FC = () => {
                     <CheckCircle className="w-3 h-3 text-[#c07a60]" /> Match Confermato
                   </div>
 
-                  <div className="mb-2 text-xs text-[#a8a29e] uppercase tracking-widest">Rituale Suggerito</div>
+                  <div className="mb-2 text-xs text-[#a8a29e] uppercase tracking-widest">{name}, il tuo Rituale Suggerito</div>
                   <h3 className="text-4xl font-serif text-[#292524] mb-6 leading-tight">
                     {result.treatment}
                   </h3>
