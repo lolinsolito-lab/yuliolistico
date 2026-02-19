@@ -5,16 +5,16 @@ import { motion } from 'framer-motion';
 
 const Journal: React.FC = () => {
   return (
-    <section id="journal" className="py-32 bg-white px-6 border-t border-[#292524]/5">
+    <section id="journal" className="py-16 bg-white px-6 border-t border-[#292524]/5">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-10">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
             <span className="text-[#849b87] uppercase tracking-[0.2em] text-xs font-bold">L'Archivio Olistico</span>
-            <h2 className="text-5xl font-serif text-[#292524] mt-4">
+            <h2 className="text-4xl font-serif text-[#292524] mt-3">
               Saggezza Ancestrale.
             </h2>
           </motion.div>
@@ -28,7 +28,7 @@ const Journal: React.FC = () => {
           </motion.button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {JOURNAL_POSTS.map((post, index) => (
             <motion.article
               key={post.id}
@@ -38,7 +38,7 @@ const Journal: React.FC = () => {
               transition={{ delay: index * 0.2 }}
               className="group cursor-pointer"
             >
-              <div className="overflow-hidden mb-6 aspect-[3/2] relative">
+              <div className="overflow-hidden mb-4 aspect-[3/2] relative">
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10" />
                 <img
                   src={post.image}
