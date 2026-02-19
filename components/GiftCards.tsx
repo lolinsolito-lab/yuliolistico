@@ -49,11 +49,11 @@ const GiftCards: React.FC = () => {
     };
 
     return (
-        <section className="py-32 px-6 bg-[#faf9f6]">
+        <section className="py-16 px-6 bg-[#faf9f6]">
             <div className="max-w-7xl mx-auto">
 
                 {/* Header */}
-                <div className="text-center mb-20">
+                <div className="text-center mb-12">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -79,7 +79,7 @@ const GiftCards: React.FC = () => {
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.2 }}
-                            className={`relative group overflow-hidden p-10 ${gift.color} ${gift.textColor} min-h-[400px] flex flex-col justify-between`}
+                            className={`relative group overflow-hidden p-8 ${gift.color} ${gift.textColor} min-h-[340px] flex flex-col justify-between`}
                         >
                             {/* Decorative Circle */}
                             <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/5 blur-3xl group-hover:bg-white/10 transition-colors duration-500"></div>
