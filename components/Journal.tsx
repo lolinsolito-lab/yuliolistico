@@ -1,5 +1,5 @@
 import React from 'react';
-import { JOURNAL_POSTS } from '../constants';
+import { JOURNAL_POSTS } from '../data/journalPosts';
 import { ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 

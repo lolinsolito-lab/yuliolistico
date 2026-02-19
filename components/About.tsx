@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { COLLABORATIONS } from '../constants';
+import { COLLABORATIONS } from '../data/collaborations';
 import { Sparkles, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../lib/supabaseClient';

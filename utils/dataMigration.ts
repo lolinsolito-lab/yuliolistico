@@ -1,5 +1,7 @@
 import { supabase } from '../lib/supabaseClient';
-import { SERVICES, JOURNAL_POSTS, BRAND_COLORS, COLLABORATIONS } from '../constants';
+import { SERVICES, BRAND_COLORS } from '../constants';
+import { JOURNAL_POSTS } from '../data/journalPosts';
+import { COLLABORATIONS } from '../data/collaborations';
 
 export const migrateData = async () => {
     console.log("🦅 Inizio Migrazione Dati...");
