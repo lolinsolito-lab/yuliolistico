@@ -94,7 +94,7 @@ const About: React.FC = () => {
 
               <div className="w-full md:w-2/5 relative">
                 <img
-                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=688&auto=format&fit=crop"
+                  src="/images/yuli-profile.jpg"
                   alt="Yuli Yuliantini Portrait"
                   className="w-full h-full object-cover min-h-[300px]"
                 />
