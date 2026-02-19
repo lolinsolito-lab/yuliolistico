@@ -92,13 +92,18 @@ const About: React.FC = () => {
                 <X className="w-8 h-8" />
               </button>
 
-              <div className="w-full md:w-2/5 relative">
+              <div className="w-full md:w-2/5 relative overflow-hidden group">
                 <img
-                  src="/images/yuli-profile.jpg"
+                  src="/images/yuli-profile.png"
                   alt="Yuli Yuliantini Portrait"
-                  className="w-full h-full object-cover min-h-[300px]"
+                  className="w-full h-full object-cover min-h-[300px] grayscale brightness-110 contrast-125 transition-all duration-700 group-hover:grayscale-0"
                 />
-                <div className="absolute inset-0 bg-[#c07a60]/10 mix-blend-overlay"></div>
+                {/* Mystic Fog Effect - Left Side */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#292524]/80 via-gray-400/20 to-transparent mix-blend-multiply z-10"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-transparent mix-blend-overlay z-10"></div>
+
+                {/* Gold Highlight Overlay */}
+                <div className="absolute inset-0 bg-[#c07a60]/10 mix-blend-overlay z-20"></div>
               </div>
 
               <div className="w-full md:w-3/5 p-10 md:p-14 flex flex-col justify-center">
