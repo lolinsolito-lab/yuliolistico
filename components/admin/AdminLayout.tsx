@@ -12,7 +12,8 @@ import {
     X,
     BrainCircuit,
     ChevronRight,
-    Sparkles
+    Sparkles,
+    UserCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -33,6 +34,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
         { id: 'quiz', label: 'Logica Quiz', icon: BrainCircuit, path: '/admin/quiz-logic' }, // Added here
         { id: 'academy', label: 'Accademia (LMS)', icon: GraduationCap, path: '/admin/academy' },
         { id: 'clients', label: 'Clienti (CRM)', icon: Users, path: '/admin/crm' },
+        { id: 'profile', label: 'Profilo', icon: UserCircle, path: '/admin/profile' },
         { id: 'settings', label: 'Impostazioni', icon: Settings, path: '/admin/settings' },
     ];
 
@@ -127,6 +129,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
                             {activeSection === 'quiz' && "Configurazione Motore Diagnostico."}
                             {activeSection === 'academy' && "Accademia Imperiale."}
                             {activeSection === 'clients' && "Registro Clienti Olistici."}
+                            {activeSection === 'profile' && "Il Tuo Profilo Professionale."}
                             {activeSection === 'settings' && "Configurazione Sistema."}
                         </h2>
                     </div>
