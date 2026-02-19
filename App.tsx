@@ -53,7 +53,6 @@ const App: React.FC = () => {
             {/* 🌍 PUBLIC SITE (Wrapped in Layout) */}
             <Route element={<PublicLayout />}>
               <Route path="/" element={<HomePage />} />
-              <Route path="/" element={<HomePage />} />
               <Route path="/booking" element={<BookingPage />} />
               <Route path="/academy" element={<AcademyPage />} />
             </Route>

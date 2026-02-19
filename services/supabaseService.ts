@@ -1,16 +1,9 @@
 
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabaseClient';
 import { Lead } from '../types';
 
-// Ensure environment variables are loaded
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseAnonKey) {
-    console.error("⚠️ Supabase credentials missing! Check .env file.");
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Re-export the single Supabase client for backward compatibility
+export { supabase };
 
 export const saveLead = async (lead: Lead) => {
     const { data, error } = await supabase
