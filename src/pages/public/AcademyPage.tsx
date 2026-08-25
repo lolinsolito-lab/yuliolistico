@@ -5,13 +5,14 @@ import { saveLead } from '../../services/supabaseService';
 
 const AcademyPage: React.FC = () => {
     const [email, setEmail] = useState('');
+    const [honeypot, setHoneypot] = useState('');
     const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
 
     const handleSubscribe = async () => {
         if (!email) return;
         setStatus('loading');
         try {
-            await saveLead({ name: 'Academy Waitlist', email, phone: '', symptom: '', result_treatment: '' }, 'academy');
+            await saveLead({ name: 'Academy Waitlist', email, phone: '', symptom: '', result_treatment: '' }, 'academy', honeypot);
             setStatus('success');
             setEmail('');
         } catch (error) {
@@ -99,6 +100,19 @@ const AcademyPage: React.FC = () => {
                         </div>
                     ) : (
                         <div className="flex gap-2">
+                            {/* Honeypot invisibile */}
+                            <div style={{ display: 'none' }} aria-hidden="true">
+                                <label htmlFor="academy_website">Website</label>
+                                <input
+                                    type="text"
+                                    id="academy_website"
+                                    name="academy_website"
+                                    value={honeypot}
+                                    onChange={(e) => setHoneypot(e.target.value)}
+                                    tabIndex={-1}
+                                    autoComplete="off"
+                                />
+                            </div>
                             <input
                                 type="email"
                                 value={email}

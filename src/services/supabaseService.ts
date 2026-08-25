@@ -5,21 +5,19 @@ import { Lead } from '../types';
 // Re-export the single Supabase client for backward compatibility
 export { supabase };
 
-export const saveLead = async (lead: Lead, source: 'quiz' | 'newsletter' | 'academy' | 'archive') => {
+export const saveLead = async (lead: Lead, source: 'quiz' | 'newsletter' | 'academy' | 'archive' | 'gift', honeypot: string = '', status: string = 'new') => {
     const { data, error } = await supabase
-        .from('leads')
-        .insert([
-            {
-                name: lead.name,
-                email: lead.email,
-                phone: lead.phone,
-                symptom: lead.symptom,
-                result_treatment: lead.result_treatment,
-                source: source,
-                status: 'new'
-            }
-        ])
-        .select();
+        .rpc('submit_lead', {
+            p_name: lead.name,
+            p_email: lead.email,
+            p_phone: lead.phone,
+            p_symptom: lead.symptom,
+            p_result_treatment: lead.result_treatment,
+            p_source: source,
+            p_resource_id: lead.resource_id || null,
+            p_honeypot: honeypot,
+            p_status: status
+        });
 
     if (error) {
         console.error("Error saving lead:", error);

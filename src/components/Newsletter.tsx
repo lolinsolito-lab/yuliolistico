@@ -4,6 +4,7 @@ import { saveLead } from '../services/supabaseService';
 
 const Newsletter: React.FC = () => {
   const [email, setEmail] = useState('');
+  const [honeypot, setHoneypot] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -11,7 +12,7 @@ const Newsletter: React.FC = () => {
     if (email) {
       setStatus('loading');
       try {
-        await saveLead({ name: 'Newsletter Subscriber', email, phone: '', symptom: '', result_treatment: '' }, 'newsletter');
+        await saveLead({ name: 'Newsletter Subscriber', email, phone: '', symptom: '', result_treatment: '' }, 'newsletter', honeypot);
         setStatus('success');
         setEmail('');
       } catch (err) {
@@ -39,6 +40,19 @@ const Newsletter: React.FC = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4 max-w-md mx-auto">
+            {/* Honeypot invisibile */}
+            <div style={{ display: 'none' }} aria-hidden="true">
+              <label htmlFor="newsletter_website">Website</label>
+              <input
+                type="text"
+                id="newsletter_website"
+                name="newsletter_website"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
             <input
               type="email"
               placeholder="La tua email migliore"

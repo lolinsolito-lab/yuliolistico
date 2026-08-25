@@ -41,6 +41,7 @@ const ArchivePage: React.FC = () => {
     const [emailModal, setEmailModal] = useState<ArchiveResource | null>(null);
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
+    const [honeypot, setHoneypot] = useState('');
     const [unlocked, setUnlocked] = useState(false);
 
     useEffect(() => {
@@ -76,8 +77,9 @@ const ArchivePage: React.FC = () => {
                 email,
                 phone: '',
                 symptom: `Download: ${emailModal.title}`,
-                result_treatment: 'archivio_download'
-            }, 'archive');
+                result_treatment: 'archivio_download',
+                resource_id: emailModal.id
+            } as any, 'archive', honeypot);
 
             // Increment download count (best-effort)
             try {
@@ -255,6 +257,19 @@ const ArchivePage: React.FC = () => {
                                     </div>
 
                                     <div className="space-y-3">
+                                        {/* Honeypot invisibile */}
+                                        <div style={{ display: 'none' }} aria-hidden="true">
+                                            <label htmlFor="archive_website">Website</label>
+                                            <input
+                                                type="text"
+                                                id="archive_website"
+                                                name="archive_website"
+                                                value={honeypot}
+                                                onChange={(e) => setHoneypot(e.target.value)}
+                                                tabIndex={-1}
+                                                autoComplete="off"
+                                            />
+                                        </div>
                                         <input
                                             type="text"
                                             value={name}

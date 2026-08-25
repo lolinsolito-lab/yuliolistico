@@ -12,6 +12,7 @@ const GiftCards: React.FC = () => {
     const [showAmountInput, setShowAmountInput] = useState<string | null>(null);
     const [phone, setPhone] = useState('393201982629'); // Default
     const [isProcessing, setIsProcessing] = useState(false);
+    const [honeypot, setHoneypot] = useState('');
 
     useEffect(() => {
         const fetchVouchersAndProfile = async () => {
@@ -80,7 +81,7 @@ const GiftCards: React.FC = () => {
                 phone: '', 
                 symptom: `Interesse: ${gift.title} (${finalPrice})`, 
                 result_treatment: gift.id 
-            }, 'gift');
+            }, 'gift', honeypot);
             
             // 2. Apriamo WhatsApp
             const message = `Ciao Yuli! Vorrei regalare il voucher "${gift.title}" da ${finalPrice}. Come possiamo procedere?`;
@@ -128,6 +129,20 @@ const GiftCards: React.FC = () => {
                             Regala un momento di assoluta disconnessione dal rumore del mondo.
                         </p>
                     </motion.div>
+                </div>
+
+                {/* Honeypot invisibile globale per il tracciamento dei lead dei regali */}
+                <div style={{ display: 'none' }} aria-hidden="true">
+                    <label htmlFor="gift_website">Website</label>
+                    <input
+                        type="text"
+                        id="gift_website"
+                        name="gift_website"
+                        value={honeypot}
+                        onChange={(e) => setHoneypot(e.target.value)}
+                        tabIndex={-1}
+                        autoComplete="off"
+                    />
                 </div>
 
                 {/* Cards Grid */}

@@ -19,6 +19,7 @@ const WellnessQuiz: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [honeypot, setHoneypot] = useState('');
 
   const [result, setResult] = useState<AiRecommendation | null>(null);
 
@@ -82,7 +83,7 @@ const WellnessQuiz: React.FC = () => {
           phone,
           symptom,
           result_treatment: result.treatment
-        }, 'quiz');
+        }, 'quiz', honeypot);
         console.log("Lead Saved to Supabase");
 
         // 2. Trigger Email (Simulated for now)
@@ -217,6 +218,19 @@ const WellnessQuiz: React.FC = () => {
                   </p>
 
                   <div className="space-y-4 text-left">
+                    {/* Honeypot invisibile */}
+                    <div style={{ display: 'none' }} aria-hidden="true">
+                      <label htmlFor="quiz_website">Website</label>
+                      <input
+                        type="text"
+                        id="quiz_website"
+                        name="quiz_website"
+                        value={honeypot}
+                        onChange={(e) => setHoneypot(e.target.value)}
+                        tabIndex={-1}
+                        autoComplete="off"
+                      />
+                    </div>
                     <input
                       type="email"
                       value={email}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Crown, Star, Key, X, ArrowRight, CheckCircle } from 'lucide-react';
-import { supabase } from '../lib/supabaseClient';
+import { saveLead } from '../services/supabaseService';
 
 const Membership: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -28,16 +28,14 @@ const Membership: React.FC = () => {
 
     setStatus('sending');
     try {
-      const { error } = await supabase.from('leads').insert([{
+      await saveLead({
         name: formData.name,
         email: formData.email,
         phone: '',
         symptom: formData.message || 'Candidatura Sanctuary Membership',
-        result_treatment: 'sanctuary_vip',
-        status: 'sanctuary_candidate'
-      }]);
+        result_treatment: 'sanctuary_vip'
+      }, 'newsletter', honeypot, 'sanctuary_candidate');
 
-      if (error) throw error;
       setStatus('success');
       setTimeout(() => {
         setShowModal(false);
