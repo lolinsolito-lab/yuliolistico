@@ -1,15 +1,15 @@
 
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import AdminLayout from '../components/admin/AdminLayout';
-import ContentsManager from '../components/admin/cms/ContentsManager';
-import ServicesEditor from '../components/admin/ServicesEditor';
-import AcademyEditor from '../components/admin/AcademyEditor';
-import QuizConfig from '../components/admin/QuizConfig'; // Import new config page
-import LeadsViewer from '../components/admin/LeadsViewer';
-import ProfileEditor from '../components/admin/ProfileEditor';
-import ArchiveEditor from '../components/admin/ArchiveEditor';
+import { useAuth } from '../../context/AuthContext';
+import AdminLayout from '../../components/admin/AdminLayout';
+import ContentsManager from '../../components/admin/cms/ContentsManager';
+import ServicesEditor from '../../components/admin/ServicesEditor';
+import AcademyEditor from '../../components/admin/AcademyEditor';
+import QuizConfig from '../../components/admin/QuizConfig'; // Import new config page
+import LeadsViewer from '../../components/admin/LeadsViewer';
+import ProfileEditor from '../../components/admin/ProfileEditor';
+import ArchiveEditor from '../../components/admin/ArchiveEditor';
 import { Construction, Loader, Users } from 'lucide-react';
 
 const AdminDashboard: React.FC = () => {

@@ -5,10 +5,10 @@ import Footer from './components/Footer';
 import ChatWidget from './components/ChatWidget';
 
 // Pages
-import HomePage from './pages/HomePage';
-import BookingPage from './pages/BookingPage';
-import AcademyPage from './pages/AcademyPage';
-import ArchivePage from './pages/ArchivePage';
+import HomePage from './pages/public/HomePage';
+import BookingPage from './pages/public/BookingPage';
+import AcademyPage from './pages/public/AcademyPage';
+import ArchivePage from './pages/public/ArchivePage';
 
 // Console Signature Easter Egg
 const printConsoleSignature = () => {
@@ -38,8 +38,8 @@ Ogni rituale la ascolta.
 import { AuthProvider } from './context/AuthContext';
 import { BookingProvider } from './context/BookingContext';
 import PublicLayout from './components/PublicLayout';
-import LoginPage from './pages/LoginPage';
-import AdminDashboard from './pages/AdminDashboard';
+import LoginPage from './pages/admin/LoginPage';
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 const App: React.FC = () => {
   useEffect(() => {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from '../../lib/supabaseClient';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, Headphones, Video, BookOpen, ArrowRight, X, Download, Lock } from 'lucide-react';
-import { useBooking } from '../context/BookingContext';
+import { useBooking } from '../../context/BookingContext';
 
 interface ArchiveResource {
     id: string;
