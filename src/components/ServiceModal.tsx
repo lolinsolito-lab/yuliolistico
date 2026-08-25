@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Clock, Sparkles } from 'lucide-react';
 import { Service } from '../types';
+import { useBooking } from '../context/BookingContext';
 
 interface ServiceModalProps {
     service: Service | null;
@@ -21,6 +22,8 @@ const ServiceModal: React.FC<ServiceModalProps> = ({ service, isOpen, onClose })
             document.body.style.overflow = 'unset';
         };
     }, [isOpen]);
+
+    const { openBooking } = useBooking();
 
     if (!service) return null;
 
@@ -120,14 +123,15 @@ const ServiceModal: React.FC<ServiceModalProps> = ({ service, isOpen, onClose })
                                 <span className="font-serif text-2xl text-[#c07a60]">{service.price}</span>
                             </div>
 
-                            <a
-                                href="https://wa.me/393201982629" // Update with real booking link if context allows
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <button
+                                onClick={() => {
+                                    onClose();
+                                    openBooking(service.title);
+                                }}
                                 className="px-8 py-4 bg-[#292524] text-[#f3e9d2] text-sm font-bold uppercase tracking-widest rounded-full hover:bg-[#c07a60] transition-colors shadow-lg shadow-[#c07a60]/20"
                             >
                                 Prenota Esperienza
-                            </a>
+                            </button>
                         </div>
 
                     </motion.div>
