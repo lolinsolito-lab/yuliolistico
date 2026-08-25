@@ -54,7 +54,7 @@ create policy "Public view published courses" on courses
 create policy "Admin manage courses" on courses
   for all using (
     exists (
-      select 1 from profiles
+      select 1 from public.profiles
       where profiles.id = auth.uid()
       and profiles.role = 'admin'
     )
@@ -71,7 +71,7 @@ create policy "Enrolled users view modules" on modules
     )
     OR
     exists (
-      select 1 from profiles
+      select 1 from public.profiles
       where profiles.id = auth.uid()
       and profiles.role = 'admin'
     )
@@ -80,7 +80,7 @@ create policy "Enrolled users view modules" on modules
 create policy "Admin manage modules" on modules
   for all using (
     exists (
-      select 1 from profiles
+      select 1 from public.profiles
       where profiles.id = auth.uid()
       and profiles.role = 'admin'
     )
@@ -93,7 +93,7 @@ create policy "Users view own enrollments" on enrollments
 create policy "Admin manage enrollments" on enrollments
   for all using (
     exists (
-      select 1 from profiles
+      select 1 from public.profiles
       where profiles.id = auth.uid()
       and profiles.role = 'admin'
     )

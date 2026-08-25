@@ -44,7 +44,7 @@ create policy "Public view business profile" on business_profile
 create policy "Admin manage business profile" on business_profile
   for all using (
     exists (
-      select 1 from profiles
+      select 1 from public.profiles
       where profiles.id = auth.uid()
       and profiles.role = 'admin'
     )
