@@ -6,11 +6,25 @@ import { supabase } from '../lib/supabaseClient';
 const Membership: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [honeypot, setHoneypot] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
+
+    // Bot detection: se l'honeypot è stato riempito, scarta silenziosamente la richiesta
+    if (honeypot) {
+      console.log('Bot detected. Silent reject.');
+      setStatus('success');
+      setTimeout(() => {
+        setShowModal(false);
+        setStatus('idle');
+        setFormData({ name: '', email: '', message: '' });
+        setHoneypot('');
+      }, 3000);
+      return;
+    }
 
     setStatus('sending');
     try {
@@ -145,6 +159,20 @@ const Membership: React.FC = () => {
                   </div>
 
                   <form onSubmit={handleSubmit} className="space-y-4">
+                    {/* Honeypot invisibile */}
+                    <div style={{ display: 'none' }} aria-hidden="true">
+                      <label htmlFor="website">Website</label>
+                      <input
+                        type="text"
+                        id="website"
+                        name="website"
+                        value={honeypot}
+                        onChange={(e) => setHoneypot(e.target.value)}
+                        tabIndex={-1}
+                        autoComplete="off"
+                      />
+                    </div>
+
                     <div>
                       <label className="text-xs uppercase tracking-widest text-white/40 mb-1 block">Nome</label>
                       <input
