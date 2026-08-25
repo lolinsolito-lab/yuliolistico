@@ -4,6 +4,10 @@
 -- Eseguire solo se la tabella è vuota per migrare i dati da constants.ts al Database.
 -- =====================================================
 
+-- 1. Creiamo il vincolo di unicità sul titolo per prevenire duplicati
+ALTER TABLE public.services ADD CONSTRAINT services_title_unique UNIQUE (title);
+
+-- 2. Inseriamo i rituali con sicurezza
 INSERT INTO public.services (title, subtitle, category, description, soul_description, duration, price, image_url, active, "order")
 VALUES 
 -- TIER 1: Le Fondamenta (Manuale)
