@@ -1,7 +1,7 @@
 export enum TreatmentType {
-  MANUAL = 'Tecniche Manuali',
-  TOOLS = 'Strumenti Naturali',
-  RITUAL = 'Rituali Olistici'
+  MANUAL = 'MANUAL',
+  TOOLS = 'TOOLS',
+  RITUAL = 'RITUAL'
 }
 
 export interface Service {
