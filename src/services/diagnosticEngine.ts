@@ -59,7 +59,7 @@ export const DEFAULT_PRESCRIPTIONS: Record<Archetype, AiRecommendation[]> = {
             oilRecommendation: "Sesamo Caldo & Lavanda Officinale"
         },
         {
-            treatment: "Tibetan Sound Bath",
+            treatment: "Tibetan Sound Bath — Armonia Sonora",
             reasoning: "Non sei stanca, sei scordata. Come uno strumento musicale che ha perso l'intonazione. Le vibrazioni delle campane non si ascoltano: si sentono nelle ossa per riallineare la frequenza.",
             oilRecommendation: "Sandalo & Franchincenso"
         }
@@ -71,7 +71,7 @@ export const DEFAULT_PRESCRIPTIONS: Record<Archetype, AiRecommendation[]> = {
             oilRecommendation: "Cipresso & Pompelmo Rosa"
         },
         {
-            treatment: "Himalayan Salt Ritual",
+            treatment: "Himalayan Salt Stone Ritual",
             reasoning: "La tua pelle è spenta, il corpo pesante. Il sale rosa non solo esfolia, ma per osmosi attira fuori le tossine emotive che ti appesantiscono. È una purificazione, non solo un trattamento.",
             oilRecommendation: "Sale Rosa & Olio di Mandorle Dolci"
         }
@@ -180,7 +180,7 @@ export const analyzeSymptom = (input: string): AiRecommendation => {
     });
 
     // Find Winner
-    let winner: Archetype = 'ESAURIMENTO'; // Default fallback if nothing matches (most generous/expensive)
+    let winner: Archetype | null = null;
     let maxScore = 0;
 
     (Object.keys(scores) as Archetype[]).forEach(key => {
@@ -189,6 +189,16 @@ export const analyzeSymptom = (input: string): AiRecommendation => {
             winner = key;
         }
     });
+
+    if (maxScore === 0 || !winner) {
+        return {
+            treatment: "Rituale della Scoperta",
+            reasoning: "Il tuo corpo parla una lingua che l'algoritmo non ha decifrato chiaramente oggi. Ti proponiamo un rituale esplorativo in cui ascolteremo il tuo corpo dal vivo, adattando le tecniche in tempo reale per trovare esattamente ciò di cui hai bisogno.",
+            oilRecommendation: "Olio di Mandorle Dolci & Lavanda (Equilibrio Universale)",
+            duration: "60 min",
+            price: "€80"
+        };
+    }
 
     // Pick a random specific ritual from the winning archetype to add variety
     const options = PRESCRIPTIONS[winner];

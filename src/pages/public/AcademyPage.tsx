@@ -1,9 +1,24 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { GraduationCap, Mail, Sparkles, ArrowRight, Calendar, BookOpen, Clock } from 'lucide-react';
+import { GraduationCap, Mail, Sparkles, ArrowRight, Calendar, BookOpen, Clock, Loader, Check } from 'lucide-react';
+import { saveLead } from '../../services/supabaseService';
 
 const AcademyPage: React.FC = () => {
+    const [email, setEmail] = useState('');
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+
+    const handleSubscribe = async () => {
+        if (!email) return;
+        setStatus('loading');
+        try {
+            await saveLead({ name: 'Academy Waitlist', email, phone: '', symptom: '', result_treatment: '' }, 'academy');
+            setStatus('success');
+            setEmail('');
+        } catch (error) {
+            console.error(error);
+            setStatus('idle');
+        }
+    };
     return (
         <section className="min-h-screen bg-[#1c1917] text-[#f3e9d2] flex flex-col relative overflow-hidden">
             {/* Background Texture - Darker & richer */}
@@ -77,16 +92,29 @@ const AcademyPage: React.FC = () => {
                     <p className="text-sm text-white/60 leading-relaxed mb-6">
                         Per garantire un affiancamento millimetrico e una vera trasformazione, l'accesso alla Masterclass sarà a numero chiuso. Inserisci la tua email: riceverai l'invito privato <strong>48 ore prima</strong> dell'apertura ufficiale. I posti migliori andranno a chi sa muoversi in anticipo.
                     </p>
-                    <div className="flex gap-2">
-                        <input
-                            type="email"
-                            placeholder="La tua email personale..."
-                            className="bg-white/5 border border-white/10 text-white px-4 rounded w-full focus:outline-none focus:border-[#d4af37]"
-                        />
-                        <button className="px-6 py-3 bg-[#292524] border border-white/10 text-white uppercase text-xs font-bold tracking-widest hover:bg-[#d4af37] hover:text-[#1c1917] transition-colors">
-                            Iscriviti
-                        </button>
-                    </div>
+                    {status === 'success' ? (
+                        <div className="flex items-center justify-center gap-2 text-[#d4af37] animate-pulse py-4">
+                            <Check className="w-5 h-5" />
+                            <span className="font-serif text-lg">Sei in lista. Ti avviseremo 48h prima.</span>
+                        </div>
+                    ) : (
+                        <div className="flex gap-2">
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="La tua email personale..."
+                                className="bg-white/5 border border-white/10 text-white px-4 rounded w-full focus:outline-none focus:border-[#d4af37]"
+                            />
+                            <button
+                                onClick={handleSubscribe}
+                                disabled={status === 'loading'}
+                                className="px-6 py-3 bg-[#292524] border border-white/10 text-white uppercase text-xs font-bold tracking-widest hover:bg-[#d4af37] hover:text-[#1c1917] transition-colors disabled:opacity-50 flex items-center justify-center min-w-[120px]"
+                            >
+                                {status === 'loading' ? <Loader className="w-4 h-4 animate-spin" /> : "Iscriviti"}
+                            </button>
+                        </div>
+                    )}
                 </div>
 
             </div>

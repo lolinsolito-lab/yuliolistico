@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
+import { saveLead } from '../../services/supabaseService';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, Headphones, Video, BookOpen, ArrowRight, X, Download, Lock } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
@@ -70,18 +71,17 @@ const ArchivePage: React.FC = () => {
         if (!email || !emailModal) return;
         try {
             // Save as lead
-            await supabase.from('leads').insert([{
+            await saveLead({
                 name: name || 'Archivio Visitor',
                 email,
                 phone: '',
                 symptom: `Download: ${emailModal.title}`,
-                result_treatment: 'archivio_download',
-                status: 'archivio_lead'
-            }]);
+                result_treatment: 'archivio_download'
+            }, 'archive');
 
             // Increment download count (best-effort)
             try {
-                await supabase.rpc('increment_download_count', { resource_id: emailModal.id });
+                await supabase.rpc('increment_resource_download', { resource_id: emailModal.id });
             } catch {
                 // RPC might not exist yet, fail silently
             }

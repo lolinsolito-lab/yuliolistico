@@ -36,12 +36,14 @@ const ServicesEditor: React.FC = () => {
     const handleNewService = () => {
         setEditingService({
             title: 'Nuovo Rituale',
+            subtitle: '',
             category: TreatmentType.MANUAL,
             price: '€0',
             duration: '0 min',
             description: '',
             soul_description: '',
             benefits: [],
+            program_details: { steps: [] },
             active: false,
             image_url: 'https://images.unsplash.com/photo-1600334089648-b0d9c3024ea2?auto=format&fit=crop&q=80',
             order: services.length + 1
@@ -67,11 +69,13 @@ const ServicesEditor: React.FC = () => {
 
         const serviceData = {
             title: editingService.title,
+            subtitle: editingService.subtitle,
             price: editingService.price,
             duration: editingService.duration,
             description: editingService.description,
             soul_description: editingService.soul_description,
             benefits: editingService.benefits,
+            program_details: editingService.program_details,
             category: editingService.category,
             image_url: editingService.imageUrl || editingService.image_url,
             active: editingService.active,
@@ -294,6 +298,15 @@ const ServicesEditor: React.FC = () => {
                                         />
                                     </div>
                                     <div className="space-y-2">
+                                        <label className="text-xs font-bold uppercase tracking-widest text-stone-400">Sottotitolo (Opzionale)</label>
+                                        <input
+                                            type="text"
+                                            value={editingService.subtitle || ''}
+                                            onChange={(e) => setEditingService({ ...editingService, subtitle: e.target.value })}
+                                            className="w-full p-3 bg-white border border-stone-200 rounded-lg focus:border-[#c07a60] outline-none font-serif text-sm text-[#57534e]"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
                                         <label className="text-xs font-bold uppercase tracking-widest text-stone-400">Categoria</label>
                                         <select
                                             value={editingService.category}
@@ -361,6 +374,29 @@ const ServicesEditor: React.FC = () => {
                                             <Plus className="w-3 h-3" /> Aggiungi Beneficio
                                         </button>
                                     </div>
+                                </div>
+
+                                {/* Deep Dive Fields: Program Details (Steps) */}
+                                <div className="space-y-2">
+                                    <div className="flex justify-between items-center">
+                                        <label className="text-xs font-bold uppercase tracking-widest text-[#849b87]">Dettagli Programma</label>
+                                        <span className="text-[10px] uppercase text-stone-400">Fasi del Trattamento JSON</span>
+                                    </div>
+                                    <textarea
+                                        rows={3}
+                                        value={editingService.program_details ? JSON.stringify(editingService.program_details, null, 2) : ''}
+                                        onChange={(e) => {
+                                            try {
+                                                const parsed = JSON.parse(e.target.value);
+                                                setEditingService({ ...editingService, program_details: parsed });
+                                            } catch (err) {
+                                                // Invalid JSON while typing, ignore state update for now or handle stringly
+                                            }
+                                        }}
+                                        className="w-full p-3 bg-stone-50 border border-stone-200 rounded-lg font-mono text-xs text-stone-600 focus:border-[#849b87] outline-none"
+                                        placeholder='{"steps": ["Fase 1", "Fase 2"]}'
+                                    />
+                                    <p className="text-[10px] text-stone-400">Inserire JSON valido (es. &#123;"steps": ["Step 1"]&#125;)</p>
                                 </div>
 
                                 {/* Description (Short) */}

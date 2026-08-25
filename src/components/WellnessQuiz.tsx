@@ -1,9 +1,9 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ArrowRight, RefreshCcw, Cpu, Lock, CheckCircle } from 'lucide-react';
-import { analyzeSymptom } from '../services/diagnosticEngine';
+import { analyzeSymptom, fetchQuizConfig } from '../services/diagnosticEngine';
 import { saveLead } from '../services/supabaseService';
+import { supabase } from '../lib/supabaseClient';
 import { sendLeadEmail } from '../services/emailService'; // Import Email Service
 import { AiRecommendation } from '../types';
 
@@ -19,6 +19,10 @@ const WellnessQuiz: React.FC = () => {
   const [phone, setPhone] = useState('');
 
   const [result, setResult] = useState<AiRecommendation | null>(null);
+
+  useEffect(() => {
+    fetchQuizConfig();
+  }, []);
 
   // Step 1: Analyze Symptom & Fake Processing
   const handleAnalyze = async () => {
@@ -38,6 +42,25 @@ const WellnessQuiz: React.FC = () => {
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     const diagnosis = analyzeSymptom(symptom);
+
+    // Dynamic Lookup for Real-Time Price & Duration
+    if (diagnosis.treatment !== 'Rituale della Scoperta') {
+      try {
+        const { data, error } = await supabase
+          .from('services')
+          .select('price, duration')
+          .eq('title', diagnosis.treatment)
+          .single();
+        
+        if (data && !error) {
+           diagnosis.price = data.price;
+           diagnosis.duration = data.duration;
+        }
+      } catch (err) {
+         console.warn("Lookup failed for", diagnosis.treatment, err);
+      }
+    }
+
     setResult(diagnosis);
     setLoading(false);
     setStep('LEAD_GEN');
@@ -57,7 +80,7 @@ const WellnessQuiz: React.FC = () => {
           phone,
           symptom,
           result_treatment: result.treatment
-        });
+        }, 'quiz');
         console.log("Lead Saved to Supabase");
 
         // 2. Trigger Email (Simulated for now)
@@ -242,6 +265,14 @@ const WellnessQuiz: React.FC = () => {
                   <h3 className="text-4xl font-serif text-[#292524] mb-6 leading-tight">
                     {result.treatment}
                   </h3>
+
+                  {(result.duration || result.price) && (
+                    <div className="flex items-center justify-center gap-4 text-sm text-[#c07a60] font-bold uppercase tracking-widest mb-6 -mt-2">
+                      {result.duration && <span>{result.duration}</span>}
+                      {result.duration && result.price && <span>•</span>}
+                      {result.price && <span>{result.price}</span>}
+                    </div>
+                  )}
 
                   <div className="mb-8 relative">
                     <span className="absolute -top-4 -left-2 text-6xl text-[#c07a60]/20 font-serif">"</span>

@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, Loader } from 'lucide-react';
+import { saveLead } from '../services/supabaseService';
 
 const Newsletter: React.FC = () => {
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'success'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      setStatus('success');
-      setEmail('');
+      setStatus('loading');
+      try {
+        await saveLead({ name: 'Newsletter Subscriber', email, phone: '', symptom: '', result_treatment: '' }, 'newsletter');
+        setStatus('success');
+        setEmail('');
+      } catch (err) {
+        console.error(err);
+        setStatus('idle');
+      }
     }
   };
 
@@ -41,9 +49,10 @@ const Newsletter: React.FC = () => {
             />
             <button
               type="submit"
-              className="bg-[#292524] text-white px-8 py-4 uppercase tracking-widest text-xs font-bold hover:bg-[#c07a60] transition-colors flex items-center justify-center gap-2"
+              disabled={status === 'loading'}
+              className="bg-[#292524] text-white px-8 py-4 uppercase tracking-widest text-xs font-bold hover:bg-[#c07a60] transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              Iscriviti <ArrowRight className="w-4 h-4" />
+              {status === 'loading' ? <Loader className="w-4 h-4 animate-spin" /> : "Iscriviti"} {status !== 'loading' && <ArrowRight className="w-4 h-4" />}
             </button>
           </form>
         )}

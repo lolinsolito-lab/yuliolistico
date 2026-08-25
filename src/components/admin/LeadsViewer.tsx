@@ -68,6 +68,7 @@ const LeadsViewer: React.FC = () => {
                             <tr>
                                 <th className="p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold">Data & Contatto</th>
                                 <th className="p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold">Diagnostica</th>
+                                <th className="p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold">Sorgente</th>
                                 <th className="p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold text-right">Stato</th>
                             </tr>
                         </thead>
@@ -103,6 +104,18 @@ const LeadsViewer: React.FC = () => {
                                                 {lead.result_treatment}
                                             </span>
                                         </div>
+                                    </td>
+
+                                    <td className="p-6 align-top">
+                                        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest ${
+                                            lead.source === 'academy' ? 'bg-indigo-50 text-indigo-600 border border-indigo-100' :
+                                            lead.source === 'quiz' ? 'bg-[#c07a60]/10 text-[#c07a60] border border-[#c07a60]/20' :
+                                            lead.source === 'newsletter' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
+                                            lead.source === 'archive' ? 'bg-sky-50 text-sky-600 border border-sky-100' :
+                                            'bg-stone-50 text-stone-500 border border-stone-100'
+                                        }`}>
+                                            {lead.source || 'Sconosciuta'}
+                                        </span>
                                     </td>
 
                                     <td className="p-6 align-top text-right w-1/6">

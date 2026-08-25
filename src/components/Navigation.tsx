@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
+import { supabase } from '../lib/supabaseClient';
 
 import { useBooking } from '../context/BookingContext';
 
@@ -12,7 +13,29 @@ const Navigation: React.FC = () => {
   const navigate = useNavigate();
   const { openBooking } = useBooking();
 
+  const [navData, setNavData] = useState({ brand_name: 'Yuli Olistico', tagline: 'Ogni corpo ha una storia. Ogni rituale la ascolta.' });
+
   useEffect(() => {
+    const fetchNavData = async () => {
+      try {
+        const { data } = await supabase
+          .from('business_profile')
+          .select('brand_name, hero_headline')
+          .limit(1)
+          .maybeSingle();
+
+        if (data) {
+          setNavData({
+            brand_name: data.brand_name || 'Yuli Olistico',
+            tagline: data.hero_headline || 'Ogni corpo ha una storia. Ogni rituale la ascolta.'
+          });
+        }
+      } catch (err) {
+        console.warn('Nav: using fallback data');
+      }
+    };
+    fetchNavData();
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
@@ -67,11 +90,11 @@ const Navigation: React.FC = () => {
           <div className="flex flex-col">
             <span className={`text-xl font-serif tracking-widest font-bold uppercase transition-colors leading-none ${isScrolled ? 'text-[#292524]' : 'text-[#292524] md:text-white'
               }`}>
-              Yuli Olistico
+              {navData.brand_name}
             </span>
             <span className={`text-[0.6rem] tracking-[0.2em] uppercase mt-1 ${isScrolled ? 'text-[#849b87]' : 'text-[#849b87] md:text-[#f3e9d2]'
               }`}>
-              Ogni corpo ha una storia. Ogni rituale la ascolta.
+              {navData.tagline}
             </span>
           </div>
         </button>

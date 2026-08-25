@@ -38,6 +38,8 @@ export interface AiRecommendation {
   treatment: string;
   reasoning: string;
   oilRecommendation: string;
+  price?: string;
+  duration?: string;
 }
 
 export interface Lead {
@@ -49,6 +51,7 @@ export interface Lead {
   symptom: string;
   result_treatment: string;
   status?: 'new' | 'contacted' | 'converted';
+  source?: string;
 }
 
 export interface Course {
