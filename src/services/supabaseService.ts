@@ -5,7 +5,7 @@ import { Lead } from '../types';
 // Re-export the single Supabase client for backward compatibility
 export { supabase };
 
-export const saveLead = async (lead: Lead, source: 'quiz' | 'newsletter' | 'academy' | 'archive' | 'gift', honeypot: string = '', status: string = 'new') => {
+export const saveLead = async (lead: Lead, source: 'quiz' | 'newsletter' | 'academy' | 'archive' | 'gift', honeypot: string = '') => {
     const { data, error } = await supabase
         .rpc('submit_lead', {
             p_name: lead.name,
@@ -15,8 +15,7 @@ export const saveLead = async (lead: Lead, source: 'quiz' | 'newsletter' | 'acad
             p_result_treatment: lead.result_treatment,
             p_source: source,
             p_resource_id: lead.resource_id || null,
-            p_honeypot: honeypot,
-            p_status: status
+            p_honeypot: honeypot
         });
 
     if (error) {

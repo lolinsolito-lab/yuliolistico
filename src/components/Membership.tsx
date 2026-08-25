@@ -34,7 +34,7 @@ const Membership: React.FC = () => {
         phone: '',
         symptom: formData.message || 'Candidatura Sanctuary Membership',
         result_treatment: 'sanctuary_vip'
-      }, 'newsletter', honeypot, 'sanctuary_candidate');
+      }, 'newsletter', honeypot);
 
       setStatus('success');
       setTimeout(() => {
