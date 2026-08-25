@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { supabase } from '../../lib/supabaseClient';
 import {
     LayoutDashboard,
     Globe,
@@ -27,6 +28,28 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
     const { signOut } = useAuth();
     const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [adminData, setAdminData] = useState({
+        brand_name: 'Yuli Olistico',
+        full_name: 'Yuliya',
+        profile_image_url: ''
+    });
+
+    useEffect(() => {
+        const fetchAdminData = async () => {
+            const { data } = await supabase
+                .from('business_profile')
+                .select('brand_name, full_name, profile_image_url')
+                .maybeSingle();
+            if (data) {
+                setAdminData({
+                    brand_name: data.brand_name || 'Yuli Olistico',
+                    full_name: data.full_name || 'Yuliya',
+                    profile_image_url: data.profile_image_url || ''
+                });
+            }
+        };
+        fetchAdminData();
+    }, []);
 
     const menuItems = [
         { id: 'overview', label: 'Panoramica', icon: LayoutDashboard, path: '/admin' },
@@ -63,8 +86,14 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
                         {/* Header */}
                         <div className="p-8 border-b border-white/5">
                             <div className="flex items-center gap-3 mb-2">
-                                <div className="w-8 h-8 bg-[#d4af37] rounded-full flex items-center justify-center text-[#1c1917] font-bold font-serif">Y</div>
-                                <h1 className="font-serif text-xl tracking-wide text-[#f3e9d2]">Yuli Olistico</h1>
+                                {adminData.profile_image_url ? (
+                                    <img src={adminData.profile_image_url} alt={adminData.brand_name} className="w-8 h-8 rounded-full object-cover border border-[#d4af37]/30" />
+                                ) : (
+                                    <div className="w-8 h-8 bg-[#d4af37] rounded-full flex items-center justify-center text-[#1c1917] font-bold font-serif">
+                                        {adminData.brand_name.charAt(0).toUpperCase()}
+                                    </div>
+                                )}
+                                <h1 className="font-serif text-xl tracking-wide text-[#f3e9d2]">{adminData.brand_name}</h1>
                             </div>
                             <p className="text-[10px] text-white/40 uppercase tracking-[0.2em] pl-11">Command Center</p>
                         </div>
@@ -98,9 +127,13 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
                         {/* Footer */}
                         <div className="p-4 border-t border-white/5 bg-[#171514]">
                             <div className="flex items-center gap-3 mb-4 px-2">
-                                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#c07a60] to-[#f3e9d2]" />
+                                {adminData.profile_image_url ? (
+                                    <img src={adminData.profile_image_url} alt={adminData.full_name} className="w-8 h-8 rounded-full object-cover" />
+                                ) : (
+                                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#c07a60] to-[#f3e9d2]" />
+                                )}
                                 <div>
-                                    <p className="text-xs font-bold text-[#f3e9d2]">Yuliya</p>
+                                    <p className="text-xs font-bold text-[#f3e9d2] truncate max-w-[140px]">{adminData.full_name}</p>
                                     <p className="text-[10px] text-white/40">Super Admin</p>
                                 </div>
                             </div>
