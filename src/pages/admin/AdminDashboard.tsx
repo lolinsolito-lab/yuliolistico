@@ -10,6 +10,7 @@ import QuizConfig from '../../components/admin/QuizConfig'; // Import new config
 import LeadsViewer from '../../components/admin/LeadsViewer';
 import ProfileEditor from '../../components/admin/ProfileEditor';
 import ArchiveEditor from '../../components/admin/ArchiveEditor';
+import GiftCardsEditor from '../../components/admin/GiftCardsEditor';
 import { Construction, Loader, Users } from 'lucide-react';
 
 const AdminDashboard: React.FC = () => {
@@ -22,6 +23,7 @@ const AdminDashboard: React.FC = () => {
         const path = location.pathname;
         if (path.includes('/cms')) return 'website';
         if (path.includes('/services')) return 'services';
+        if (path.includes('/giftcards')) return 'giftcards';
         if (path.includes('/academy')) return 'academy';
         if (path.includes('/quiz-logic')) return 'quiz'; // Add logic mapping
         if (path.includes('/leads')) return 'clients'; // Redirect 'leads' to the clients/CRM tab visually
@@ -76,6 +78,13 @@ const AdminDashboard: React.FC = () => {
                     → Gestisci
                 </div>
             </div>
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100 cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/admin/giftcards')}>
+                <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Carte Regalo</div>
+                <div className="text-2xl font-serif text-[#292524]">Gestione Gift</div>
+                <div className="mt-2 text-xs text-[#c07a60] font-bold flex items-center gap-1">
+                    → Gestisci
+                </div>
+            </div>
             <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100 cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/admin/academy')}>
                 <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Academy</div>
                 <div className="text-2xl font-serif text-[#292524]">Corsi & Materiali</div>
@@ -99,10 +108,11 @@ const AdminDashboard: React.FC = () => {
                 <Route path="/" element={<Overview />} />
                 <Route path="/cms" element={<ContentsManager />} />
                 <Route path="/services" element={<ServicesEditor />} />
+                <Route path="/giftcards" element={<GiftCardsEditor />} />
                 <Route path="/academy" element={<AcademyEditor />} />
-                <Route path="/quiz-logic" element={<QuizConfig />} /> {/* Add Route */}
+                <Route path="/quiz-logic" element={<QuizConfig />} />
                 <Route path="/leads" element={<LeadsViewer />} />
-                <Route path="/crm" element={<LeadsViewer />} /> {/* CRM acts as alias for now */}
+                <Route path="/crm" element={<LeadsViewer />} /> 
                 <Route path="/profile" element={<ProfileEditor />} />
                 <Route path="/archivio" element={<ArchiveEditor />} />
                 <Route path="/settings" element={<SettingsPlaceholder />} />

@@ -15,7 +15,8 @@ import {
     ChevronRight,
     Sparkles,
     UserCircle,
-    BookOpen
+    BookOpen,
+    Gift
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -55,7 +56,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
         { id: 'overview', label: 'Panoramica', icon: LayoutDashboard, path: '/admin' },
         { id: 'website', label: 'Sito Web (CMS)', icon: Globe, path: '/admin/cms' },
         { id: 'services', label: 'Servizi & Rituali', icon: Sparkles, path: '/admin/services' },
-        { id: 'quiz', label: 'Logica Quiz', icon: BrainCircuit, path: '/admin/quiz-logic' }, // Added here
+        { id: 'giftcards', label: 'Carte Regalo', icon: Gift, path: '/admin/giftcards' },
+        { id: 'quiz', label: 'Logica Quiz', icon: BrainCircuit, path: '/admin/quiz-logic' },
         { id: 'academy', label: 'Accademia (LMS)', icon: GraduationCap, path: '/admin/academy' },
         { id: 'clients', label: 'Clienti (CRM)', icon: Users, path: '/admin/crm' },
         { id: 'archivio', label: "L'Archivio", icon: BookOpen, path: '/admin/archivio' },

@@ -51,7 +51,24 @@ export interface Lead {
   symptom: string;
   result_treatment: string;
   status?: 'new' | 'contacted' | 'converted';
+  resource_id?: string | null;
   source?: string;
+}
+
+export type LeadSource = 'quiz' | 'newsletter' | 'academy' | 'archive' | 'gift';
+
+export interface GiftVoucher {
+  id: string;
+  created_at?: string;
+  updated_at?: string;
+  title: string;
+  price: string;
+  description: string;
+  color_theme: 'dark' | 'light' | 'sage';
+  is_custom_amount: boolean;
+  cta_text: string;
+  active: boolean;
+  order: number;
 }
 
 export interface Course {
