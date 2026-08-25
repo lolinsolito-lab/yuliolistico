@@ -15,6 +15,13 @@ on conflict (id) do nothing;
 -- pagamento, questo bucket va reso privato (public = false) e serviranno 
 -- policy di lettura collegate alla tabella "enrollments".
 
+-- PREVENZIONE ERRORI: Elimino le policy se esistono già, così lo script
+-- può essere lanciato più volte senza bloccarsi.
+DROP POLICY IF EXISTS "Public Read Images" ON storage.objects;
+DROP POLICY IF EXISTS "Public Read Archive" ON storage.objects;
+DROP POLICY IF EXISTS "Public Read Academy Content" ON storage.objects;
+DROP POLICY IF EXISTS "Admin Write Objects" ON storage.objects;
+
 -- 2. Policy di Storage (Lettura pubblica per tutti e 3)
 create policy "Public Read Images"
 on storage.objects for select
