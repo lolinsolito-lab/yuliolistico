@@ -9,6 +9,7 @@ const LeadsViewer: React.FC = () => {
     const [leads, setLeads] = useState<Lead[]>([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('');
+    const [sourceFilter, setSourceFilter] = useState<'ALL' | 'quiz' | 'academy' | 'newsletter'>('ALL');
 
     useEffect(() => {
         fetchLeads();
@@ -33,11 +34,15 @@ const LeadsViewer: React.FC = () => {
         }
     };
 
-    const filteredLeads = leads.filter(lead =>
-        (lead.name || '').toLowerCase().includes(filter.toLowerCase()) ||
-        (lead.email || '').toLowerCase().includes(filter.toLowerCase()) ||
-        (lead.result_treatment || '').toLowerCase().includes(filter.toLowerCase())
-    );
+    const filteredLeads = leads.filter(lead => {
+        const matchesText = (lead.name || '').toLowerCase().includes(filter.toLowerCase()) ||
+                            (lead.email || '').toLowerCase().includes(filter.toLowerCase()) ||
+                            (lead.result_treatment || '').toLowerCase().includes(filter.toLowerCase());
+        
+        const matchesSource = sourceFilter === 'ALL' || lead.source === sourceFilter;
+
+        return matchesText && matchesSource;
+    });
 
     if (loading) return <div className="p-10 flex justify-center"><Loader className="animate-spin text-[#c07a60]" /></div>;
 
@@ -49,15 +54,24 @@ const LeadsViewer: React.FC = () => {
                     <p className="text-stone-500 text-sm">Controlla chi ha completato il quiz e necessita di contatto.</p>
                 </div>
 
-                <div className="relative group">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-hover:text-[#c07a60] transition-colors" />
-                    <input
-                        type="text"
-                        placeholder="Cerca nome, email..."
-                        value={filter}
-                        onChange={(e) => setFilter(e.target.value)}
-                        className="pl-10 pr-4 py-3 border border-stone-200 rounded-lg outline-none focus:border-[#c07a60] transition-all bg-white shadow-sm w-64 focus:w-80"
-                    />
+                <div className="flex items-center gap-4">
+                    <div className="flex bg-stone-100 p-1 rounded-lg">
+                        <button onClick={() => setSourceFilter('ALL')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'ALL' ? 'bg-white shadow-sm text-[#292524]' : 'text-stone-400 hover:text-stone-600'}`}>Tutti</button>
+                        <button onClick={() => setSourceFilter('quiz')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'quiz' ? 'bg-[#c07a60]/10 text-[#c07a60]' : 'text-stone-400 hover:text-stone-600'}`}>Quiz</button>
+                        <button onClick={() => setSourceFilter('academy')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'academy' ? 'bg-indigo-50 text-indigo-600' : 'text-stone-400 hover:text-stone-600'}`}>Academy</button>
+                        <button onClick={() => setSourceFilter('newsletter')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'newsletter' ? 'bg-amber-50 text-amber-600' : 'text-stone-400 hover:text-stone-600'}`}>Newsletter</button>
+                    </div>
+                    
+                    <div className="relative group">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-hover:text-[#c07a60] transition-colors" />
+                        <input
+                            type="text"
+                            placeholder="Cerca nome, email..."
+                            value={filter}
+                            onChange={(e) => setFilter(e.target.value)}
+                            className="pl-10 pr-4 py-3 border border-stone-200 rounded-lg outline-none focus:border-[#c07a60] transition-all bg-white shadow-sm w-48 focus:w-64"
+                        />
+                    </div>
                 </div>
             </div>
 

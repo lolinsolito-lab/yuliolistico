@@ -6,11 +6,13 @@ import { saveLead } from '../services/supabaseService';
 import { supabase } from '../lib/supabaseClient';
 import { sendLeadEmail } from '../services/emailService'; // Import Email Service
 import { AiRecommendation } from '../types';
+import { useBooking } from '../context/BookingContext';
 
 const WellnessQuiz: React.FC = () => {
   const [step, setStep] = useState<'INPUT' | 'LEAD_GEN' | 'RESULT'>('INPUT');
   const [loading, setLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState(""); // For "Wisdom Pill"
+  const { openBooking } = useBooking();
 
   // Form State
   const [symptom, setSymptom] = useState('');
@@ -286,7 +288,7 @@ const WellnessQuiz: React.FC = () => {
                     <p className="text-[#c07a60] font-serif text-xl">{result.oilRecommendation}</p>
                   </div>
 
-                  <button className="w-full bg-[#292524] text-white py-4 uppercase text-xs tracking-[0.2em] font-bold hover:bg-[#c07a60] transition-colors flex items-center justify-center gap-2 group shadow-xl">
+                  <button onClick={openBooking} className="w-full bg-[#292524] text-white py-4 uppercase text-xs tracking-[0.2em] font-bold hover:bg-[#c07a60] transition-colors flex items-center justify-center gap-2 group shadow-xl cursor-pointer">
                     Prenota Questo Rituale <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </motion.div>
