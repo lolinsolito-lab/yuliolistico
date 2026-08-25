@@ -1,3 +1,7 @@
+-- =====================================================
+-- 03_ACADEMY.sql
+-- Yuli Olistico — Corsi, Moduli, Iscrizioni
+-- =====================================================
 
 -- 1. COURSES Table (The Containers)
 create table if not exists courses (
@@ -8,7 +12,7 @@ create table if not exists courses (
   thumbnail_url text, -- Cover image for the course
   price_eur integer default 0, -- Price in Euro (0 = Free)
   is_published boolean default false,
-  slug text unique -- For URL routing (e.g. /academy/fondamenti-tocco)
+  slug text unique -- For URL routing
 );
 
 -- 2. MODULES Table (The Content - 1:N with Courses)

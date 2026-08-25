@@ -1,6 +1,10 @@
--- Create a table to store dynamic site content (CMS)
+-- =====================================================
+-- 07_SITE_CONTENT_SEED.sql
+-- Yuli Olistico — CMS dinamico dei testi del sito (Hero, Philosophy...)
+-- =====================================================
+
 create table if not exists site_content (
-  section text primary key, -- e.g., 'hero', 'philosophy', 'about'
+  section text primary key,
   content jsonb not null default '{}'::jsonb,
   last_updated timestamptz default now()
 );
@@ -8,20 +12,29 @@ create table if not exists site_content (
 -- Enable Row Level Security
 alter table site_content enable row level security;
 
--- Policy: Everyone can read content (public site)
 create policy "Public content is viewable by everyone"
   on site_content for select
   using ( true );
 
--- Policy: Only authenticated users can update (admins)
 create policy "Admins can update content"
   on site_content for update
-  using ( auth.role() = 'authenticated' );
+  using (
+    exists (
+      select 1 from public.profiles
+      where profiles.id = auth.uid()
+      and profiles.role = 'admin'
+    )
+  );
 
--- Policy: Only authenticated users can insert (admins)
 create policy "Admins can insert content"
   on site_content for insert
-  with check ( auth.role() = 'authenticated' );
+  with check (
+    exists (
+      select 1 from public.profiles
+      where profiles.id = auth.uid()
+      and profiles.role = 'admin'
+    )
+  );
 
 -- Insert default Hero content if not exists
 insert into site_content (section, content)

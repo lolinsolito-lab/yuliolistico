@@ -1,26 +1,33 @@
--- Create table for storing dynamic Quiz Logic
+-- =====================================================
+-- 06_QUIZ_CONFIG.sql
+-- Yuli Olistico — Configurazione dinamica del Wellness Quiz
+-- =====================================================
+
 create table if not exists quiz_config (
   id uuid default uuid_generate_v4() primary key,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
   is_active boolean default true,
-  rules jsonb not null, -- Stores the RULES array
-  prescriptions jsonb not null -- Stores the PRESCRIPTIONS object
+  rules jsonb not null, 
+  prescriptions jsonb not null
 );
 
 -- Enable RLS
 alter table quiz_config enable row level security;
 
--- Policy: Allow Read for everyone (so the Quiz works for public users)
 create policy "Allow Public Read" on quiz_config
   for select using (true);
 
--- Policy: Allow Insert/Update only for Authenticated Users (Admins)
 create policy "Allow Admin Manage" on quiz_config
-  for all using (auth.role() = 'authenticated');
+  for all using (
+    exists (
+      select 1 from public.profiles
+      where profiles.id = auth.uid()
+      and profiles.role = 'admin'
+    )
+  );
 
--- Initial Seed: Insert the current Hardcoded Logic as the "Default"
--- Note: This structure matches the JSON output of the current RULES and PRESCRIPTIONS constants.
+-- Initial Seed
 insert into quiz_config (rules, prescriptions)
 values (
   '[

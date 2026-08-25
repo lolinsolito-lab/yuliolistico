@@ -1,4 +1,8 @@
--- Create a table for the Business Profile / Global Settings
+-- =====================================================
+-- 05_BUSINESS_PROFILE.sql
+-- Yuli Olistico — Profilo aziendale / impostazioni globali
+-- =====================================================
+
 create table if not exists business_profile (
   id uuid default uuid_generate_v4() primary key,
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
@@ -12,8 +16,8 @@ create table if not exists business_profile (
   full_name text default 'Yuli Yuliantini',
   role text default 'Founder & CEO',
   bio_short text,
-  bio_long text, -- Can contain markdown or HTML
-  profile_image_url text, -- The 'Fog' image
+  bio_long text,
+  profile_image_url text,
   signature_image_url text,
 
   -- Contact & Legal
@@ -21,7 +25,7 @@ create table if not exists business_profile (
   phone text,
   whatsapp text,
   address text,
-  vat_number text, -- P.IVA
+  vat_number text,
   
   -- Social Media (JSON)
   social_links jsonb default '{}'::jsonb,
@@ -34,11 +38,9 @@ create table if not exists business_profile (
 alter table business_profile enable row level security;
 
 -- Policies
--- Public can read everything
 create policy "Public view business profile" on business_profile
   for select using (true);
 
--- Only Admin can update
 create policy "Admin manage business profile" on business_profile
   for all using (
     exists (

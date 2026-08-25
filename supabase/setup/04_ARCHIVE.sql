@@ -1,7 +1,7 @@
--- =============================================
--- L'Archivio: Content Marketing Resources
--- =============================================
--- Run in Supabase SQL Editor
+-- =====================================================
+-- 04_ARCHIVE.sql
+-- Yuli Olistico — Risorse Archivio (lead magnet: PDF/audio/video)
+-- =====================================================
 
 CREATE TABLE IF NOT EXISTS archive_resources (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -29,10 +29,23 @@ CREATE POLICY "Public read published resources"
     ON archive_resources FOR SELECT
     USING (is_published = true);
 
+-- Admin richiede ruolo
 CREATE POLICY "Admin full access to resources"
     ON archive_resources FOR ALL
-    USING (true)
-    WITH CHECK (true);
+    USING (
+      exists (
+        select 1 from public.profiles
+        where profiles.id = auth.uid()
+        and profiles.role = 'admin'
+      )
+    )
+    WITH CHECK (
+      exists (
+        select 1 from public.profiles
+        where profiles.id = auth.uid()
+        and profiles.role = 'admin'
+      )
+    );
 
 -- Seed with sample categories
 INSERT INTO archive_resources (title, description, category, resource_type, is_free, requires_email, upsell_service, upsell_text, is_published, sort_order) VALUES
