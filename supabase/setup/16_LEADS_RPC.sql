@@ -58,4 +58,4 @@ END;
 $$;
 
 -- 3. Consentiamo l'esecuzione pubblica esclusivamente a questa RPC
-GRANT EXECUTE ON FUNCTION public.submit_lead TO anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.submit_lead(text, text, text, text, text, text, uuid, text) TO anon, authenticated;
