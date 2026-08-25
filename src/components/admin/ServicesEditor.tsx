@@ -176,7 +176,7 @@ const ServicesEditor: React.FC = () => {
                             <div className="flex items-center justify-between pt-2 mt-auto">
                                 <div className="flex gap-1">
                                     <button
-                                        onClick={(e) => toggleActive(service.id, !service.active, e)}
+                                        onClick={(e) => toggleActive(service.id, service.active, e)}
                                         className="p-2 hover:bg-stone-100 rounded-full text-stone-400 hover:text-[#292524] transition-colors"
                                         title="Visibilità"
                                     >
