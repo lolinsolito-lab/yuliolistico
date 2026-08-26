@@ -55,7 +55,7 @@ const Journal: React.FC = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <span className="text-[#849b87] uppercase tracking-[0.2em] text-xs font-bold">Il Journal Olistico</span>
+            <span className="text-[#849b87] uppercase tracking-[0.2em] text-xs font-bold">Il Journal Olistico di Yuliantini</span>
             <h2 className="text-4xl font-serif text-[#292524] mt-3">
               Saggezza Ancestrale.
             </h2>
