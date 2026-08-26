@@ -16,7 +16,7 @@ CREATE OR REPLACE FUNCTION public.submit_lead(
     p_result_treatment text,
     p_source text,
     p_resource_id uuid DEFAULT NULL,
-    p_honeypot text DEFAULT ''
+    p_honeypot text
 )
 RETURNS void
 LANGUAGE plpgsql
