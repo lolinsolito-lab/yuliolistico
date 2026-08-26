@@ -96,10 +96,9 @@ const Journal: React.FC = () => {
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-[#292524] to-[#1c1917] flex items-center justify-center group-hover:from-[#3a3533] transition-all">
                     <div className="text-[#d4af37]/40 scale-150">
-                      {TYPE_ICONS[post.resource_type] || <FileText className="w-5 h-5" />}
+                      <BookOpen className="w-5 h-5" />
                     </div>
                   </div>
-                )}
                 )}
               </div>
               <div className="flex flex-col gap-3">
