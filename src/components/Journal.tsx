@@ -5,33 +5,27 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 
-interface ArchiveResource {
+interface Post {
   id: string;
   title: string;
-  description: string;
+  content: string;
   category: string;
-  resource_type: string;
-  thumbnail_url: string;
+  image_url: string;
 }
 
-const TYPE_ICONS: Record<string, React.ReactNode> = {
-  pdf: <FileText className="w-5 h-5" />,
-  audio: <Headphones className="w-5 h-5" />,
-  video: <Video className="w-5 h-5" />,
-  article: <BookOpen className="w-5 h-5" />,
-};
+
 
 const Journal: React.FC = () => {
   const navigate = useNavigate();
-  const [dbResources, setDbResources] = useState<ArchiveResource[]>([]);
+  const [dbResources, setDbResources] = useState<Post[]>([]);
 
   useEffect(() => {
     const fetchResources = async () => {
       const { data } = await supabase
-        .from('archive_resources')
-        .select('id, title, description, category, resource_type, thumbnail_url')
-        .eq('is_published', true)
-        .order('sort_order', { ascending: true })
+        .from('posts')
+        .select('id, title, content, category, image_url')
+        .eq('published', true)
+        .order('created_at', { ascending: false })
         .limit(3);
       if (data && data.length > 0) setDbResources(data);
     };
@@ -46,9 +40,9 @@ const Journal: React.FC = () => {
       id: r.id,
       category: r.category.charAt(0).toUpperCase() + r.category.slice(1),
       title: r.title,
-      preview: r.description,
-      image: r.thumbnail_url || '',
-      resource_type: r.resource_type,
+      preview: r.content.substring(0, 100) + '...',
+      image: r.image_url || '',
+      resource_type: 'article',
     }))
     : JOURNAL_POSTS.map(p => ({ ...p, id: String(p.id), resource_type: 'article' as string }));
 
@@ -70,10 +64,10 @@ const Journal: React.FC = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            onClick={() => navigate('/archivio')}
+            onClick={() => navigate('/journal')}
             className="hidden md:flex items-center gap-2 text-[#c07a60] uppercase tracking-widest text-xs font-bold border-b border-[#c07a60] pb-1 hover:text-[#292524] hover:border-[#292524] transition-all cursor-pointer"
           >
-            Esplora L'Archivio <ArrowUpRight className="w-4 h-4" />
+            Esplora il Journal <ArrowUpRight className="w-4 h-4" />
           </motion.button>
         </div>
 
@@ -86,7 +80,7 @@ const Journal: React.FC = () => {
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
               className="group cursor-pointer"
-              onClick={() => navigate('/archivio')}
+              onClick={() => navigate(`/journal/${post.id}`)}
             >
               {/* Image or gradient placeholder */}
               <div className="overflow-hidden mb-4 aspect-[3/2] relative">
@@ -106,11 +100,6 @@ const Journal: React.FC = () => {
                     </div>
                   </div>
                 )}
-                {/* Type badge */}
-                {useDb && (
-                  <div className="absolute top-3 right-3 z-20 bg-white/90 backdrop-blur-sm px-2 py-1 text-[9px] uppercase tracking-widest font-bold text-stone-600">
-                    {post.resource_type}
-                  </div>
                 )}
               </div>
               <div className="flex flex-col gap-3">
@@ -132,10 +121,10 @@ const Journal: React.FC = () => {
         {/* Mobile CTA */}
         <div className="mt-8 text-center md:hidden">
           <button
-            onClick={() => navigate('/archivio')}
+            onClick={() => navigate('/journal')}
             className="items-center gap-2 text-[#c07a60] uppercase tracking-widest text-xs font-bold border-b border-[#c07a60] pb-1"
           >
-            Esplora L'Archivio <ArrowUpRight className="w-4 h-4 inline" />
+            Esplora il Journal <ArrowUpRight className="w-4 h-4 inline" />
           </button>
         </div>
       </div>

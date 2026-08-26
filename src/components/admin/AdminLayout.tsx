@@ -16,7 +16,8 @@ import {
     Sparkles,
     UserCircle,
     BookOpen,
-    Gift
+    Gift,
+    Feather
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -61,6 +62,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
         { id: 'academy', label: 'Accademia (LMS)', icon: GraduationCap, path: '/admin/academy' },
         { id: 'clients', label: 'Clienti (CRM)', icon: Users, path: '/admin/crm' },
         { id: 'archivio', label: "L'Archivio", icon: BookOpen, path: '/admin/archivio' },
+        { id: 'journal', label: "Journal VIP", icon: Feather, path: '/admin/journal' },
         { id: 'profile', label: 'Profilo', icon: UserCircle, path: '/admin/profile' },
         { id: 'settings', label: 'Impostazioni', icon: Settings, path: '/admin/settings' },
     ];
@@ -166,6 +168,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
                             {activeSection === 'quiz' && "Configurazione Motore Diagnostico."}
                             {activeSection === 'academy' && "Accademia Imperiale."}
                             {activeSection === 'clients' && "Registro Clienti Olistici."}
+                            {activeSection === 'archivio' && "Gestione Archivio e Lead Magnet."}
+                            {activeSection === 'journal' && "Gestione Brochure VIP e Journal."}
                             {activeSection === 'profile' && "Il Tuo Profilo Professionale."}
                             {activeSection === 'settings' && "Configurazione Sistema."}
                         </h2>

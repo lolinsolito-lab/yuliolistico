@@ -10,6 +10,7 @@ import QuizConfig from '../../components/admin/QuizConfig'; // Import new config
 import LeadsViewer from '../../components/admin/LeadsViewer';
 import ProfileEditor from '../../components/admin/ProfileEditor';
 import ArchiveEditor from '../../components/admin/ArchiveEditor';
+import JournalEditor from '../../components/admin/JournalEditor';
 import GiftCardsEditor from '../../components/admin/GiftCardsEditor';
 import { Construction, Loader, Users } from 'lucide-react';
 
@@ -29,6 +30,7 @@ const AdminDashboard: React.FC = () => {
         if (path.includes('/leads')) return 'clients'; // Redirect 'leads' to the clients/CRM tab visually
         if (path.includes('/profile')) return 'profile';
         if (path.includes('/archivio')) return 'archivio';
+        if (path.includes('/journal')) return 'journal';
         if (path.includes('/settings')) return 'settings';
         return 'overview';
     };
@@ -99,6 +101,13 @@ const AdminDashboard: React.FC = () => {
                     → Gestisci
                 </div>
             </div>
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100 cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/admin/journal')}>
+                <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Journal</div>
+                <div className="text-2xl font-serif text-[#292524]">Vetrina VIP</div>
+                <div className="mt-2 text-xs text-[#c07a60] font-bold flex items-center gap-1">
+                    → Gestisci
+                </div>
+            </div>
         </div>
     );
 
@@ -115,6 +124,7 @@ const AdminDashboard: React.FC = () => {
                 <Route path="/crm" element={<LeadsViewer />} /> 
                 <Route path="/profile" element={<ProfileEditor />} />
                 <Route path="/archivio" element={<ArchiveEditor />} />
+                <Route path="/journal" element={<JournalEditor />} />
                 <Route path="/settings" element={<SettingsPlaceholder />} />
             </Routes>
         </AdminLayout>

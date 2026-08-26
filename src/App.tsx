@@ -9,6 +9,9 @@ import HomePage from './pages/public/HomePage';
 import BookingPage from './pages/public/BookingPage';
 import AcademyPage from './pages/public/AcademyPage';
 import ArchivePage from './pages/public/ArchivePage';
+import GiftVouchersPage from './pages/public/GiftVouchersPage';
+import JournalPage from './pages/public/JournalPage';
+import JournalPostPage from './pages/public/JournalPostPage';
 
 // Console Signature Easter Egg
 const printConsoleSignature = () => {
@@ -40,6 +43,7 @@ import { BookingProvider } from './context/BookingContext';
 import PublicLayout from './components/PublicLayout';
 import LoginPage from './pages/admin/LoginPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import JournalEditor from './components/admin/JournalEditor';
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -57,6 +61,9 @@ const App: React.FC = () => {
               <Route path="/booking" element={<BookingPage />} />
               <Route path="/academy" element={<AcademyPage />} />
               <Route path="/archivio" element={<ArchivePage />} />
+              <Route path="/gift-cards" element={<GiftVouchersPage />} />
+              <Route path="/journal" element={<JournalPage />} />
+              <Route path="/journal/:id" element={<JournalPostPage />} />
             </Route>
 
             {/* 👑 ADMIN EMPIRE (No Layout) */}
