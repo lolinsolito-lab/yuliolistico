@@ -58,7 +58,7 @@ const JournalPage: React.FC = () => {
             <Sparkles className="w-6 h-6 text-[#d4af37]" />
           </div>
           <span className="text-[#849b87] uppercase tracking-[0.3em] text-xs font-bold block mb-4">
-            L'Archivio Olistico
+            Il Journal Olistico
           </span>
           <h1 className="text-5xl md:text-6xl font-serif text-[#292524] mb-6 leading-tight">
             Saggezza <span className="italic text-[#d4af37]">Ancestrale.</span>
