@@ -15,6 +15,9 @@ const Navigation: React.FC = () => {
 
   const [navData, setNavData] = useState({ brand_name: 'Yuli Olistico', tagline: 'Ogni corpo ha una storia. Ogni rituale la ascolta.' });
 
+  const isDarkHeroPage = location.pathname === '/' || location.pathname === '/archivio' || location.pathname === '/academy';
+  const textTheme = (isScrolled || !isDarkHeroPage) ? 'dark' : 'light';
+
   useEffect(() => {
     const fetchNavData = async () => {
       try {
@@ -85,15 +88,15 @@ const Navigation: React.FC = () => {
         {/* Logo */}
         <button onClick={scrollToTop} className="flex items-center gap-3 group cursor-pointer">
           <Logo
-            className={`w-10 h-10 transition-colors ${isScrolled ? 'text-[#849b87]' : 'text-[#849b87] md:text-[#f3e9d2]'}`}
+            className={`w-10 h-10 transition-colors ${textTheme === 'dark' ? 'text-[#849b87]' : 'text-[#849b87] md:text-[#f3e9d2]'}`}
             color="currentColor"
           />
           <div className="flex flex-col">
-            <span className={`text-xl font-serif tracking-widest font-bold uppercase transition-colors leading-none ${isScrolled ? 'text-[#292524]' : 'text-[#292524] md:text-white'
+            <span className={`text-xl font-serif tracking-widest font-bold uppercase transition-colors leading-none ${textTheme === 'dark' ? 'text-[#292524]' : 'text-[#292524] md:text-white'
               }`}>
               {navData.brand_name}
             </span>
-            <span className={`text-[0.6rem] tracking-[0.2em] uppercase mt-1 ${isScrolled ? 'text-[#849b87]' : 'text-[#849b87] md:text-[#f3e9d2]'
+            <span className={`text-[0.6rem] tracking-[0.2em] uppercase mt-1 ${textTheme === 'dark' ? 'text-[#849b87]' : 'text-[#849b87] md:text-[#f3e9d2]'
               }`}>
               {navData.tagline}
             </span>
@@ -106,7 +109,7 @@ const Navigation: React.FC = () => {
             <button
               key={link.name}
               onClick={link.action}
-              className={`text-sm tracking-widest uppercase hover:text-[#c07a60] transition-colors cursor-pointer bg-transparent border-none ${isScrolled ? 'text-[#57534e]' : 'text-white/90 hover:text-white'
+              className={`text-sm tracking-widest uppercase hover:text-[#c07a60] transition-colors cursor-pointer bg-transparent border-none ${textTheme === 'dark' ? 'text-[#57534e]' : 'text-white/90 hover:text-white'
                 }`}
             >
               {link.name}
@@ -114,7 +117,7 @@ const Navigation: React.FC = () => {
           ))}
           <button
             onClick={openBooking}
-            className={`px-6 py-2 border transition-all duration-300 cursor-pointer ${isScrolled
+            className={`px-6 py-2 border transition-all duration-300 cursor-pointer ${textTheme === 'dark'
               ? 'border-[#849b87] text-[#849b87] hover:bg-[#849b87] hover:text-white'
               : 'border-white text-white hover:bg-white hover:text-[#849b87]'
               }`}
@@ -128,7 +131,7 @@ const Navigation: React.FC = () => {
           className="md:hidden text-[#292524]"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          {isMobileMenuOpen ? <X /> : <Menu className={!isScrolled ? "text-[#292524] md:text-white" : "text-[#292524]"} />}
+          {isMobileMenuOpen ? <X /> : <Menu className={textTheme === 'light' ? "text-[#292524] md:text-white" : "text-[#292524]"} />}
         </button>
       </div>
 
