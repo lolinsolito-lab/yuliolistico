@@ -15,8 +15,8 @@ CREATE OR REPLACE FUNCTION public.submit_lead(
     p_symptom text,
     p_result_treatment text,
     p_source text,
-    p_resource_id uuid DEFAULT NULL,
-    p_honeypot text
+    p_honeypot text,
+    p_resource_id uuid DEFAULT NULL
 )
 RETURNS void
 LANGUAGE plpgsql
@@ -58,4 +58,4 @@ END;
 $$;
 
 -- 3. Consentiamo l'esecuzione pubblica esclusivamente a questa RPC
-GRANT EXECUTE ON FUNCTION public.submit_lead(text, text, text, text, text, text, uuid, text) TO anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.submit_lead(text, text, text, text, text, text, text, uuid) TO anon, authenticated;
