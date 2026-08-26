@@ -4,8 +4,13 @@
 -- Eseguire solo se la tabella è vuota per migrare i dati da constants.ts al Database.
 -- =====================================================
 
--- 1. Creiamo il vincolo di unicità sul titolo per prevenire duplicati
-ALTER TABLE public.services ADD CONSTRAINT services_title_unique UNIQUE (title);
+-- 1. Creiamo il vincolo di unicità sul titolo per prevenire duplicati (in modo sicuro)
+DO $$ 
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'services_title_unique') THEN
+    ALTER TABLE public.services ADD CONSTRAINT services_title_unique UNIQUE (title);
+  END IF;
+END $$;
 
 -- 2. Inseriamo i rituali con sicurezza
 INSERT INTO public.services (title, subtitle, category, description, soul_description, duration, price, image_url, active, "order")
@@ -170,4 +175,13 @@ VALUES
   'https://images.unsplash.com/photo-1544161513-01f14371f435?auto=format&fit=crop&w=800&q=80', 
   true, 
   13
-);
+)
+ON CONFLICT (title) DO UPDATE SET 
+    image_url = EXCLUDED.image_url,
+    description = EXCLUDED.description,
+    soul_description = EXCLUDED.soul_description,
+    price = EXCLUDED.price,
+    duration = EXCLUDED.duration,
+    category = EXCLUDED.category,
+    active = EXCLUDED.active,
+    "order" = EXCLUDED."order";
