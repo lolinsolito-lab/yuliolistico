@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import AdminLayout from './AdminLayout';
 import { supabase } from '../../lib/supabaseClient';
 import { Plus, Trash2, Edit2, Check, X, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -69,7 +68,7 @@ const JournalEditor: React.FC = () => {
     };
 
     return (
-        <AdminLayout activeSection="journal">
+        <div className="space-y-6">
             <div className="flex justify-between items-center mb-8">
                 <div>
                     <h3 className="text-xl font-serif">I tuoi Articoli</h3>
@@ -210,7 +209,7 @@ const JournalEditor: React.FC = () => {
                     </motion.div>
                 </div>
             )}
-        </AdminLayout>
+        </div>
     );
 };
 
