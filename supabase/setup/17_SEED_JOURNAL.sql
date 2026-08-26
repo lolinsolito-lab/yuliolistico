@@ -93,7 +93,7 @@ Sul lettino, userò solo oli vettori puri, riscaldati alla temperatura perfetta.
 (
     'Thai Royal Flow: L''Antica Danza della Guarigione',
     'Rituals',
-    'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=1000',
+    'https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=1000',
     true,
     'Il massaggio Tradizionale Thailandese viene spesso definito "lo Yoga per i pigri", ma nella sua essenza più profonda è una meditazione in movimento. Nato nei templi buddhisti, è un rituale sacro che agisce lungo le linee sen (i canali energetici del corpo).
 
@@ -106,7 +106,7 @@ I benefici sono straordinari: sblocco articolare, miglioramento drastico della p
 (
     'Cupping Therapy: Il Respiro Profondo dei Tessuti',
     'Rituals',
-    'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1000',
+    'https://images.unsplash.com/photo-1583416750470-965b2707b355?q=80&w=1000',
     true,
     'Nota fin dall''antico Egitto e celebrata nella Medicina Tradizionale Cinese, la Cupping Therapy (Coppettazione) sfrutta il potere del vuoto per operare miracoli sui tessuti congestionati. 
 
@@ -119,7 +119,7 @@ Sì, può lasciare i famosi "marchi" temporanei, ma quei segni non sono lividi: 
 (
     'Deep Tissue Release: Sciogliere le Armature del Corpo',
     'Rituals',
-    'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1000',
+    'https://images.unsplash.com/photo-1537672238356-9fbbf209a8f4?q=80&w=1000',
     true,
     'Il massaggio Deep Tissue non è, come molti credono, un "massaggio svedese fatto molto forte". È una tecnica specifica, lenta e mirata, che mira ad accedere agli strati più profondi del tessuto muscolare e della fascia.
 
@@ -132,7 +132,7 @@ Utilizzo avambracci, nocche e gomiti con una pressione decisa ma sempre rispetto
 (
     'Ayurveda Soul Connection: Riequilibrare i Dosha per Rinascere',
     'Rituals',
-    'https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1000',
+    'https://images.unsplash.com/photo-1512290926925-c1e11eb5c552?q=80&w=1000',
     true,
     'L''Ayurveda, la Scienza della Vita indiana, ci insegna che non esiste un corpo uguale all''altro. Siamo tutti costituiti da un mix unico di tre energie vitali: Vata, Pitta e Kapha (i Dosha). Quando questi elementi vanno fuori asse a causa del clima, della dieta o dello stress emotivo, ci ammaliamo.
 

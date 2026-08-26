@@ -81,7 +81,7 @@ VALUES
   'Fuoco e terra uniti per calmare il fuoco interiore.', 
   '75 min', 
   '€95', 
-  'https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=800&q=80', 
+  'https://images.unsplash.com/photo-1556760544-74068565a05c?auto=format&fit=crop&w=800&q=80', 
   true, 
   6
 ),
