@@ -80,7 +80,7 @@ const GiftCards: React.FC = () => {
                 email: 'intent@whatsapp.click', // Dummy per far passare la validazione DB se serve
                 phone: '', 
                 symptom: `Interesse: ${gift.title} (${finalPrice})`, 
-                result_treatment: gift.id 
+                result_treatment: gift.title 
             }, 'gift', honeypot);
             
             // 2. Apriamo WhatsApp
