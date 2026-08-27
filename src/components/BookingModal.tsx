@@ -66,36 +66,29 @@ const BookingModal: React.FC = () => {
                         {/* Content Switcher: Real Iframe vs Mock UI */}
                         <div className="flex-grow relative bg-white overflow-hidden">
                             {isDemo ? (
-                                // ✨ MOCK MODE UI
+                                // ✨ MOCK MODE UI (Fallback attesa Settembre)
                                 <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center bg-[#faf9f6]">
                                     <div className="max-w-md w-full bg-white p-8 shadow-xl rounded-xl border border-stone-100">
                                         <div className="w-16 h-16 bg-[#d4af37]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                                            <Loader className="w-8 h-8 text-[#d4af37]" />
+                                            <Calendar className="w-8 h-8 text-[#d4af37]" />
                                         </div>
-                                        <h4 className="font-serif text-2xl text-[#292524] mb-2">Luminel Manager Demo</h4>
+                                        <h4 className="font-serif text-2xl text-[#292524] mb-2">Prenotazione Diretta</h4>
                                         <p className="text-[#57534e] text-sm mb-8 leading-relaxed">
-                                            Il Booking Engine è in modalità simulazione.<br />
-                                            Presto qui apparirà il calendario reale sincronizzato.
+                                            Il nostro sistema di prenotazione automatica (Luminel) sarà attivo da Settembre.<br /><br />
+                                            Nel frattempo, contattaci direttamente per verificare le disponibilità e fissare il tuo appuntamento.
                                         </p>
 
-                                        {/* Fake Calendar Grid */}
-                                        <div className="grid grid-cols-7 gap-2 mb-8 opacity-50 pointer-events-none select-none">
-                                            {['L', 'M', 'M', 'G', 'V', 'S', 'D'].map((day, i) => (
-                                                <div key={i} className="text-[10px] uppercase font-bold text-[#a8a29e]">{day}</div>
-                                            ))}
-                                            {[...Array(31)].map((_, i) => (
-                                                <div key={i} className={`h-8 flex items-center justify-center text-xs rounded-full ${i === 14 ? 'bg-[#c07a60] text-white' : 'bg-stone-50 text-[#57534e]'}`}>
-                                                    {i + 1}
-                                                </div>
-                                            ))}
+                                        <div className="space-y-4">
+                                            <a href="https://wa.me/393201982629" target="_blank" rel="noopener noreferrer" className="w-full py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white uppercase text-xs tracking-[0.2em] font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+                                                Scrivici su WhatsApp
+                                            </a>
+                                            <a href="mailto:yuliolistico@gmail.com" className="w-full py-3 bg-[#292524] hover:bg-[#c07a60] text-white uppercase text-xs tracking-[0.2em] font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+                                                Invia un'Email
+                                            </a>
                                         </div>
-
-                                        <button className="w-full py-3 bg-[#292524] text-white uppercase text-xs tracking-[0.2em] font-bold rounded-lg opacity-50 cursor-not-allowed">
-                                            Seleziona Orario
-                                        </button>
                                     </div>
                                     <p className="mt-8 text-[10px] text-[#a8a29e] uppercase tracking-widest">
-                                        Powered by Insolito Empire
+                                        Luminel Booking Engine — Coming Soon
                                     </p>
                                 </div>
                             ) : (
