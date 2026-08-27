@@ -29,45 +29,44 @@ function stripNewlines(text: string): string {
 }
 
 // Guscio HTML fisso in cui inseriamo il testo scritto da Yuli (Bulletproof per Gmail/Hotmail)
-function wrapInHtmlShell(bodyContent: string, companyName: string, showBookingButton: boolean = true): string {
-    // Convertiamo i normali a capo testuali (\n) in tag <br> per l'HTML
+function wrapInHtmlShell(bodyContent: string, companyName: string, showBookingButton: boolean = true, recipientEmail?: string): string {
     const formattedContent = bodyContent.replace(/\n/g, '<br/>');
-    
+    const isCustomerEmail = showBookingButton; // false solo per la notifica admin interna
+
     return `
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
 </head>
-<body style="margin: 0; padding: 0; background-color: #faf9f6; font-family: 'Georgia', serif; -webkit-font-smoothing: antialiased;">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#faf9f6">
+<body style="margin: 0; padding: 0; background-color: #1c1917; font-family: 'Georgia', serif; -webkit-font-smoothing: antialiased;">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#1c1917">
         <tr>
             <td align="center" style="padding: 40px 10px;">
-                <!-- Main Container -->
-                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" style="max-width: 600px; width: 100%; border-top: 4px solid #c07a60; border-radius: 4px;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" style="max-width: 600px; width: 100%; border-radius: 4px; overflow: hidden;">
                     <tr>
-                        <td align="center" style="padding: 40px 40px 20px 40px;">
-                            <h1 style="margin: 0; font-family: 'Georgia', serif; font-size: 24px; color: #292524; letter-spacing: 2px; text-transform: uppercase;">YULI OLISTICO</h1>
+                        <td align="center" bgcolor="#1c1917" style="padding: 32px 40px;">
+                            <h1 style="margin: 0; font-family: 'Georgia', serif; font-size: 22px; color: #d4af37; letter-spacing: 3px; text-transform: uppercase;">YULI OLISTICO</h1>
                         </td>
                     </tr>
                     <tr>
-                        <td align="center" style="padding: 0 40px 40px 40px;">
-                            <div style="height: 1px; background-color: #e7e5e4; width: 50px; margin: 0 auto;"></div>
-                        </td>
+                        <td style="height: 4px; background-color: #d4af37; line-height: 4px; font-size: 4px;">&nbsp;</td>
                     </tr>
                     <tr>
-                        <td align="left" style="padding: 0 40px 40px 40px; font-family: 'Georgia', serif; font-size: 16px; color: #44403c; line-height: 1.8;">
+                        <td align="left" style="padding: 40px; font-family: 'Georgia', serif; font-size: 16px; color: #292524; line-height: 1.8; background-color: #ffffff;">
                             ${formattedContent}
                         </td>
                     </tr>
                     ${showBookingButton ? `
                     <tr>
-                        <td align="center" style="padding: 0 40px 40px 40px;">
+                        <td align="center" style="padding: 0 40px 40px 40px; background-color: #ffffff;">
                             <table border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td align="center" bgcolor="#292524" style="border-radius: 4px;">
-                                        <a href="https://www.yuliolistico.com/#booking" target="_blank" style="display: inline-block; padding: 14px 30px; font-family: 'Helvetica', Arial, sans-serif; font-size: 12px; color: #ffffff; text-decoration: none; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;">
+                                    <td align="center" bgcolor="#d4af37" style="border-radius: 4px;">
+                                        <a href="https://www.yuliolistico.com/#booking" target="_blank" style="display: inline-block; padding: 14px 34px; font-family: 'Helvetica', Arial, sans-serif; font-size: 12px; color: #1c1917; text-decoration: none; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;">
                                             PRENOTA ORA
                                         </a>
                                     </td>
@@ -77,9 +76,12 @@ function wrapInHtmlShell(bodyContent: string, companyName: string, showBookingBu
                     </tr>
                     ` : ''}
                     <tr>
-                        <td align="center" style="padding: 30px 40px; border-top: 1px solid #e7e5e4; font-family: 'Helvetica', Arial, sans-serif; font-size: 11px; color: #a8a29e; line-height: 1.5; letter-spacing: 1px; text-transform: uppercase;">
-                            <p style="margin: 0 0 10px 0;">Ricevi questa email perché hai interagito con ${companyName}.</p>
-                            <p style="margin: 0;">Se desideri non ricevere più comunicazioni, puoi <a href="#" style="color: #c07a60; text-decoration: none;">disiscriverti qui</a>.</p>
+                        <td align="center" bgcolor="#1c1917" style="padding: 28px 40px; font-family: 'Helvetica', Arial, sans-serif; font-size: 11px; color: #a8a29e; line-height: 1.6; letter-spacing: 0.5px;">
+                            <p style="margin: 0 0 8px 0;">Ricevi questa email perché hai interagito con ${companyName}.</p>
+                            ${isCustomerEmail && recipientEmail ? `
+                            <p style="margin: 0;">
+                                <a href="https://www.yuliolistico.com/api/unsubscribe?email=${encodeURIComponent(recipientEmail)}" style="color: #d4af37; text-decoration: underline;">Non voglio più ricevere comunicazioni</a>
+                            </p>` : ''}
                         </td>
                     </tr>
                 </table>
@@ -128,9 +130,17 @@ export default async function handler(req: any, res: any) {
         }
 
         // 2. Recupero dinamico dati azienda
-        const { data: profile } = await supabaseAnon.from('business_profile').select('email, company_name').single();
+        const { data: profile, error: profileError } = await supabaseAnon
+            .from('business_profile')
+            .select('email, brand_name')
+            .single();
+
+        if (profileError) {
+            console.error('business_profile fetch failed, using fallback values:', profileError);
+        }
+
         const adminEmail = profile?.email || 'yuli@yuliolistico.com';
-        const companyName = profile?.company_name || 'Yuli Olistico';
+        const companyName = profile?.brand_name || 'Yuli Olistico';
         const senderEmail = `Yuli Olistico <yuli@yuliolistico.com>`; // Usa il dominio verificato
 
         // 3. Preparazione Email Admin (Hardcoded, è solo interna)
@@ -198,7 +208,7 @@ export default async function handler(req: any, res: any) {
                 .replace(/\{\{companyName\}\}/g, safeCompanyName);
 
             // Avvolgiamo il testo nudo nel guscio HTML fisso
-            clientHtml = wrapInHtmlShell(rawBody, safeCompanyName);
+            clientHtml = wrapInHtmlShell(rawBody, safeCompanyName, true, lead.email);
         }
 
         // 5. Invio via Resend
