@@ -101,20 +101,20 @@ export default async function handler(req: any, res: any) {
         const { data: profile } = await supabaseAnon.from('business_profile').select('email, company_name').single();
         const adminEmail = profile?.email || 'yuli@yuliolistico.com';
         const companyName = profile?.company_name || 'Yuli Olistico';
-        const senderEmail = \`Yuli Olistico <onboarding@resend.dev>\`; // Resend default per test
+        const senderEmail = `Yuli Olistico <onboarding@resend.dev>`; // Resend default per test
 
         // 3. Preparazione Email Admin (Hardcoded, è solo interna)
-        const adminSubject = stripNewlines(\`Nuovo Lead (\${source}): \${lead.name || lead.email}\`);
-        const adminHtml = \`
+        const adminSubject = stripNewlines(`Nuovo Lead (${source}): ${lead.name || lead.email}`);
+        const adminHtml = `
             <h2>Nuovo Lead Acquisito</h2>
-            <p><strong>Origine:</strong> \${escapeHtml(source)}</p>
-            <p><strong>Nome:</strong> \${escapeHtml(lead.name || 'N/A')}</p>
-            <p><strong>Email:</strong> \${escapeHtml(lead.email)}</p>
-            <p><strong>Telefono:</strong> \${escapeHtml(lead.phone || 'N/A')}</p>
-            <p><strong>Sintomo/Richiesta:</strong> \${escapeHtml(lead.symptom || 'N/A')}</p>
-            <p><strong>Risultato/Trattamento:</strong> \${escapeHtml(lead.result_treatment || 'N/A')}</p>
-            <p><strong>Consenso Marketing:</strong> \${lead.marketing_consent ? 'Sì' : 'No'}</p>
-        \`;
+            <p><strong>Origine:</strong> ${escapeHtml(source)}</p>
+            <p><strong>Nome:</strong> ${escapeHtml(lead.name || 'N/A')}</p>
+            <p><strong>Email:</strong> ${escapeHtml(lead.email)}</p>
+            <p><strong>Telefono:</strong> ${escapeHtml(lead.phone || 'N/A')}</p>
+            <p><strong>Sintomo/Richiesta:</strong> ${escapeHtml(lead.symptom || 'N/A')}</p>
+            <p><strong>Risultato/Trattamento:</strong> ${escapeHtml(lead.result_treatment || 'N/A')}</p>
+            <p><strong>Consenso Marketing:</strong> ${lead.marketing_consent ? 'Sì' : 'No'}</p>
+        `;
 
         // 4. Preparazione Email Cliente tramite CMS
         let clientSubject = '';
@@ -172,14 +172,14 @@ export default async function handler(req: any, res: any) {
         try {
             const adminEmailReq = fetch('https://api.resend.com/emails', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': \`Bearer \${resendApiKey}\` },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${resendApiKey}` },
                 body: JSON.stringify({ from: senderEmail, to: adminEmail, subject: adminSubject, html: adminHtml, reply_to: adminEmail })
             });
 
             // Inviamo l'email al cliente solo se abbiamo trovato un template valido
             const clientEmailReq = (clientSubject && clientHtml) ? fetch('https://api.resend.com/emails', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': \`Bearer \${resendApiKey}\` },
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${resendApiKey}` },
                 body: JSON.stringify({ from: senderEmail, to: lead.email, subject: clientSubject, html: clientHtml, reply_to: adminEmail })
             }) : Promise.resolve({ ok: true });
 
@@ -204,3 +204,4 @@ export default async function handler(req: any, res: any) {
         });
     }
 }
+
