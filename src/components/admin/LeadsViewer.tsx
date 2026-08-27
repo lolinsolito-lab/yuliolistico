@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../services/supabaseService';
 import { Lead } from '../../types';
-import { Loader, Search, Mail, Phone, Calendar, CheckCircle } from 'lucide-react';
+import { Loader, Search, Mail, Phone, Calendar, CheckCircle, RefreshCw } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const LeadsViewer: React.FC = () => {
@@ -13,9 +13,22 @@ const LeadsViewer: React.FC = () => {
 
     useEffect(() => {
         fetchLeads();
+
+        // Iscrizione al canale Supabase per ricevere i nuovi leads in tempo reale
+        const subscription = supabase
+            .channel('public:leads')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'leads' }, (payload) => {
+                setLeads(currentLeads => [payload.new as Lead, ...currentLeads]);
+            })
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(subscription);
+        };
     }, []);
 
     const fetchLeads = async () => {
+        setLoading(true);
         try {
             const { data, error } = await supabase
                 .from('leads')
@@ -62,16 +75,26 @@ const LeadsViewer: React.FC = () => {
                         <button onClick={() => setSourceFilter('newsletter')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'newsletter' ? 'bg-amber-50 text-amber-600' : 'text-stone-400 hover:text-stone-600'}`}>Newsletter</button>
                         <button onClick={() => setSourceFilter('sanctuary')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'sanctuary' ? 'bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/20 shadow-sm' : 'text-stone-400 hover:text-[#d4af37]'}`}>Sanctuary VIP</button>
                     </div>
-                    
-                    <div className="relative group">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-hover:text-[#c07a60] transition-colors" />
-                        <input
-                            type="text"
-                            placeholder="Cerca nome, email..."
-                            value={filter}
-                            onChange={(e) => setFilter(e.target.value)}
-                            className="pl-10 pr-4 py-3 border border-stone-200 rounded-lg outline-none focus:border-[#c07a60] transition-all bg-white shadow-sm w-48 focus:w-64"
-                        />
+                    <div className="flex items-center gap-2">
+                        <button 
+                            onClick={fetchLeads} 
+                            disabled={loading}
+                            title="Aggiorna lista"
+                            className="p-3 bg-white border border-stone-200 rounded-lg text-stone-400 hover:text-[#c07a60] hover:border-[#c07a60] transition-colors shadow-sm flex items-center justify-center"
+                        >
+                            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-[#c07a60]' : ''}`} />
+                        </button>
+                        
+                        <div className="relative group">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 group-hover:text-[#c07a60] transition-colors" />
+                            <input
+                                type="text"
+                                placeholder="Cerca nome, email..."
+                                value={filter}
+                                onChange={(e) => setFilter(e.target.value)}
+                                className="pl-10 pr-4 py-3 border border-stone-200 rounded-lg outline-none focus:border-[#c07a60] transition-all bg-white shadow-sm w-48 focus:w-64"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
