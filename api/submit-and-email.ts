@@ -101,7 +101,7 @@ export default async function handler(req: any, res: any) {
         const { data: profile } = await supabaseAnon.from('business_profile').select('email, company_name').single();
         const adminEmail = profile?.email || 'yuli@yuliolistico.com';
         const companyName = profile?.company_name || 'Yuli Olistico';
-        const senderEmail = `Yuli Olistico <onboarding@resend.dev>`; // Resend default per test
+        const senderEmail = `Yuli Olistico <yuli@yuliolistico.com>`; // Usa il dominio verificato
 
         // 3. Preparazione Email Admin (Hardcoded, è solo interna)
         const adminSubject = stripNewlines(`Nuovo Lead (${source}): ${lead.name || lead.email}`);
