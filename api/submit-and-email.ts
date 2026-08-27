@@ -152,17 +152,17 @@ export default async function handler(req: any, res: any) {
 
             // Sostituzione segnaposto nel Subject (usando valori ripuliti dai ritorni a capo per l'header)
             clientSubject = templateData.subject
-                .replace(/\\{\\{name\\}\\}/g, safeSubjectName)
-                .replace(/\\{\\{title\\}\\}/g, stripNewlines(safeFileTitle))
-                .replace(/\\{\\{companyName\\}\\}/g, stripNewlines(safeCompanyName));
+                .replace(/\{\{name\}\}/g, safeSubjectName)
+                .replace(/\{\{title\}\}/g, stripNewlines(safeFileTitle))
+                .replace(/\{\{companyName\}\}/g, stripNewlines(safeCompanyName));
 
             // Sostituzione segnaposto nel Body (usando valori solo escapati in HTML)
             let rawBody = templateData.body_content
-                .replace(/\\{\\{name\\}\\}/g, safeName)
-                .replace(/\\{\\{treatment\\}\\}/g, safeTreatment)
-                .replace(/\\{\\{title\\}\\}/g, safeFileTitle)
-                .replace(/\\{\\{fileUrl\\}\\}/g, safeFileUrl)
-                .replace(/\\{\\{companyName\\}\\}/g, safeCompanyName);
+                .replace(/\{\{name\}\}/g, safeName)
+                .replace(/\{\{treatment\}\}/g, safeTreatment)
+                .replace(/\{\{title\}\}/g, safeFileTitle)
+                .replace(/\{\{fileUrl\}\}/g, safeFileUrl)
+                .replace(/\{\{companyName\}\}/g, safeCompanyName);
 
             // Avvolgiamo il testo nudo nel guscio HTML fisso
             clientHtml = wrapInHtmlShell(rawBody, safeCompanyName);
