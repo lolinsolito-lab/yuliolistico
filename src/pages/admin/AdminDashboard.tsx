@@ -13,7 +13,11 @@ import ArchiveEditor from '../../components/admin/ArchiveEditor';
 import JournalEditor from '../../components/admin/JournalEditor';
 import GiftCardsEditor from '../../components/admin/GiftCardsEditor';
 import EmailTemplatesEditor from '../../components/admin/EmailTemplatesEditor';
-import { Construction, Loader, Users } from 'lucide-react';
+import { 
+    Construction, Loader, Users, Globe, Sparkles, Gift, 
+    GraduationCap, BookOpen, Feather, Mail, BrainCircuit, ArrowRight
+} from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const AdminDashboard: React.FC = () => {
     const { user, loading } = useAuth();
@@ -55,69 +59,77 @@ const AdminDashboard: React.FC = () => {
         </div>
     );
 
-    const Overview = () => (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100 cursor-pointer hover:shadow-md transition-all group" onClick={() => navigate('/admin/leads')}>
-                <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2 flex justify-between">
-                    <div>Nuovi Contatti</div>
-                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                </div>
-                <div className="text-2xl font-serif text-[#292524] group-hover:text-[#c07a60] transition-colors">Leads</div>
-                <div className="mt-2 text-xs text-[#c07a60] font-bold flex items-center gap-1">
-                    → Visualizza
-                </div>
-            </div>
+    const overviewCards = [
+        { id: 'leads', path: '/admin/leads', title: 'Leads', subtitle: 'Nuovi Contatti', icon: Users, color: 'from-[#c07a60] to-[#d4af37]', status: 'active' },
+        { id: 'cms', path: '/admin/cms', title: 'Sito Web', subtitle: 'CMS Status', icon: Globe, color: 'from-green-500 to-emerald-700', status: 'live' },
+        { id: 'services', path: '/admin/services', title: 'Catalogo', subtitle: 'Servizi Attivi', icon: Sparkles, color: 'from-[#292524] to-[#c07a60]' },
+        { id: 'gift', path: '/admin/giftcards', title: 'Gestione Gift', subtitle: 'Carte Regalo', icon: Gift, color: 'from-[#d4af37] to-yellow-600' },
+        { id: 'academy', path: '/admin/academy', title: 'Corsi & Materiali', subtitle: 'Academy LMS', icon: GraduationCap, color: 'from-purple-600 to-indigo-800' },
+        { id: 'archivio', path: '/admin/archivio', title: 'Lead Magnet', subtitle: "L'Archivio", icon: BookOpen, color: 'from-blue-500 to-cyan-700' },
+        { id: 'journal', path: '/admin/journal', title: 'Vetrina VIP', subtitle: 'Journal', icon: Feather, color: 'from-[#292524] to-black' },
+        { id: 'emails', path: '/admin/emails', title: 'Automazioni', subtitle: 'Template Email', icon: Mail, color: 'from-[#c07a60] to-orange-600' }
+    ];
 
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100 cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/admin/cms')}>
-                <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">CMS Status</div>
-                <div className="text-2xl font-serif text-[#292524]">Sito Web</div>
-                <div className="mt-2 text-xs text-green-600 font-bold flex items-center gap-1">
-                    ● Live
-                </div>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100 cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/admin/services')}>
-                <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Servizi Attivi</div>
-                <div className="text-2xl font-serif text-[#292524]">Gestione Catalogo</div>
-                <div className="mt-2 text-xs text-[#c07a60] font-bold flex items-center gap-1">
-                    → Gestisci
-                </div>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100 cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/admin/giftcards')}>
-                <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Carte Regalo</div>
-                <div className="text-2xl font-serif text-[#292524]">Gestione Gift</div>
-                <div className="mt-2 text-xs text-[#c07a60] font-bold flex items-center gap-1">
-                    → Gestisci
-                </div>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100 cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/admin/academy')}>
-                <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Academy</div>
-                <div className="text-2xl font-serif text-[#292524]">Corsi & Materiali</div>
-                <div className="mt-2 text-xs text-[#c07a60] font-bold flex items-center gap-1">
-                    → Accedi
-                </div>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100 cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/admin/archivio')}>
-                <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">L'Archivio</div>
-                <div className="text-2xl font-serif text-[#292524]">Lead Magnet</div>
-                <div className="mt-2 text-xs text-[#c07a60] font-bold flex items-center gap-1">
-                    → Gestisci
-                </div>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100 cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/admin/journal')}>
-                <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Journal</div>
-                <div className="text-2xl font-serif text-[#292524]">Vetrina VIP</div>
-                <div className="mt-2 text-xs text-[#c07a60] font-bold flex items-center gap-1">
-                    → Gestisci
-                </div>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100 cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/admin/emails')}>
-                <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Automazioni</div>
-                <div className="text-2xl font-serif text-[#292524]">Template Email</div>
-                <div className="mt-2 text-xs text-[#c07a60] font-bold flex items-center gap-1">
-                    → Modifica Testi
-                </div>
-            </div>
-        </div>
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1 }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+    };
+
+    const Overview = () => (
+        <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 relative z-10"
+        >
+            {overviewCards.map((card) => (
+                <motion.div
+                    key={card.id}
+                    variants={itemVariants}
+                    onClick={() => navigate(card.path)}
+                    whileHover={{ y: -5, scale: 1.02 }}
+                    className="relative overflow-hidden bg-white/80 backdrop-blur-xl p-6 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/40 cursor-pointer group transition-all duration-300 hover:shadow-[0_8px_30px_rgb(192,122,96,0.15)] hover:border-[#c07a60]/30"
+                >
+                    {/* Background Icon (Futuristic watermark) */}
+                    <card.icon className="absolute -right-6 -bottom-6 w-32 h-32 text-stone-100 group-hover:text-[#c07a60]/5 group-hover:scale-110 transition-all duration-500 transform -rotate-12" />
+                    
+                    {/* Glowing gradient orb */}
+                    <div className={`absolute -top-10 -left-10 w-24 h-24 bg-gradient-to-br ${card.color} rounded-full blur-3xl opacity-10 group-hover:opacity-30 transition-opacity duration-500`}></div>
+
+                    <div className="relative z-10">
+                        <div className="flex justify-between items-start mb-6">
+                            <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#a8a29e] group-hover:text-[#c07a60] transition-colors">{card.subtitle}</div>
+                            {card.status === 'active' && (
+                                <span className="flex h-2.5 w-2.5">
+                                    <span className="animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full bg-green-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                                </span>
+                            )}
+                            {card.status === 'live' && (
+                                <div className="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-green-100 text-green-700 border border-green-200">
+                                    Live
+                                </div>
+                            )}
+                        </div>
+                        
+                        <h3 className="text-2xl font-serif text-[#292524] mb-2">{card.title}</h3>
+                        
+                        <div className="mt-4 flex items-center gap-2 text-xs font-bold text-stone-400 group-hover:text-[#c07a60] transition-colors uppercase tracking-widest">
+                            <span>Gestisci</span>
+                            <ArrowRight className="w-3 h-3 transform group-hover:translate-x-1 transition-transform" />
+                        </div>
+                    </div>
+                </motion.div>
+            ))}
+        </motion.div>
     );
 
     return (
