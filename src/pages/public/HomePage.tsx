@@ -11,8 +11,11 @@ import GiftCards from '../../components/GiftCards';
 
 import SolutionBridge from '../../components/SolutionBridge';
 import AcademyTeaserSection from '../../components/AcademyTeaserSection';
+import { useCanonical } from '../../hooks/useCanonical';
 
 const HomePage: React.FC = () => {
+  useCanonical('https://yuliolistico.com/');
+
   return (
     <>
       <Hero />

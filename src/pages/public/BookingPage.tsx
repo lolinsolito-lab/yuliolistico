@@ -1,7 +1,10 @@
 import React from 'react';
 import BookingCalendar from '../../components/BookingCalendar';
+import { useCanonical } from '../../hooks/useCanonical';
 
 const BookingPage: React.FC = () => {
+  useCanonical('https://yuliolistico.com/booking');
+
   return (
     <div className="min-h-screen bg-[#faf9f6] pt-28 pb-20 px-4">
       <div className="text-center max-w-2xl mx-auto mb-12">

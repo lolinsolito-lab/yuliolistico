@@ -62,18 +62,18 @@ A presto,
 Il team di {{companyName}}'
 ),
 (
-    'quiz',
-    'Il tuo responso olistico - {{companyName}}',
-    'Ciao {{name}},
+    'quiz', 
+    'Il tuo responso riservato - {{companyName}}', 
+    'Cara {{name}},
 
-Il nostro motore diagnostico ha elaborato la tua richiesta.
+Il nostro motore olistico ha elaborato la tua richiesta. Il rituale che il tuo corpo sta chiedendo è:
 
-Il rituale suggerito per il tuo sblocco è: {{treatment}}
+{{treatment}}
 
-Ti aspettiamo in studio per far iniziare il tuo viaggio.
+Ti aspettiamo in studio per iniziare questo percorso.
 
 A presto,
-Il team di {{companyName}}'
+{{companyName}}'
 ),
 (
     'newsletter',

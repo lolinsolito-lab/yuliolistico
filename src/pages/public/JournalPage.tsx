@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { useCanonical } from '../../hooks/useCanonical';
 
 interface Post {
   id: string;

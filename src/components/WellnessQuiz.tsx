@@ -112,7 +112,7 @@ const WellnessQuiz: React.FC = () => {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Cpu className="w-4 h-4 text-[#849b87]" />
-              <span className="text-[#849b87] uppercase tracking-[0.2em] text-xs font-bold">Yuli • Diagnostic Engine</span>
+              <span className="text-[#849b87] uppercase tracking-[0.2em] text-xs font-bold">Yuli • Motore Olistico</span>
             </div>
             <h2 className="text-5xl md:text-7xl font-serif text-[#292524] mb-8 leading-none">
               Cosa chiede <br />
@@ -187,7 +187,7 @@ const WellnessQuiz: React.FC = () => {
                         className="w-full bg-[#292524] text-white py-4 uppercase text-xs tracking-[0.2em] font-bold hover:bg-[#c07a60] transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
                       >
                         {loading ? <RefreshCcw className="animate-spin w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
-                        {loading ? "Decodifica in corso..." : "Avvia Diagnostica"}
+                        {loading ? "Decodifica in corso..." : "Avvia Analisi Olistica"}
                       </button>
                     </div>
                   </motion.div>

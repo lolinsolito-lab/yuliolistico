@@ -167,7 +167,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
                             {activeSection === 'overview' && "Bentornata al Comando."}
                             {activeSection === 'website' && "Gestione Contenuti Digitali."}
                             {activeSection === 'services' && "Catalogo Esperienze & Rituali."}
-                            {activeSection === 'quiz' && "Configurazione Motore Diagnostico."}
+                            {activeSection === 'quiz' && "Configurazione Motore Olistico."}
                             {activeSection === 'academy' && "Accademia Imperiale."}
                             {activeSection === 'clients' && "Registro Clienti Olistici."}
                             {activeSection === 'archivio' && "Gestione Archivio e Lead Magnet."}

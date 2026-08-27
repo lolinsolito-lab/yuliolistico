@@ -50,7 +50,7 @@ const LeadsViewer: React.FC = () => {
         <div className="space-y-6 max-w-7xl mx-auto p-8">
             <div className="flex justify-between items-center mb-8">
                 <div>
-                    <h2 className="text-3xl font-serif text-[#292524] mb-2">Diagnostic Leads</h2>
+                    <h2 className="text-3xl font-serif text-[#292524] mb-2">Leads Valutazione</h2>
                     <p className="text-stone-500 text-sm">Controlla chi ha completato il quiz e necessita di contatto.</p>
                 </div>
 
@@ -81,7 +81,7 @@ const LeadsViewer: React.FC = () => {
                         <thead className="bg-[#faf9f6] border-b border-stone-100">
                             <tr>
                                 <th className="p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold">Data & Contatto</th>
-                                <th className="p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold">Diagnostica</th>
+                                <th className="p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold">Valutazione</th>
                                 <th className="p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold">Sorgente</th>
                                 <th className="p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold text-right">Stato</th>
                             </tr>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
-import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, Clock, Calendar, Share2, Facebook, Twitter, Linkedin, Link2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useCanonical } from '../../hooks/useCanonical';
 
 interface Post {
   id: string;
@@ -15,6 +16,7 @@ interface Post {
 
 const JournalPostPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  useCanonical(`https://yuliolistico.com/journal/${id}`);
   const navigate = useNavigate();
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);

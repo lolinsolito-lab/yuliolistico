@@ -115,7 +115,7 @@ export const fetchQuizConfig = async () => {
             return { rules: RULES, prescriptions: PRESCRIPTIONS };
         }
     } catch (err) {
-        console.error("Critical Diagnostic Engine Error:", err);
+        console.error("Critical Holistic Engine Error:", err);
     }
     return false;
 };

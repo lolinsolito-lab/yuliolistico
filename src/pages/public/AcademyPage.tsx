@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { GraduationCap, Mail, Sparkles, ArrowRight, Calendar, BookOpen, Clock, Loader, Check } from 'lucide-react';
 import { saveLead } from '../../services/supabaseService';
+import { useCanonical } from '../../hooks/useCanonical';
 
 const AcademyPage: React.FC = () => {
+    useCanonical('https://yuliolistico.com/academy');
     const [email, setEmail] = useState('');
     const [honeypot, setHoneypot] = useState('');
     const [marketingConsent, setMarketingConsent] = useState(false);

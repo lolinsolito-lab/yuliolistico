@@ -4,6 +4,7 @@ import { saveLead } from '../../services/supabaseService';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, Headphones, Video, BookOpen, ArrowRight, X, Download, Lock } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
+import { useCanonical } from '../../hooks/useCanonical';
 
 interface ArchiveResource {
     id: string;
@@ -34,6 +35,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 const ArchivePage: React.FC = () => {
+    useCanonical('https://yuliolistico.com/archivio');
     const { openBooking } = useBooking();
     const [resources, setResources] = useState<ArchiveResource[]>([]);
     const [loading, setLoading] = useState(true);
