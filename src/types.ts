@@ -40,6 +40,13 @@ export interface AiRecommendation {
   oilRecommendation: string;
   price?: string;
   duration?: string;
+  secondary?: {
+    treatment: string;
+    reasoning: string;
+    oilRecommendation: string;
+    price?: string;
+    duration?: string;
+  };
 }
 
 export interface Lead {

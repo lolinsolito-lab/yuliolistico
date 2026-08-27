@@ -179,30 +179,47 @@ export const analyzeSymptom = (input: string): AiRecommendation => {
         });
     });
 
-    // Find Winner
-    let winner: Archetype | null = null;
-    let maxScore = 0;
+    // Find Top 2 Winners
+    const sortedArchetypes = (Object.keys(scores) as Archetype[]).sort((a, b) => scores[b] - scores[a]);
+    
+    const primaryWinner = sortedArchetypes[0];
+    const secondaryWinner = sortedArchetypes[1];
+    const maxScore = scores[primaryWinner];
+    const secondScore = scores[secondaryWinner];
 
-    (Object.keys(scores) as Archetype[]).forEach(key => {
-        if (scores[key] > maxScore) {
-            maxScore = scores[key];
-            winner = key;
-        }
-    });
-
-    if (maxScore === 0 || !winner) {
+    if (maxScore === 0) {
         return {
             treatment: "Rituale della Scoperta",
-            reasoning: "Il tuo corpo parla una lingua che l'algoritmo non ha decifrato chiaramente oggi. Ti proponiamo un rituale esplorativo in cui ascolteremo il tuo corpo dal vivo, adattando le tecniche in tempo reale per trovare esattamente ciò di cui hai bisogno.",
+            reasoning: "Il tuo corpo parla una lingua profonda che oggi sfugge a una singola etichetta. Ti proponiamo un rituale esplorativo in cui ascolteremo il tuo corpo dal vivo, adattando le tecniche in tempo reale per trovare esattamente la sinergia di cui hai bisogno.",
             oilRecommendation: "Olio di Mandorle Dolci & Lavanda (Equilibrio Universale)",
             duration: "60 min",
             price: "€80"
         };
     }
 
-    // Pick a random specific ritual from the winning archetype to add variety
-    const options = PRESCRIPTIONS[winner];
-    const selected = options[Math.floor(Math.random() * options.length)];
+    // Pick a primary ritual
+    const primaryOptions = PRESCRIPTIONS[primaryWinner];
+    const primarySelected = primaryOptions[Math.floor(Math.random() * primaryOptions.length)];
 
-    return selected;
+    let result: AiRecommendation = { ...primarySelected };
+
+    // If there's a strong secondary emotion/symptom, add a synergistic complementary ritual
+    if (secondScore > 0 && secondScore >= maxScore * 0.5) {
+        const secondaryOptions = PRESCRIPTIONS[secondaryWinner];
+        const secondarySelected = secondaryOptions[Math.floor(Math.random() * secondaryOptions.length)];
+        
+        // Ensure it's not the exact same treatment (impossible due to archetypes, but just in case)
+        if (secondarySelected.treatment !== primarySelected.treatment) {
+            result.reasoning = `${primarySelected.reasoning} \n\nTuttavia, avverto anche un'altra risonanza in te. C'è una sovrapposizione emotiva complessa. Per questo motivo, ti suggerisco una sinergia profonda con un secondo rituale complementare.`;
+            result.secondary = {
+                treatment: secondarySelected.treatment,
+                reasoning: secondarySelected.reasoning,
+                oilRecommendation: secondarySelected.oilRecommendation,
+                price: secondarySelected.price,
+                duration: secondarySelected.duration
+            };
+        }
+    }
+
+    return result;
 };

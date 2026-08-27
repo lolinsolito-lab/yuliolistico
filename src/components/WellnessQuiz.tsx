@@ -82,7 +82,7 @@ const WellnessQuiz: React.FC = () => {
           email,
           phone,
           symptom,
-          result_treatment: result.treatment,
+          result_treatment: result.secondary ? `${result.treatment} & ${result.secondary.treatment}` : result.treatment,
           marketing_consent: marketingConsent
         }, 'quiz', honeypot);
         console.log("Lead Saved & Email Triggered via Vercel");
@@ -298,9 +298,23 @@ const WellnessQuiz: React.FC = () => {
                     </div>
                   )}
 
+                  {result.secondary && (
+                    <div className="mb-6 p-4 border border-[#c07a60]/20 bg-[#c07a60]/5 rounded-sm">
+                      <div className="text-[10px] text-[#c07a60] uppercase tracking-widest mb-1">Sinergia Complementare:</div>
+                      <h4 className="text-xl font-serif text-[#292524] mb-2">{result.secondary.treatment}</h4>
+                      {(result.secondary.duration || result.secondary.price) && (
+                        <div className="flex items-center justify-center gap-3 text-xs text-[#57534e] uppercase tracking-widest">
+                          {result.secondary.duration && <span>{result.secondary.duration}</span>}
+                          {result.secondary.duration && result.secondary.price && <span>•</span>}
+                          {result.secondary.price && <span>{result.secondary.price}</span>}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   <div className="mb-8 relative">
                     <span className="absolute -top-4 -left-2 text-6xl text-[#c07a60]/20 font-serif">"</span>
-                    <p className="text-[#57534e] text-lg font-light italic leading-relaxed relative z-10">
+                    <p className="text-[#57534e] text-lg font-light italic leading-relaxed relative z-10 whitespace-pre-line">
                       {result.reasoning}
                     </p>
                   </div>
@@ -308,10 +322,13 @@ const WellnessQuiz: React.FC = () => {
                   <div className="bg-[#faf9f6] p-6 mb-8 border border-[#292524]/5">
                     <span className="block text-xs uppercase tracking-widest text-[#a8a29e] mb-2">Consiglio Sensoriale</span>
                     <p className="text-[#c07a60] font-serif text-xl">{result.oilRecommendation}</p>
+                    {result.secondary && (
+                      <p className="text-[#c07a60] font-serif text-md mt-2 opacity-80">+ {result.secondary.oilRecommendation}</p>
+                    )}
                   </div>
 
                   <button onClick={openBooking} className="w-full bg-[#292524] text-white py-4 uppercase text-xs tracking-[0.2em] font-bold hover:bg-[#c07a60] transition-colors flex items-center justify-center gap-2 group shadow-xl cursor-pointer">
-                    Prenota Questo Rituale <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    Prenota Questa Esperienza <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </motion.div>
               )}
