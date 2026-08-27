@@ -104,7 +104,7 @@ const Membership: React.FC = () => {
             </button>
 
             <p className="mt-4 text-[10px] text-white/30 uppercase tracking-widest">
-              * Lista d'attesa attuale: 3 settimane
+              * Lista d'attesa attiva
             </p>
           </motion.div>
         </div>
