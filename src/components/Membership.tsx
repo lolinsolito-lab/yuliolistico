@@ -5,7 +5,7 @@ import { saveLead } from '../services/supabaseService';
 
 const Membership: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [honeypot, setHoneypot] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
@@ -20,7 +20,7 @@ const Membership: React.FC = () => {
       setTimeout(() => {
         setShowModal(false);
         setStatus('idle');
-        setFormData({ name: '', email: '', message: '' });
+        setFormData({ name: '', email: '', phone: '', message: '' });
         setHoneypot('');
       }, 3000);
       return;
@@ -31,7 +31,7 @@ const Membership: React.FC = () => {
       await saveLead({
         name: formData.name,
         email: formData.email,
-        phone: '',
+        phone: formData.phone,
         symptom: formData.message || 'Candidatura Sanctuary Membership',
         result_treatment: 'sanctuary_vip'
       }, 'sanctuary', honeypot);
@@ -40,7 +40,7 @@ const Membership: React.FC = () => {
       setTimeout(() => {
         setShowModal(false);
         setStatus('idle');
-        setFormData({ name: '', email: '', message: '' });
+        setFormData({ name: '', email: '', phone: '', message: '' });
       }, 3000);
     } catch {
       setStatus('error');
@@ -191,6 +191,18 @@ const Membership: React.FC = () => {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="la.tua@email.com"
+                        className="w-full py-3 px-4 bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-[#d4af37] transition-colors text-sm"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs uppercase tracking-widest text-white/40 mb-1 block">Telefono</label>
+                      <input
+                        type="tel"
+                        required
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        placeholder="+39 333 000 0000"
                         className="w-full py-3 px-4 bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-[#d4af37] transition-colors text-sm"
                       />
                     </div>
