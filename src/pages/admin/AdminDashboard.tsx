@@ -12,6 +12,7 @@ import ProfileEditor from '../../components/admin/ProfileEditor';
 import ArchiveEditor from '../../components/admin/ArchiveEditor';
 import JournalEditor from '../../components/admin/JournalEditor';
 import GiftCardsEditor from '../../components/admin/GiftCardsEditor';
+import EmailTemplatesEditor from '../../components/admin/EmailTemplatesEditor';
 import { Construction, Loader, Users } from 'lucide-react';
 
 const AdminDashboard: React.FC = () => {
@@ -27,7 +28,8 @@ const AdminDashboard: React.FC = () => {
         if (path.includes('/giftcards')) return 'giftcards';
         if (path.includes('/academy')) return 'academy';
         if (path.includes('/quiz-logic')) return 'quiz'; // Add logic mapping
-        if (path.includes('/leads')) return 'clients'; // Redirect 'leads' to the clients/CRM tab visually
+        if (path.includes('/leads') || path.includes('/crm')) return 'clients'; // Redirect 'leads' to the clients/CRM tab visually
+        if (path.includes('/emails')) return 'emails';
         if (path.includes('/profile')) return 'profile';
         if (path.includes('/archivio')) return 'archivio';
         if (path.includes('/journal')) return 'journal';
@@ -108,6 +110,13 @@ const AdminDashboard: React.FC = () => {
                     → Gestisci
                 </div>
             </div>
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-stone-100 cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/admin/emails')}>
+                <div className="text-[#a8a29e] text-xs uppercase tracking-widest mb-2">Automazioni</div>
+                <div className="text-2xl font-serif text-[#292524]">Template Email</div>
+                <div className="mt-2 text-xs text-[#c07a60] font-bold flex items-center gap-1">
+                    → Modifica Testi
+                </div>
+            </div>
         </div>
     );
 
@@ -122,6 +131,7 @@ const AdminDashboard: React.FC = () => {
                 <Route path="/quiz-logic" element={<QuizConfig />} />
                 <Route path="/leads" element={<LeadsViewer />} />
                 <Route path="/crm" element={<LeadsViewer />} /> 
+                <Route path="/emails" element={<EmailTemplatesEditor />} />
                 <Route path="/profile" element={<ProfileEditor />} />
                 <Route path="/archivio" element={<ArchiveEditor />} />
                 <Route path="/journal" element={<JournalEditor />} />

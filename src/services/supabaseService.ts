@@ -1,4 +1,3 @@
-
 import { supabase } from '../lib/supabaseClient';
 import { Lead } from '../types';
 
@@ -6,22 +5,25 @@ import { Lead } from '../types';
 export { supabase };
 
 export const saveLead = async (lead: Lead, source: 'quiz' | 'newsletter' | 'academy' | 'archive' | 'gift', honeypot: string = '') => {
-    const { data, error } = await supabase
-        .rpc('submit_lead', {
-            p_name: lead.name,
-            p_email: lead.email,
-            p_phone: lead.phone,
-            p_symptom: lead.symptom,
-            p_result_treatment: lead.result_treatment,
-            p_source: source,
-            p_resource_id: lead.resource_id || null,
-            p_honeypot: honeypot
-        });
+    // Chiamata all'endpoint unificato di Vercel per la sicurezza (insert + email)
+    const response = await fetch('/api/submit-and-email', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            lead,
+            source,
+            honeypot
+        })
+    });
 
-    if (error) {
-        console.error("Error saving lead:", error);
-        throw error;
+    const result = await response.json();
+
+    if (!response.ok) {
+        console.error("Error saving lead via unified API:", result.error);
+        throw new Error(result.error || "Failed to submit lead");
     }
 
-    return data;
+    return result;
 };

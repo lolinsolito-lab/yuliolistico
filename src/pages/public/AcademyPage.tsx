@@ -6,13 +6,21 @@ import { saveLead } from '../../services/supabaseService';
 const AcademyPage: React.FC = () => {
     const [email, setEmail] = useState('');
     const [honeypot, setHoneypot] = useState('');
+    const [marketingConsent, setMarketingConsent] = useState(false);
     const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
 
     const handleSubscribe = async () => {
         if (!email) return;
         setStatus('loading');
         try {
-            await saveLead({ name: 'Academy Waitlist', email, phone: '', symptom: '', result_treatment: '' }, 'academy', honeypot);
+            await saveLead({ 
+                name: 'Academy Waitlist', 
+                email, 
+                phone: '', 
+                symptom: '', 
+                result_treatment: '',
+                marketing_consent: marketingConsent
+            }, 'academy', honeypot);
             setStatus('success');
             setEmail('');
         } catch (error) {
@@ -91,42 +99,58 @@ const AcademyPage: React.FC = () => {
                 <div className="max-w-xl mx-auto mt-12 p-8 border border-white/10 bg-black/40 backdrop-blur-md rounded-2xl text-center">
                     <p className="text-[#c07a60] uppercase tracking-widest text-xs font-bold mb-4">L'eccellenza richiede attenzione assoluta</p>
                     <p className="text-sm text-white/60 leading-relaxed mb-6">
-                        Per garantire un affiancamento millimetrico e una vera trasformazione, l'accesso alla Masterclass sarà a numero chiuso. Inserisci la tua email: riceverai l'invito privato <strong>48 ore prima</strong> dell'apertura ufficiale. I posti migliori andranno a chi sa muoversi in anticipo.
+                        Per garantire un affiancamento millimetrico e una vera trasformazione, l'accesso alla Masterclass sarà a numero chiuso. Inserisci la tua email: riceverai l'invito privato e il materiale preparatorio <strong>48 ore prima</strong> dell'apertura ufficiale. I posti migliori andranno a chi sa muoversi in anticipo.
                     </p>
                     {status === 'success' ? (
                         <div className="flex items-center justify-center gap-2 text-[#d4af37] animate-pulse py-4">
                             <Check className="w-5 h-5" />
-                            <span className="font-serif text-lg">Sei in lista. Ti avviseremo 48h prima.</span>
+                            <span className="font-serif text-lg">Sei in lista. Ti avviseremo via email 48h prima.</span>
                         </div>
                     ) : (
-                        <div className="flex gap-2">
-                            {/* Honeypot invisibile */}
-                            <div style={{ display: 'none' }} aria-hidden="true">
-                                <label htmlFor="academy_website">Website</label>
+                        <div className="flex flex-col gap-4">
+                            <div className="flex gap-2">
+                                {/* Honeypot invisibile */}
+                                <div style={{ display: 'none' }} aria-hidden="true">
+                                    <label htmlFor="academy_website">Website</label>
+                                    <input
+                                        type="text"
+                                        id="academy_website"
+                                        name="academy_website"
+                                        value={honeypot}
+                                        onChange={(e) => setHoneypot(e.target.value)}
+                                        tabIndex={-1}
+                                        autoComplete="off"
+                                    />
+                                </div>
                                 <input
-                                    type="text"
-                                    id="academy_website"
-                                    name="academy_website"
-                                    value={honeypot}
-                                    onChange={(e) => setHoneypot(e.target.value)}
-                                    tabIndex={-1}
-                                    autoComplete="off"
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="La tua email personale..."
+                                    className="bg-white/5 border border-white/10 text-white px-4 rounded w-full focus:outline-none focus:border-[#d4af37]"
                                 />
+                                <button
+                                    onClick={handleSubscribe}
+                                    disabled={status === 'loading'}
+                                    className="px-6 py-3 bg-[#292524] border border-white/10 text-white uppercase text-xs font-bold tracking-widest hover:bg-[#d4af37] hover:text-[#1c1917] transition-colors disabled:opacity-50 flex items-center justify-center min-w-[120px]"
+                                >
+                                    {status === 'loading' ? <Loader className="w-4 h-4 animate-spin" /> : "Iscriviti"}
+                                </button>
                             </div>
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="La tua email personale..."
-                                className="bg-white/5 border border-white/10 text-white px-4 rounded w-full focus:outline-none focus:border-[#d4af37]"
-                            />
-                            <button
-                                onClick={handleSubscribe}
-                                disabled={status === 'loading'}
-                                className="px-6 py-3 bg-[#292524] border border-white/10 text-white uppercase text-xs font-bold tracking-widest hover:bg-[#d4af37] hover:text-[#1c1917] transition-colors disabled:opacity-50 flex items-center justify-center min-w-[120px]"
-                            >
-                                {status === 'loading' ? <Loader className="w-4 h-4 animate-spin" /> : "Iscriviti"}
-                            </button>
+                            
+                            {/* GDPR Consent */}
+                            <div className="flex items-start gap-2 text-left">
+                                <input 
+                                    type="checkbox" 
+                                    id="gdpr_academy"
+                                    checked={marketingConsent}
+                                    onChange={(e) => setMarketingConsent(e.target.checked)}
+                                    className="mt-1 accent-[#d4af37]"
+                                />
+                                <label htmlFor="gdpr_academy" className="text-[10px] text-white/50 leading-tight">
+                                    Acconsento a ricevere approfondimenti e comunicazioni future da Yuli Olistico Academy. (Facoltativo)
+                                </label>
+                            </div>
                         </div>
                     )}
                 </div>

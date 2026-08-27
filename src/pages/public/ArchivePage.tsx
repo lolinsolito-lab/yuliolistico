@@ -42,7 +42,8 @@ const ArchivePage: React.FC = () => {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [honeypot, setHoneypot] = useState('');
-    const [unlocked, setUnlocked] = useState(false);
+    const [marketingConsent, setMarketingConsent] = useState(false);
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'partial_error'>('idle');
 
     useEffect(() => {
         const fetchResources = async () => {
@@ -70,15 +71,17 @@ const ArchivePage: React.FC = () => {
 
     const handleSubmitEmail = async () => {
         if (!email || !emailModal) return;
+        setStatus('loading');
         try {
             // Save as lead
-            await saveLead({
+            const result = await saveLead({
                 name: name || 'Archivio Visitor',
                 email,
                 phone: '',
                 symptom: `Download: ${emailModal.title}`,
                 result_treatment: 'archivio_download',
-                resource_id: emailModal.id
+                resource_id: emailModal.id,
+                marketing_consent: marketingConsent
             } as any, 'archive', honeypot);
 
             // Increment download count (best-effort)
@@ -88,18 +91,23 @@ const ArchivePage: React.FC = () => {
                 // RPC might not exist yet, fail silently
             }
 
-            setUnlocked(true);
+            if (result && result.emailSent === false) {
+                setStatus('partial_error');
+            } else {
+                setStatus('success');
+            }
+
             setTimeout(() => {
-                if (emailModal.file_url) window.open(emailModal.file_url, '_blank');
                 setEmailModal(null);
-                setUnlocked(false);
+                setStatus('idle');
                 setEmail('');
                 setName('');
-            }, 2000);
+                setMarketingConsent(false);
+            }, 8000);
         } catch {
-            // Fail silently, still allow download
-            if (emailModal.file_url) window.open(emailModal.file_url, '_blank');
+            // Fail silently on complete failure, but close modal to prevent stuck UI
             setEmailModal(null);
+            setStatus('idle');
         }
     };
 
@@ -234,15 +242,20 @@ const ArchivePage: React.FC = () => {
                             exit={{ scale: 0.9, y: 20 }}
                             className="relative bg-white p-8 max-w-sm w-full z-10 text-center"
                         >
-                            <button onClick={() => setEmailModal(null)} className="absolute top-3 right-3 text-stone-400 hover:text-stone-700">
+                            <button onClick={() => { setEmailModal(null); setStatus('idle'); }} className="absolute top-3 right-3 text-stone-400 hover:text-stone-700">
                                 <X className="w-5 h-5" />
                             </button>
 
-                            {unlocked ? (
+                            {status === 'success' ? (
                                 <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }}>
                                     <Download className="w-10 h-10 text-[#d4af37] mx-auto mb-3" />
-                                    <h3 className="font-serif text-xl mb-1">Download in corso...</h3>
-                                    <p className="text-sm text-stone-500">Grazie per la fiducia ✨</p>
+                                    <h3 className="font-serif text-xl mb-1">Controlla la tua email!</h3>
+                                    <p className="text-sm text-stone-500">Ti abbiamo appena inviato il link per il download gratuito. Se non lo vedi, controlla anche nella cartella Spam o Promozioni.</p>
+                                </motion.div>
+                            ) : status === 'partial_error' ? (
+                                <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }}>
+                                    <h3 className="font-serif text-xl mb-3 text-[#c07a60]">Quasi pronto...</h3>
+                                    <p className="text-sm text-stone-500">Abbiamo ricevuto la tua richiesta, ma il server di posta è un po' lento in questo momento. Se non ricevi l'email entro 10 minuti, non preoccuparti: ti contatteremo noi per inviarti il materiale.</p>
                                 </motion.div>
                             ) : (
                                 <>
@@ -253,7 +266,7 @@ const ArchivePage: React.FC = () => {
                                             </div>
                                         )}
                                         <h3 className="font-serif text-lg mb-1">{emailModal.title}</h3>
-                                        <p className="text-xs text-stone-400">Inserisci la tua email per il download gratuito</p>
+                                        <p className="text-xs text-stone-400">Inserendo l'email riceverai il materiale richiesto direttamente nella tua casella di posta.</p>
                                     </div>
 
                                     <div className="space-y-3">
@@ -274,7 +287,7 @@ const ArchivePage: React.FC = () => {
                                             type="text"
                                             value={name}
                                             onChange={e => setName(e.target.value)}
-                                            placeholder="Il tuo nome"
+                                            placeholder="Il tuo nome (facoltativo)"
                                             className="w-full py-3 px-4 border border-stone-200 text-sm focus:outline-none focus:border-[#d4af37]"
                                         />
                                         <input
@@ -285,15 +298,30 @@ const ArchivePage: React.FC = () => {
                                             placeholder="la.tua@email.com"
                                             className="w-full py-3 px-4 border border-stone-200 text-sm focus:outline-none focus:border-[#d4af37]"
                                         />
+                                        
+                                        {/* GDPR Consent */}
+                                        <div className="flex items-start gap-2 text-left pt-2">
+                                            <input 
+                                                type="checkbox" 
+                                                id="gdpr_archive"
+                                                checked={marketingConsent}
+                                                onChange={(e) => setMarketingConsent(e.target.checked)}
+                                                className="mt-1 accent-[#d4af37]"
+                                            />
+                                            <label htmlFor="gdpr_archive" className="text-[10px] text-stone-500 leading-tight">
+                                                Acconsento a ricevere approfondimenti e comunicazioni future da Yuli Olistico. (Facoltativo)
+                                            </label>
+                                        </div>
+
                                         <button
                                             onClick={handleSubmitEmail}
-                                            disabled={!email}
-                                            className="w-full py-3 bg-[#292524] text-white uppercase text-xs tracking-[0.2em] font-bold hover:bg-[#d4af37] transition-colors disabled:opacity-40"
+                                            disabled={!email || status === 'loading'}
+                                            className="w-full py-3 bg-[#292524] text-white uppercase text-xs tracking-[0.2em] font-bold hover:bg-[#d4af37] transition-colors disabled:opacity-40 flex justify-center items-center gap-2"
                                         >
-                                            Scarica Ora
+                                            {status === 'loading' ? 'Invio in corso...' : 'Ricevi via Email'}
                                         </button>
                                     </div>
-                                    <p className="mt-3 text-[10px] text-stone-300">Nessuno spam. Mai.</p>
+                                    <p className="mt-4 text-[10px] text-stone-400">Il tuo indirizzo è al sicuro. Leggi la nostra Privacy Policy.</p>
                                 </>
                             )}
                         </motion.div>

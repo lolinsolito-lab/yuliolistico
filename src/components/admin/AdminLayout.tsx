@@ -17,7 +17,8 @@ import {
     UserCircle,
     BookOpen,
     Gift,
-    Feather
+    Feather,
+    Mail
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -61,6 +62,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
         { id: 'quiz', label: 'Logica Quiz', icon: BrainCircuit, path: '/admin/quiz-logic' },
         { id: 'academy', label: 'Accademia (LMS)', icon: GraduationCap, path: '/admin/academy' },
         { id: 'clients', label: 'Clienti (CRM)', icon: Users, path: '/admin/crm' },
+        { id: 'emails', label: 'Template Email', icon: Mail, path: '/admin/emails' },
         { id: 'archivio', label: "L'Archivio", icon: BookOpen, path: '/admin/archivio' },
         { id: 'journal', label: "Journal VIP", icon: Feather, path: '/admin/journal' },
         { id: 'profile', label: 'Profilo', icon: UserCircle, path: '/admin/profile' },

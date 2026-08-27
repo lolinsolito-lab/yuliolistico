@@ -52,6 +52,7 @@ export interface Lead {
   result_treatment: string;
   status?: 'new' | 'contacted' | 'converted';
   resource_id?: string | null;
+  marketing_consent?: boolean;
   source?: string;
 }
 

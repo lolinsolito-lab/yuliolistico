@@ -4,7 +4,6 @@ import { Sparkles, ArrowRight, RefreshCcw, Cpu, Lock, CheckCircle } from 'lucide
 import { analyzeSymptom, fetchQuizConfig } from '../services/diagnosticEngine';
 import { saveLead } from '../services/supabaseService';
 import { supabase } from '../lib/supabaseClient';
-import { sendLeadEmail } from '../services/emailService'; // Import Email Service
 import { AiRecommendation } from '../types';
 import { useBooking } from '../context/BookingContext';
 
@@ -20,6 +19,7 @@ const WellnessQuiz: React.FC = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [honeypot, setHoneypot] = useState('');
+  const [marketingConsent, setMarketingConsent] = useState(false);
 
   const [result, setResult] = useState<AiRecommendation | null>(null);
 
@@ -76,23 +76,16 @@ const WellnessQuiz: React.FC = () => {
 
     try {
       if (result) {
-        // 1. Save to Database
+        // 1. Save to Database and Trigger Email (Unified Vercel API)
         await saveLead({
           name,
           email,
           phone,
           symptom,
-          result_treatment: result.treatment
+          result_treatment: result.treatment,
+          marketing_consent: marketingConsent
         }, 'quiz', honeypot);
-        console.log("Lead Saved to Supabase");
-
-        // 2. Trigger Email (Simulated for now)
-        try {
-          await sendLeadEmail(email, name, result);
-          console.log("Email trigger sent");
-        } catch (emailError) {
-          console.error("Failed to trigger email", emailError);
-        }
+        console.log("Lead Saved & Email Triggered via Vercel");
       }
     } catch (error) {
       console.error("Failed to save lead", error);
@@ -245,6 +238,21 @@ const WellnessQuiz: React.FC = () => {
                       placeholder="Il tuo Numero (Solo per conferme)..."
                       className="w-full bg-white p-4 border border-[#292524]/10 outline-none"
                     />
+
+                    {/* GDPR Consent */}
+                    <div className="flex items-start gap-2 text-left pt-2 pb-2">
+                        <input 
+                            type="checkbox" 
+                            id="gdpr_quiz"
+                            checked={marketingConsent}
+                            onChange={(e) => setMarketingConsent(e.target.checked)}
+                            className="mt-1 accent-[#c07a60]"
+                        />
+                        <label htmlFor="gdpr_quiz" className="text-[10px] text-stone-500 leading-tight">
+                            Acconsento a ricevere approfondimenti e comunicazioni future da Yuli Olistico. (Facoltativo)
+                        </label>
+                    </div>
+
                     <button
                       onClick={handleUnlock}
                       disabled={loading || !email || !phone}
@@ -253,7 +261,7 @@ const WellnessQuiz: React.FC = () => {
                       {loading ? "Sblocco..." : "Sblocca il Risultato"} <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
-                  <p className="text-[10px] text-[#a8a29e] mt-4 uppercase tracking-widest">Nessuno spam. Solo benessere.</p>
+                  <p className="text-[10px] text-[#a8a29e] mt-4 uppercase tracking-widest">Nessuno spam. Leggi la nostra Privacy Policy.</p>
                 </motion.div>
               )}
             </AnimatePresence>
