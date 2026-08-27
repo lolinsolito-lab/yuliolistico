@@ -29,9 +29,9 @@ function stripNewlines(text: string): string {
 }
 
 // Guscio HTML fisso in cui inseriamo il testo scritto da Yuli (Bulletproof per Gmail/Hotmail)
-function wrapInHtmlShell(bodyContent: string, companyName: string, showBookingButton: boolean = true, recipientEmail?: string): string {
+function wrapInHtmlShell(bodyContent: string, companyName: string, ctaConfig?: { text: string; link: string }, recipientEmail?: string): string {
     const formattedContent = bodyContent.replace(/\n/g, '<br/>');
-    const isCustomerEmail = showBookingButton; // false solo per la notifica admin interna
+    const isCustomerEmail = !!ctaConfig || !!recipientEmail; // Notifica admin interna non ha cta
 
     return `
 <!DOCTYPE html>
@@ -60,14 +60,14 @@ function wrapInHtmlShell(bodyContent: string, companyName: string, showBookingBu
                             ${formattedContent}
                         </td>
                     </tr>
-                    ${showBookingButton ? `
+                    ${ctaConfig ? `
                     <tr>
                         <td align="center" style="padding: 0 40px 40px 40px; background-color: #ffffff;">
                             <table border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td align="center" bgcolor="#d4af37" style="border-radius: 4px;">
-                                        <a href="https://www.yuliolistico.com/#booking" target="_blank" style="display: inline-block; padding: 14px 34px; font-family: 'Helvetica', Arial, sans-serif; font-size: 12px; color: #1c1917; text-decoration: none; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;">
-                                            PRENOTA ORA
+                                        <a href="${ctaConfig.link}" target="_blank" style="display: inline-block; padding: 14px 34px; font-family: 'Helvetica', Arial, sans-serif; font-size: 12px; color: #1c1917; text-decoration: none; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;">
+                                            ${ctaConfig.text}
                                         </a>
                                     </td>
                                 </tr>
@@ -157,7 +157,7 @@ export default async function handler(req: any, res: any) {
                 <p><strong>Consenso Marketing:</strong> ${lead.marketing_consent ? 'Sì' : 'No'}</p>
             </div>
         `;
-        const adminHtml = wrapInHtmlShell(rawAdminHtml, companyName, false);
+        const adminHtml = wrapInHtmlShell(rawAdminHtml, companyName, undefined);
 
         // 4. Preparazione Email Cliente tramite CMS
         let clientSubject = '';
@@ -200,15 +200,24 @@ export default async function handler(req: any, res: any) {
                 .replace(/\{\{companyName\}\}/g, stripNewlines(safeCompanyName));
 
             // Sostituzione segnaposto nel Body (usando valori solo escapati in HTML)
+            // Togliamo {{fileUrl}} dal testo perché lo usiamo per il bottone CTA (se presente)
             let rawBody = templateData.body_content
                 .replace(/\{\{name\}\}/g, safeName)
                 .replace(/\{\{treatment\}\}/g, safeTreatment)
                 .replace(/\{\{title\}\}/g, safeFileTitle)
-                .replace(/\{\{fileUrl\}\}/g, safeFileUrl)
+                .replace(/\{\{fileUrl\}\}/g, '')
                 .replace(/\{\{companyName\}\}/g, safeCompanyName);
 
+            // Costruiamo la CTA Dinamica
+            let ctaConfig: { text: string; link: string } | undefined = undefined;
+            if (source === 'archive' && safeFileUrl !== '#') {
+                ctaConfig = { text: 'SCARICA ORA', link: safeFileUrl };
+            } else if (source === 'quiz' || source === 'newsletter') {
+                ctaConfig = { text: 'PRENOTA ORA', link: 'https://www.yuliolistico.com/#booking' };
+            }
+
             // Avvolgiamo il testo nudo nel guscio HTML fisso
-            clientHtml = wrapInHtmlShell(rawBody, safeCompanyName, true, lead.email);
+            clientHtml = wrapInHtmlShell(rawBody, safeCompanyName, ctaConfig, lead.email);
         }
 
         // 5. Invio via Resend
