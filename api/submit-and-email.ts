@@ -116,6 +116,10 @@ export default async function handler(req: any, res: any) {
 
         if (dbError) {
             console.error("Database Error:", dbError);
+            if (dbError.message?.includes('duplicate_subscription')) {
+                // Silently succeed so the user doesn't know, but don't send duplicate emails
+                return res.status(200).json({ success: true, emailSent: false, message: 'Already subscribed' });
+            }
             return res.status(500).json({ error: "Failed to save lead in database", details: dbError });
         }
 

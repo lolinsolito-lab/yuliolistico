@@ -158,9 +158,24 @@ const LeadsViewer: React.FC = () => {
                                     </td>
 
                                     <td className="p-6 align-top text-right w-1/6">
-                                        <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full ${lead.status === 'new' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-gray-100 text-gray-500'}`}>
-                                            <CheckCircle className="w-3 h-3" /> {lead.status || 'NEW'}
-                                        </span>
+                                        <div className="flex flex-col items-end gap-3">
+                                            <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full ${lead.status === 'new' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-gray-100 text-gray-500'}`}>
+                                                <CheckCircle className="w-3 h-3" /> {lead.status || 'NEW'}
+                                            </span>
+                                            <button 
+                                                onClick={async () => {
+                                                    if(window.confirm('Sei sicuro di voler eliminare questo lead?')) {
+                                                        const { error } = await supabase.from('leads').delete().eq('id', lead.id);
+                                                        if (!error) {
+                                                            setLeads(current => current.filter(l => l.id !== lead.id));
+                                                        }
+                                                    }
+                                                }}
+                                                className="text-xs text-red-400 hover:text-red-600 underline transition-colors mt-2"
+                                            >
+                                                Elimina
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

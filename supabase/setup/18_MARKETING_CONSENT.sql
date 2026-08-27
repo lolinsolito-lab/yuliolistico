@@ -49,6 +49,16 @@ BEGIN
         RAISE EXCEPTION 'Invalid lead source';
     END IF;
 
+    -- Anti-Spam: Previeni iscrizioni multiple per le stesse fonti (tranne quiz)
+    IF p_source != 'quiz' THEN
+        IF EXISTS (
+            SELECT 1 FROM public.leads 
+            WHERE email = p_email AND source = p_source
+        ) THEN
+            RAISE EXCEPTION 'duplicate_subscription';
+        END IF;
+    END IF;
+
     -- Inserimento del lead effettivo con il marketing consent
     INSERT INTO public.leads (
         name, 
