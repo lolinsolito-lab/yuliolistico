@@ -172,12 +172,12 @@ const Footer: React.FC = () => {
 
   return (
     <>
-      <footer className="bg-[#292524] text-[#a8a29e] py-8 md:py-10 px-6 border-t border-[#44403c]">
-        {/* Main Footer Content - Compact 3 columns */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-start">
+      <footer className="bg-[#292524] text-[#a8a29e] py-6 md:py-10 px-6 border-t border-[#44403c]">
+        {/* Main Footer Content - Compact 2 columns on mobile, 3 on desktop */}
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-6 md:gap-8 items-start">
 
           {/* Brand + Quote */}
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-3">
               <Logo className="w-6 h-6 text-[#849b87]" color="currentColor" />
               <h3 className="text-white font-serif text-lg">{footerData.brand_name}</h3>
@@ -215,44 +215,44 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Legal disclaimer + links */}
-        <div className="max-w-7xl mx-auto mt-6 md:mt-8 pt-6 border-t border-white/10">
-          <p className="text-[9px] md:text-[10px] text-white/40 leading-relaxed max-w-3xl mb-4 md:mb-6 text-center md:text-left mx-auto md:mx-0">
+        <div className="max-w-7xl mx-auto mt-6 md:mt-8 pt-4 md:pt-6 border-t border-white/10">
+          <p className="text-[8px] md:text-[10px] text-white/40 leading-relaxed max-w-3xl mb-3 md:mb-6 text-center md:text-left mx-auto md:mx-0">
             Attività professionale disciplinata ai sensi della Legge 4/2013. I trattamenti offerti sono di natura olistica
             e finalizzati al benessere psicofisico. Non sono prestazioni sanitarie, mediche o estetiche e non si sostituiscono
             in alcun modo al parere medico.
           </p>
 
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[9px] md:text-[10px] uppercase tracking-widest opacity-50 text-center md:text-left">
-            <span className="order-2 md:order-1 mt-2 md:mt-0">© 2026 Yuli Olistico. Tutti i diritti riservati.</span>
-            <div className="order-1 md:order-2 flex flex-wrap justify-center md:justify-end items-center gap-x-3 gap-y-2">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-4 text-[8px] md:text-[10px] uppercase tracking-widest opacity-50 text-center md:text-left">
+            <span className="order-2 md:order-1 mt-1 md:mt-0">© 2026 Yuli Olistico. Tutti i diritti riservati.</span>
+            <div className="order-1 md:order-2 flex flex-wrap justify-center md:justify-end items-center gap-x-2 md:gap-x-3 gap-y-1">
               <a
                 href="https://www.michaelluminels.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[10px] uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1"
+                className="text-[8px] md:text-[10px] uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1"
               >
-                Created by <span className="font-bold text-[#d4af37]">Insolito Experiences</span>
+                Created by <span className="font-bold text-[#d4af37]">Insolito</span>
               </a>
               <span className="hidden md:inline text-white/20">|</span>
               <button
                 onClick={() => setActivePopup('privacy')}
-                className="hover:text-white hover:opacity-100 transition-all cursor-pointer bg-transparent border-none text-[#a8a29e] uppercase tracking-widest text-[10px]"
+                className="hover:text-white hover:opacity-100 transition-all cursor-pointer bg-transparent border-none text-[#a8a29e] uppercase tracking-widest text-[8px] md:text-[10px]"
               >
                 Privacy Policy
               </button>
-              <span className="text-white/20">|</span>
+              <span className="hidden md:inline text-white/20">|</span>
               <button
                 onClick={() => setActivePopup('cookies')}
-                className="hover:text-white hover:opacity-100 transition-all cursor-pointer bg-transparent border-none text-[#a8a29e] uppercase tracking-widest text-[10px]"
+                className="hover:text-white hover:opacity-100 transition-all cursor-pointer bg-transparent border-none text-[#a8a29e] uppercase tracking-widest text-[8px] md:text-[10px]"
               >
-                Cookie Policy
+                Cookie
               </button>
-              <span className="text-white/20">|</span>
+              <span className="hidden md:inline text-white/20">|</span>
               <button
                 onClick={() => setActivePopup('terms')}
-                className="hover:text-white hover:opacity-100 transition-all cursor-pointer bg-transparent border-none text-[#a8a29e] uppercase tracking-widest text-[10px]"
+                className="hover:text-white hover:opacity-100 transition-all cursor-pointer bg-transparent border-none text-[#a8a29e] uppercase tracking-widest text-[8px] md:text-[10px]"
               >
-                Termini e Condizioni
+                Termini
               </button>
             </div>
           </div>

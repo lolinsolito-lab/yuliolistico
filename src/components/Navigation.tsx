@@ -74,9 +74,9 @@ const Navigation: React.FC = () => {
     { name: 'Home', action: () => scrollToTop() },
     { name: 'Esperienze', action: () => scrollToSection('esperienze') },
     { name: 'Chi Sono', action: () => scrollToSection('chi-sono') },
-    { name: 'Journal', action: () => { setIsMobileMenuOpen(false); navigate('/journal'); } },
-    { name: "L'Archivio", action: () => { setIsMobileMenuOpen(false); navigate('/archivio'); } },
-    { name: 'Academy', action: () => { setIsMobileMenuOpen(false); navigate('/academy'); } },
+    { name: 'Journal', action: () => { setIsMobileMenuOpen(false); window.scrollTo(0,0); navigate('/journal'); } },
+    { name: "L'Archivio", action: () => { setIsMobileMenuOpen(false); window.scrollTo(0,0); navigate('/archivio'); } },
+    { name: 'Academy', action: () => { setIsMobileMenuOpen(false); window.scrollTo(0,0); navigate('/academy'); } },
   ];
 
   return (
