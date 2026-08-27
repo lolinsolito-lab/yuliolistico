@@ -14,23 +14,23 @@ export interface DiagnosisRule {
 // 2. The Keyword Database (The "Brain")
 export const DEFAULT_RULES: DiagnosisRule[] = [
     {
-        archetype: 'PIETRA', // Tensione, Dolore, Blocchi
-        keywords: ['spalle', 'schiena', 'collo', 'cervicale', 'dolore', 'male', 'contrattura', 'blocc', 'rigid', 'pc', 'sedut', 'tensione', 'muscol', 'nodo', 'marmo', 'pezzo di legno'],
+        archetype: 'PIETRA', // Tensione, Dolore, Blocchi, Rabbia
+        keywords: ['spalle', 'schiena', 'collo', 'cervicale', 'dolore', 'male', 'contrattura', 'blocc', 'rigid', 'pc', 'sedut', 'tensione', 'muscol', 'nodo', 'marmo', 'pezzo di legno', 'strappo', 'lombar', 'testa pesante', 'rabbia', 'nervos', 'scricchiol', 'duro', 'postura', 'peso sulle spalle'],
         priority: 2
     },
     {
-        archetype: 'RUMORE_BIANCO', // Ansia, Mente, Insonnia
-        keywords: ['testa', 'cervello', 'pensieri', 'dormo', 'sonno', 'insonnia', 'ansia', 'stress', 'respiro', 'affanno', 'caos', 'rumore', 'spegnere', 'controllo', 'preoccup', 'cortisolo'],
+        archetype: 'RUMORE_BIANCO', // Ansia, Mente, Insonnia, Tristezza
+        keywords: ['testa', 'cervello', 'pensieri', 'dorm', 'sonno', 'insonnia', 'ansia', 'stress', 'respiro', 'affanno', 'caos', 'rumore', 'spegnere', 'controllo', 'preoccup', 'cortisolo', 'impazient', 'fretta', 'trist', 'depress', 'piang', 'panico', 'tachicardia', 'agitazion', 'angoscia', 'paura', 'mente'],
         priority: 2
     },
     {
         archetype: 'ACQUA_FERMA', // Gonfiore, Peso, Ristagno
-        keywords: ['gonfi', 'pesant', 'gambe', 'ritenzione', 'tossin', 'metabolismo', 'cellulite', 'ferma', 'palude', 'circolazione', 'fredd', 'liquid'],
+        keywords: ['gonfi', 'pesant', 'gambe', 'ritenzione', 'tossin', 'metabolismo', 'cellulite', 'ferma', 'palude', 'circolazione', 'fredd', 'liquid', 'grasso', 'pancia', 'lenta', 'riten', 'formicol', 'estetica', 'buccia', 'ristagno'],
         priority: 2
     },
     {
         archetype: 'ESAURIMENTO', // Burnout, Crollo
-        keywords: ['stanch', 'mort', 'tutto', 'basta', 'sparire', 'miracolo', 'crollo', 'burnout', 'esaurit', 'senza forze', 'batteria', 'zerbino', 'ricaric', 'vacanza'],
+        keywords: ['stanch', 'mort', 'tutto', 'basta', 'sparire', 'miracolo', 'crollo', 'burnout', 'esaurit', 'senza forze', 'batteria', 'zerbino', 'ricaric', 'vacanza', 'distrutt', 'a terra', 'sfinita', 'spenta', 'vuota', 'ko', 'finite', 'energia'],
         priority: 3 // Higher priority because burnout overrides simple pain
     }
 ];
