@@ -224,27 +224,27 @@ const EmailTemplatesEditor: React.FC = () => {
                         </p>
                         <ul className="space-y-3">
                             <li className="text-sm border-b border-stone-200 pb-2">
-                                <code className="bg-white px-2 py-1 border border-stone-200 rounded text-[#c07a60] font-mono text-xs">{{name}}</code>
+                                <code className="bg-white px-2 py-1 border border-stone-200 rounded text-[#c07a60] font-mono text-xs">{"{{name}}"}</code>
                                 <div className="text-xs text-stone-500 mt-1">Nome del cliente (es: Laura)</div>
                             </li>
                             <li className="text-sm border-b border-stone-200 pb-2">
-                                <code className="bg-white px-2 py-1 border border-stone-200 rounded text-[#c07a60] font-mono text-xs">{{companyName}}</code>
+                                <code className="bg-white px-2 py-1 border border-stone-200 rounded text-[#c07a60] font-mono text-xs">{"{{companyName}}"}</code>
                                 <div className="text-xs text-stone-500 mt-1">Nome del tuo brand</div>
                             </li>
                             {selectedTemplate.source === 'quiz' && (
                                 <li className="text-sm border-b border-stone-200 pb-2">
-                                    <code className="bg-white px-2 py-1 border border-stone-200 rounded text-[#c07a60] font-mono text-xs">{{treatment}}</code>
+                                    <code className="bg-white px-2 py-1 border border-stone-200 rounded text-[#c07a60] font-mono text-xs">{"{{treatment}}"}</code>
                                     <div className="text-xs text-stone-500 mt-1">Rituale consigliato dal quiz</div>
                                 </li>
                             )}
                             {selectedTemplate.source === 'archive' && (
                                 <>
                                 <li className="text-sm border-b border-stone-200 pb-2">
-                                    <code className="bg-white px-2 py-1 border border-stone-200 rounded text-[#c07a60] font-mono text-xs">{{title}}</code>
+                                    <code className="bg-white px-2 py-1 border border-stone-200 rounded text-[#c07a60] font-mono text-xs">{"{{title}}"}</code>
                                     <div className="text-xs text-stone-500 mt-1">Titolo del PDF richiesto</div>
                                 </li>
                                 <li className="text-sm">
-                                    <code className="bg-white px-2 py-1 border border-stone-200 rounded text-[#c07a60] font-mono text-xs">{{fileUrl}}</code>
+                                    <code className="bg-white px-2 py-1 border border-stone-200 rounded text-[#c07a60] font-mono text-xs">{"{{fileUrl}}"}</code>
                                     <div className="text-xs text-stone-500 mt-1">Link diretto per scaricare il PDF</div>
                                 </li>
                                 </>
