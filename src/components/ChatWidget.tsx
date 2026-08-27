@@ -26,18 +26,42 @@ const ChatWidget: React.FC = () => {
     scrollToBottom();
   }, [messages, isOpen]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!inputText.trim()) return;
 
     const userMsg: Message = { id: Date.now(), text: inputText, sender: 'user' };
     setMessages(prev => [...prev, userMsg]);
     setInputText('');
 
-    // Instant honest response
-    setTimeout(() => {
-      const botMsg: Message = { id: Date.now() + 1, text: STATIC_RESPONSE, sender: 'bot' };
-      setMessages(prev => [...prev, botMsg]);
-    }, 400);
+    // --- FUTURE AI INTEGRATION FLAG ---
+    // Change to 'true' when the Yuli Olistico Virtual Twin / Backend AI is ready
+    const USE_AI_BACKEND = false; 
+
+    if (USE_AI_BACKEND) {
+        // [FUTURE] Placeholder for AI API Call
+        /*
+        try {
+            const response = await fetch('/api/chat-ai', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: inputText })
+            });
+            const data = await response.json();
+            const botMsg: Message = { id: Date.now() + 1, text: data.reply, sender: 'bot' };
+            setMessages(prev => [...prev, botMsg]);
+        } catch (error) {
+            console.error("AI Chat Error:", error);
+            // Fallback to static message on error
+            setMessages(prev => [...prev, { id: Date.now() + 1, text: STATIC_RESPONSE, sender: 'bot' }]);
+        }
+        */
+    } else {
+        // [CURRENT] Instant honest response (Offline Mode)
+        setTimeout(() => {
+          const botMsg: Message = { id: Date.now() + 1, text: STATIC_RESPONSE, sender: 'bot' };
+          setMessages(prev => [...prev, botMsg]);
+        }, 400);
+    }
   };
 
   return (
