@@ -39,21 +39,19 @@ function wrapInHtmlShell(bodyContent: string, companyName: string): string {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body { font-family: 'Georgia', serif; background-color: #faf9f6; color: #292524; line-height: 1.6; margin: 0; padding: 0; }
-        .container { max-w-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 40px; border-top: 4px solid #c07a60; }
-        .content { font-size: 16px; margin-bottom: 30px; }
-        .footer { border-top: 1px solid #e7e5e4; padding-top: 20px; font-size: 12px; color: #a8a29e; text-align: center; font-family: 'Helvetica', sans-serif; }
-    </style>
 </head>
-<body>
-    <div class="container">
-        <div class="content">
+<body style="font-family: 'Georgia', serif; background-color: #faf9f6; color: #292524; line-height: 1.8; margin: 0; padding: 40px 20px;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 50px 40px; border-top: 4px solid #c07a60; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-radius: 4px;">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h1 style="font-family: 'Georgia', serif; font-size: 24px; color: #292524; margin: 0; letter-spacing: 2px; text-transform: uppercase;">Yuli Olistico</h1>
+            <div style="height: 1px; background-color: #e7e5e4; width: 50%; margin: 20px auto 0;"></div>
+        </div>
+        <div style="font-size: 16px; margin-bottom: 40px; color: #44403c;">
             ${formattedContent}
         </div>
-        <div class="footer">
-            <p>Ricevi questa email perché hai interagito con ${companyName}.</p>
-            <p>Per non ricevere più comunicazioni promozionali, puoi <a href="#" style="color: #c07a60;">disiscriverti qui</a>.</p>
+        <div style="border-top: 1px solid #e7e5e4; padding-top: 30px; font-size: 12px; color: #a8a29e; text-align: center; font-family: 'Helvetica', sans-serif; letter-spacing: 1px;">
+            <p style="margin-bottom: 10px;">Ricevi questa email perché hai interagito con ${companyName}.</p>
+            <p>Se desideri non ricevere più queste comunicazioni, puoi <a href="#" style="color: #c07a60; text-decoration: none;">disiscriverti qui</a>.</p>
         </div>
     </div>
 </body>

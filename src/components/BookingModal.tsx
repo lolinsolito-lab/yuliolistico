@@ -74,7 +74,7 @@ const BookingModal: React.FC = () => {
                                         </div>
                                         <h4 className="font-serif text-2xl text-[#292524] mb-2">Prenotazione Diretta</h4>
                                         <p className="text-[#57534e] text-sm mb-8 leading-relaxed">
-                                            Il nostro sistema di prenotazione automatica (Luminel) sarà attivo da Settembre.<br /><br />
+                                            Il nostro sistema di prenotazione automatica sarà attivo prossimamente.<br /><br />
                                             Nel frattempo, contattaci direttamente per verificare le disponibilità e fissare il tuo appuntamento.
                                         </p>
 
