@@ -8,8 +8,8 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''; // Neces
 const resendApiKey = process.env.RESEND_API_KEY || ''; // Deve essere configurato in Vercel
 
 const supabaseAnon = createClient(supabaseUrl, supabaseAnonKey);
-// Client con Service Role per bypassare RLS solo in lettura sui template
-const supabaseAdmin = supabaseServiceKey ? createClient(supabaseUrl, supabaseServiceKey) : supabaseAnon; 
+// Client con Service Role per bypassare RLS in lettura (NON fare fallback ad anon per evitare fallimenti silenziosi)
+const supabaseAdmin = supabaseServiceKey ? createClient(supabaseUrl, supabaseServiceKey) : null;
 
 // Funzione di utilità per escaping HTML base (anti-XSS)
 function escapeHtml(unsafe: string): string {
@@ -118,6 +118,11 @@ export default async function handler(req: any, res: any) {
     // 4. Preparazione Email Cliente tramite CMS
     let clientSubject = '';
     let clientHtml = '';
+
+    if (!supabaseAdmin) {
+        console.error("FATAL: SUPABASE_SERVICE_ROLE_KEY mancante. Impossibile leggere i template email e completare l'invio via Resend.");
+        return res.status(200).json({ success: true, emailSent: false, message: 'DB Success, Email Failed due to missing Service Role Key' });
+    }
 
     // Recuperiamo il template dal DB usando il Service Role (per bypassare RLS in lettura)
     const { data: templateData, error: templateError } = await supabaseAdmin
