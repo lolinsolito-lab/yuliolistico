@@ -29,7 +29,7 @@ function stripNewlines(text: string): string {
 }
 
 // Guscio HTML fisso in cui inseriamo il testo scritto da Yuli
-function wrapInHtmlShell(bodyContent: string, companyName: string): string {
+function wrapInHtmlShell(bodyContent: string, companyName: string, showBookingButton: boolean = true): string {
     // Convertiamo i normali a capo testuali (\n) in tag <br> per l'HTML
     const formattedContent = bodyContent.replace(/\n/g, '<br/>');
     
@@ -49,6 +49,15 @@ function wrapInHtmlShell(bodyContent: string, companyName: string): string {
         <div style="font-size: 16px; margin-bottom: 40px; color: #44403c;">
             ${formattedContent}
         </div>
+        
+        ${showBookingButton ? `
+        <div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
+            <a href="https://www.yuliolistico.com/#booking" style="display: inline-block; background-color: #292524; color: #ffffff; padding: 14px 30px; text-decoration: none; font-size: 12px; font-family: 'Helvetica', sans-serif; letter-spacing: 2px; text-transform: uppercase; border-radius: 4px; font-weight: bold;">
+                PRENOTA ORA
+            </a>
+        </div>
+        ` : ''}
+
         <div style="border-top: 1px solid #e7e5e4; padding-top: 30px; font-size: 12px; color: #a8a29e; text-align: center; font-family: 'Helvetica', sans-serif; letter-spacing: 1px;">
             <p style="margin-bottom: 10px;">Ricevi questa email perché hai interagito con ${companyName}.</p>
             <p>Se desideri non ricevere più queste comunicazioni, puoi <a href="#" style="color: #c07a60; text-decoration: none;">disiscriverti qui</a>.</p>
@@ -103,16 +112,19 @@ export default async function handler(req: any, res: any) {
 
         // 3. Preparazione Email Admin (Hardcoded, è solo interna)
         const adminSubject = stripNewlines(`Nuovo Lead (${source}): ${lead.name || lead.email}`);
-        const adminHtml = `
-            <h2>Nuovo Lead Acquisito</h2>
-            <p><strong>Origine:</strong> ${escapeHtml(source)}</p>
-            <p><strong>Nome:</strong> ${escapeHtml(lead.name || 'N/A')}</p>
-            <p><strong>Email:</strong> ${escapeHtml(lead.email)}</p>
-            <p><strong>Telefono:</strong> ${escapeHtml(lead.phone || 'N/A')}</p>
-            <p><strong>Sintomo/Richiesta:</strong> ${escapeHtml(lead.symptom || 'N/A')}</p>
-            <p><strong>Risultato/Trattamento:</strong> ${escapeHtml(lead.result_treatment || 'N/A')}</p>
-            <p><strong>Consenso Marketing:</strong> ${lead.marketing_consent ? 'Sì' : 'No'}</p>
+        const rawAdminHtml = `
+            <div style="background-color: #faf9f6; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e7e5e4;">
+                <h2 style="margin-top: 0; color: #c07a60; font-family: 'Georgia', serif;">Nuovo Lead Acquisito</h2>
+                <p><strong>Origine:</strong> ${escapeHtml(source)}</p>
+                <p><strong>Nome:</strong> ${escapeHtml(lead.name || 'N/A')}</p>
+                <p><strong>Email:</strong> ${escapeHtml(lead.email)}</p>
+                <p><strong>Telefono:</strong> ${escapeHtml(lead.phone || 'N/A')}</p>
+                <p><strong>Sintomo/Richiesta:</strong> ${escapeHtml(lead.symptom || 'N/A')}</p>
+                <p><strong>Risultato/Trattamento:</strong> ${escapeHtml(lead.result_treatment || 'N/A')}</p>
+                <p><strong>Consenso Marketing:</strong> ${lead.marketing_consent ? 'Sì' : 'No'}</p>
+            </div>
         `;
+        const adminHtml = wrapInHtmlShell(rawAdminHtml, companyName, false);
 
         // 4. Preparazione Email Cliente tramite CMS
         let clientSubject = '';
