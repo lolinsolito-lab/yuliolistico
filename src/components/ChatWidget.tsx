@@ -8,15 +8,14 @@ interface Message {
   sender: 'user' | 'bot';
 }
 
-const STATIC_RESPONSE = "Grazie per il tuo messaggio! 🌿 Per una risposta rapida, scrivimi direttamente a yuliolistico@gmail.com o chiamami al 320 198 26 29. Ti ricontatterò entro 24h! 💌";
+const STATIC_RESPONSE = "Grazie di cuore per avermi scritto. 🌿 Essendo spesso in studio per i trattamenti non riesco a rispondere in tempo reale. Copia questo messaggio e inviamelo su WhatsApp (320 198 26 29) o via email (yuliolistico@gmail.com). Ti dedicherò tutta la mia attenzione appena possibile! 💌";
 
 const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { id: 0, text: "Ciao! 🌿 Al momento rispondo personalmente. Scrivimi qui il tuo messaggio oppure contattami a yuliolistico@gmail.com e ti ricontatterò entro 24h.", sender: 'bot' }
+    { id: 0, text: "Ciao! ✨ Sono in studio per i trattamenti e non posso rispondere subito. Usa questa finestra per annotare i tuoi pensieri, poi scrivimi direttamente su WhatsApp o via email e ti risponderò con cura entro 24h.", sender: 'bot' }
   ]);
   const [inputText, setInputText] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -33,14 +32,12 @@ const ChatWidget: React.FC = () => {
     const userMsg: Message = { id: Date.now(), text: inputText, sender: 'user' };
     setMessages(prev => [...prev, userMsg]);
     setInputText('');
-    setIsTyping(true);
 
-    // Static response after brief delay (no API call)
+    // Instant honest response
     setTimeout(() => {
       const botMsg: Message = { id: Date.now() + 1, text: STATIC_RESPONSE, sender: 'bot' };
       setMessages(prev => [...prev, botMsg]);
-      setIsTyping(false);
-    }, 1200);
+    }, 400);
   };
 
   return (
@@ -82,15 +79,6 @@ const ChatWidget: React.FC = () => {
                   </div>
                 </div>
               ))}
-              {isTyping && (
-                <div className="flex justify-start">
-                  <div className="bg-white border border-[#e7e5e4] p-3 rounded-xl rounded-bl-none shadow-sm flex gap-1">
-                    <span className="w-2 h-2 bg-[#a8a29e] rounded-full animate-bounce"></span>
-                    <span className="w-2 h-2 bg-[#a8a29e] rounded-full animate-bounce delay-75"></span>
-                    <span className="w-2 h-2 bg-[#a8a29e] rounded-full animate-bounce delay-150"></span>
-                  </div>
-                </div>
-              )}
               <div ref={messagesEndRef} />
             </div>
 
