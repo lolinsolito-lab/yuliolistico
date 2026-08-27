@@ -28,6 +28,7 @@ Raccogliamo solo i dati necessari per gestire le prenotazioni: nome, cognome, em
 2. FINALITÀ DEL TRATTAMENTO
 I dati personali sono trattati per:
 • Gestione delle prenotazioni e comunicazioni relative al servizio
+• Erogazione di valutazioni olistiche personalizzate tramite il "Motore Olistico" (Quiz)
 • Invio di comunicazioni promozionali (solo con consenso esplicito)
 • Adempimenti di legge
 
@@ -43,7 +44,7 @@ Ai sensi degli artt. 15-22 del GDPR (Reg. UE 2016/679), hai diritto di: accesso,
 6. SICUREZZA
 Adottiamo misure tecniche e organizzative appropriate per proteggere i tuoi dati personali.
 
-Ultimo aggiornamento: Febbraio 2026`
+Ultimo aggiornamento: Agosto 2026`
   },
   cookies: {
     title: 'Cookie Policy',
@@ -59,14 +60,15 @@ Non è richiesto il consenso per i cookie tecnici ai sensi dell'art. 122 del Cod
 
 Per qualsiasi domanda, contattaci a yuliolistico@gmail.com.
 
-Ultimo aggiornamento: Febbraio 2026`
+Ultimo aggiornamento: Agosto 2026`
   },
   terms: {
     title: 'Termini e Condizioni',
     content: `TERMINI E CONDIZIONI — Yuli Olistico
 
-1. NATURA DEI SERVIZI
-I servizi offerti da Yuli Olistico sono di natura olistica e del benessere, ai sensi della Legge 4/2013 (Disposizioni in materia di professioni non organizzate). NON sono prestazioni sanitarie, mediche, fisioterapiche o estetiche e non sostituiscono in alcun modo il parere, la diagnosi o il trattamento medico.
+1. NATURA DEI SERVIZI E "MOTORE OLISTICO"
+I servizi offerti da Yuli Olistico sono di natura olistica e del benessere, ai sensi della Legge 4/2013 (Disposizioni in materia di professioni non organizzate). NON sono prestazioni sanitarie, mediche, fisioterapiche o estetiche e non sostituiscono in alcun modo il parere, la diagnosi o il trattamento medico. 
+Il "Motore Olistico" (Quiz) presente sul sito è un algoritmo basato su regole preimpostate (non Intelligenza Artificiale generativa) e serve unicamente ad abbinare parole chiave ai trattamenti di benessere offerti. Non elabora diagnosi mediche e non conserva dati sanitari.
 
 2. PRENOTAZIONI E CANCELLAZIONI
 • Le prenotazioni si intendono confermate previo contatto diretto
