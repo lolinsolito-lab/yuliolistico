@@ -9,7 +9,7 @@ const LeadsViewer: React.FC = () => {
     const [leads, setLeads] = useState<Lead[]>([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('');
-    const [sourceFilter, setSourceFilter] = useState<'ALL' | 'quiz' | 'academy' | 'newsletter'>('ALL');
+    const [sourceFilter, setSourceFilter] = useState<'ALL' | 'quiz' | 'academy' | 'newsletter' | 'sanctuary'>('ALL');
 
     useEffect(() => {
         fetchLeads();
@@ -55,11 +55,12 @@ const LeadsViewer: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <div className="flex bg-stone-100 p-1 rounded-lg">
+                    <div className="flex flex-wrap bg-stone-100 p-1 rounded-lg gap-1">
                         <button onClick={() => setSourceFilter('ALL')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'ALL' ? 'bg-white shadow-sm text-[#292524]' : 'text-stone-400 hover:text-stone-600'}`}>Tutti</button>
                         <button onClick={() => setSourceFilter('quiz')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'quiz' ? 'bg-[#c07a60]/10 text-[#c07a60]' : 'text-stone-400 hover:text-stone-600'}`}>Quiz</button>
                         <button onClick={() => setSourceFilter('academy')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'academy' ? 'bg-indigo-50 text-indigo-600' : 'text-stone-400 hover:text-stone-600'}`}>Academy</button>
                         <button onClick={() => setSourceFilter('newsletter')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'newsletter' ? 'bg-amber-50 text-amber-600' : 'text-stone-400 hover:text-stone-600'}`}>Newsletter</button>
+                        <button onClick={() => setSourceFilter('sanctuary')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'sanctuary' ? 'bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/20 shadow-sm' : 'text-stone-400 hover:text-[#d4af37]'}`}>Sanctuary VIP</button>
                     </div>
                     
                     <div className="relative group">
@@ -122,6 +123,7 @@ const LeadsViewer: React.FC = () => {
 
                                     <td className="p-6 align-top">
                                         <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest ${
+                                            lead.source === 'sanctuary' ? 'bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/30' :
                                             lead.source === 'academy' ? 'bg-indigo-50 text-indigo-600 border border-indigo-100' :
                                             lead.source === 'quiz' ? 'bg-[#c07a60]/10 text-[#c07a60] border border-[#c07a60]/20' :
                                             lead.source === 'newsletter' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
