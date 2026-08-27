@@ -28,41 +28,64 @@ function stripNewlines(text: string): string {
     return text.replace(/[\r\n]+/g, " ").trim();
 }
 
-// Guscio HTML fisso in cui inseriamo il testo scritto da Yuli
+// Guscio HTML fisso in cui inseriamo il testo scritto da Yuli (Bulletproof per Gmail/Hotmail)
 function wrapInHtmlShell(bodyContent: string, companyName: string, showBookingButton: boolean = true): string {
     // Convertiamo i normali a capo testuali (\n) in tag <br> per l'HTML
     const formattedContent = bodyContent.replace(/\n/g, '<br/>');
     
     return `
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="font-family: 'Georgia', serif; background-color: #faf9f6; color: #292524; line-height: 1.8; margin: 0; padding: 40px 20px;">
-    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 50px 40px; border-top: 4px solid #c07a60; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-radius: 4px;">
-        <div style="text-align: center; margin-bottom: 40px;">
-            <h1 style="font-family: 'Georgia', serif; font-size: 24px; color: #292524; margin: 0; letter-spacing: 2px; text-transform: uppercase;">Yuli Olistico</h1>
-            <div style="height: 1px; background-color: #e7e5e4; width: 50%; margin: 20px auto 0;"></div>
-        </div>
-        <div style="font-size: 16px; margin-bottom: 40px; color: #44403c;">
-            ${formattedContent}
-        </div>
-        
-        ${showBookingButton ? `
-        <div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
-            <a href="https://www.yuliolistico.com/#booking" style="display: inline-block; background-color: #292524; color: #ffffff; padding: 14px 30px; text-decoration: none; font-size: 12px; font-family: 'Helvetica', sans-serif; letter-spacing: 2px; text-transform: uppercase; border-radius: 4px; font-weight: bold;">
-                PRENOTA ORA
-            </a>
-        </div>
-        ` : ''}
-
-        <div style="border-top: 1px solid #e7e5e4; padding-top: 30px; font-size: 12px; color: #a8a29e; text-align: center; font-family: 'Helvetica', sans-serif; letter-spacing: 1px;">
-            <p style="margin-bottom: 10px;">Ricevi questa email perché hai interagito con ${companyName}.</p>
-            <p>Se desideri non ricevere più queste comunicazioni, puoi <a href="#" style="color: #c07a60; text-decoration: none;">disiscriverti qui</a>.</p>
-        </div>
-    </div>
+<body style="margin: 0; padding: 0; background-color: #faf9f6; font-family: 'Georgia', serif; -webkit-font-smoothing: antialiased;">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#faf9f6">
+        <tr>
+            <td align="center" style="padding: 40px 10px;">
+                <!-- Main Container -->
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#ffffff" style="max-width: 600px; width: 100%; border-top: 4px solid #c07a60; border-radius: 4px;">
+                    <tr>
+                        <td align="center" style="padding: 40px 40px 20px 40px;">
+                            <h1 style="margin: 0; font-family: 'Georgia', serif; font-size: 24px; color: #292524; letter-spacing: 2px; text-transform: uppercase;">YULI OLISTICO</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="padding: 0 40px 40px 40px;">
+                            <div style="height: 1px; background-color: #e7e5e4; width: 50px; margin: 0 auto;"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" style="padding: 0 40px 40px 40px; font-family: 'Georgia', serif; font-size: 16px; color: #44403c; line-height: 1.8;">
+                            ${formattedContent}
+                        </td>
+                    </tr>
+                    ${showBookingButton ? `
+                    <tr>
+                        <td align="center" style="padding: 0 40px 40px 40px;">
+                            <table border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td align="center" bgcolor="#292524" style="border-radius: 4px;">
+                                        <a href="https://www.yuliolistico.com/#booking" target="_blank" style="display: inline-block; padding: 14px 30px; font-family: 'Helvetica', Arial, sans-serif; font-size: 12px; color: #ffffff; text-decoration: none; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;">
+                                            PRENOTA ORA
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    ` : ''}
+                    <tr>
+                        <td align="center" style="padding: 30px 40px; border-top: 1px solid #e7e5e4; font-family: 'Helvetica', Arial, sans-serif; font-size: 11px; color: #a8a29e; line-height: 1.5; letter-spacing: 1px; text-transform: uppercase;">
+                            <p style="margin: 0 0 10px 0;">Ricevi questa email perché hai interagito con ${companyName}.</p>
+                            <p style="margin: 0;">Se desideri non ricevere più comunicazioni, puoi <a href="#" style="color: #c07a60; text-decoration: none;">disiscriverti qui</a>.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>
     `;
