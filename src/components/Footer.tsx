@@ -23,26 +23,27 @@ Titolare del Trattamento: Yuliantini Yuliantini
 Email: yuliolistico@gmail.com
 
 1. DATI RACCOLTI
-Raccogliamo solo i dati necessari per gestire le prenotazioni: nome, cognome, email, numero di telefono. Non raccogliamo dati sensibili relativi alla salute.
+Raccogliamo solo i dati necessari per gestire le prenotazioni: nome, cognome, email, numero di telefono. Non raccogliamo dati clinici o sanitari.
 
-2. FINALITÀ DEL TRATTAMENTO
+2. FINALITÀ DEL TRATTAMENTO E AUTOMAZIONE (AI)
 I dati personali sono trattati per:
 • Gestione delle prenotazioni e comunicazioni relative al servizio
 • Erogazione di valutazioni olistiche personalizzate tramite il "Motore Olistico" (Quiz)
+• Invio di comunicazioni automatizzate e suggerimenti su misura, anche tramite l'ausilio di algoritmi e strumenti di Intelligenza Artificiale (AI), al fine di personalizzare l'esperienza olistica
 • Invio di comunicazioni promozionali (solo con consenso esplicito)
 • Adempimenti di legge
 
 3. BASE GIURIDICA
-Il trattamento si basa sul consenso dell'interessato e sull'esecuzione del contratto di servizio.
+Il trattamento si basa sul consenso dell'interessato e sull'esecuzione del contratto di servizio. L'elaborazione algoritmica ha il solo scopo di ottimizzare il servizio offerto.
 
-4. CONSERVAZIONE DEI DATI
-I dati vengono conservati per il tempo strettamente necessario alle finalità per cui sono stati raccolti e comunque non oltre 24 mesi dall'ultimo contatto.
+4. CONSERVAZIONE E PROTEZIONE AI
+I dati vengono conservati per il tempo strettamente necessario (max 24 mesi). Qualora i dati vengano processati da sistemi di automazione o AI, garantiamo che nessun dato personale verrà mai venduto a terzi, ceduto per scopi di marketing esterno o utilizzato per addestrare modelli linguistici pubblici.
 
 5. DIRITTI DELL'INTERESSATO
-Ai sensi degli artt. 15-22 del GDPR (Reg. UE 2016/679), hai diritto di: accesso, rettifica, cancellazione, limitazione del trattamento, portabilità dei dati e opposizione al trattamento. Per esercitare i tuoi diritti, scrivi a yuliolistico@gmail.com.
+Ai sensi degli artt. 15-22 del GDPR, hai diritto di: accesso, rettifica, cancellazione, portabilità e opposizione al trattamento automatizzato (profilazione). Scrivi a yuliolistico@gmail.com.
 
 6. SICUREZZA
-Adottiamo misure tecniche e organizzative appropriate per proteggere i tuoi dati personali.
+Adottiamo misure tecniche e organizzative appropriate, crittografia avanzata e rigidi controlli di accesso per proteggere i tuoi dati personali, anche quando elaborati da sistemi automatizzati.
 
 Ultimo aggiornamento: Agosto 2026`
   },
