@@ -4,7 +4,7 @@ import { Lead } from '../types';
 // Re-export the single Supabase client for backward compatibility
 export { supabase };
 
-export const saveLead = async (lead: Lead, source: 'quiz' | 'newsletter' | 'academy' | 'archive' | 'gift', honeypot: string = '') => {
+export const saveLead = async (lead: Lead, source: 'quiz' | 'newsletter' | 'academy' | 'archive' | 'gift' | 'sanctuary', honeypot: string = '') => {
     // Chiamata all'endpoint unificato di Vercel per la sicurezza (insert + email)
     const response = await fetch('/api/submit-and-email', {
         method: 'POST',
