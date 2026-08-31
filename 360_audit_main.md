@@ -1,6 +1,6 @@
 # 👑 Yuli Olistico: 360° Project Audit & Status
 
-Questo documento è la fotografia completa ed esatta del progetto (branch `main`), dettagliata per ogni singolo strato: database, frontend pubblico, pannello di controllo privato, e ora con un'analisi dedicata alla responsività (PC, Tablet, Mobile).
+Questo documento è la fotografia completa ed esatta del progetto (branch `main`), dettagliata per ogni singolo strato: database, frontend pubblico, pannello di controllo privato e strategia. L'ultimo grande aggiornamento (31 Agosto 2026) ha chiuso l'intero funnel di acquisizione lead e allineato l'architettura tecnica al brand "a domicilio".
 
 ---
 
@@ -8,6 +8,10 @@ Questo documento è la fotografia completa ed esatta del progetto (branch `main`
 
 ```text
 📁 yuliolistico/
+├── 📁 strategy/               # 🧭 Cuore Strategico e Regole di Sicurezza
+│   ├── 📄 YULI_DNA.md                 (Identità brand, copy, regole anti-promessa-clinica)
+│   ├── 📄 SECURITY_ARCHITECTURE.md    (Inventario vivo RLS e firme RPC)
+│   └── 📄 FINANCE_AND_ANALYTICS.md    (Infrastruttura, costi, conversioni)
 ├── 📁 src/                    
 │   ├── 📁 components/         
 │   │   ├── 📁 admin/          # 👑 Interfacce del Pannello di Controllo
@@ -33,7 +37,7 @@ Questo documento è la fotografia completa ed esatta del progetto (branch `main`
 │   └── ...
 └── 📁 supabase/               # 🗄️ Codice Backend (Database & Sicurezza)
     └── 📁 setup/              
-        ├── 📄 01..16_...sql             (Tutte le tabelle base, policy e funzioni)
+        ├── 📄 01..22_...sql             (Tabelle, policy, email templates e RPC blindate)
         └── 📄 17_SEED_JOURNAL.sql       (Seed database per articoli premium VIP)
 ```
 
@@ -55,55 +59,67 @@ L'intera applicazione è stata costruita con **Tailwind CSS** utilizzando un app
 
 ### 3. Chat Widget (`ChatWidget.tsx`)
 - Galleggiante fisso in basso a destra.
-- **Brand Identity**: Nessun "finto bot". Il widget funge da "taccuino digitale" trasparente e asincrono per raccogliere i pensieri dell'utente e invitarlo al contatto diretto via WhatsApp/Email, mantenendo autenticità (zero finzioni).
-- **Future-Proof (AI Ready)**: Il codice è già strutturato e commentato con un feature flag (`USE_AI_BACKEND`) pronto per essere attivato appena si vorrà collegare il motore IA di Virtual Twin.
-- **UX Mobile**: Posizionamento tattico (`bottom-24`) a portata di pollice, senza collidere con le tastiere virtuali native, per un'esperienza fluida anche su schermi piccoli.
+- **Brand Identity**: Nessun "finto bot". Il widget funge da "taccuino digitale" asincrono per invitare al contatto su WhatsApp. Entrambi i testi ("Sono impegnata in un trattamento..." e fallback statico) riflettono la natura a domicilio del servizio.
+- **Future-Proof (AI Ready)**: Feature flag (`USE_AI_BACKEND`) pronto per il motore IA di Virtual Twin.
+- **UX Mobile**: Posizionamento tattico (`bottom-24`) a portata di pollice.
 
 ### 4. Griglie e Vetrina (Journal e Servizi)
-- **Servizi**: Su mobile è una singola colonna scorrevole verticalmente. Su tablet/PC scala automaticamente a 2 o 3 colonne.
-- **Journal Page**: Layout editoriale asimmetrico ad alta conversione (stile Masonry). Su Desktop, un post prende il 60% della riga, l'altro il 40% (alternandosi). Su Mobile, tutto collassa in una colonna elegante, pur mantenendo l'effetto "immagine scura che si schiarisce al tocco".
-
-### 5. SEO e Legale (Nuovo)
-- **SEO Dinamico**: Implementato hook custom `useCanonical` per la corretta iniezione del tag canonical dinamico su ogni vista React, preservando i tag Open Graph statici su `index.html` per l'anteprima link (WhatsApp/Instagram).
-- **GDPR & Terminologia**: Il sito è disaccoppiato da implicazioni sanitarie ("Motore Olistico" invece di "Motore Diagnostico"). Privacy Policy copre profilazione e raccolta dati.
+- **Servizi**: Su mobile colonna singola scorrevole. Su tablet/PC scala automaticamente a 2 o 3 colonne.
+- **Journal Page**: Layout editoriale asimmetrico ad alta conversione (stile Masonry).
 
 ---
 
-## 🏗️ Pagine e Moduli: Stato Attuale (Aggiornato)
+## 🏗️ Ecosistema Pubblico: Stato Attuale 🟢
 
-### 1. Ecosistema Pubblico 🟢
-Tutto il codice del front-end pubblico è stato completato e implementato (da collaudare live da utente finale).
-- ✅ **Homepage**: Navigazione adattiva, Quiz collegato al CRM, Servizi dinamici.
-- ✅ **Il Journal Olistico**: Completamente vivo. La Vetrina VIP (Homepage Teaser e Pagina dedicata) carica gli articoli reali dal Database, inclusi di cover in alta risoluzione (senza duplicati).
-- ✅ **L'Archivio (Lead Gen)**: Attivo. Usa la tecnica del "Cancello Email" per generare contatti puliti bloccati da honeypot.
-- ✅ **Carte Regalo**: Pagina pubblica completa, integrata con WhatsApp precompilato e tracciamento lead.
-- ✅ **Academy Waitlist**: Landing page cattura contatti in attesa.
-
-### 2. Il Pannello di Controllo (Admin) 🟢
-- ✅ **Journal Editor**: Aggiunto editor VIP per scrivere e nascondere/pubblicare gli articoli del Journal Olistico in tempo reale.
-- ✅ **Gestione Archivi, Carte Regalo, Servizi**: Attivi e operativi.
-- ✅ **CRM (Leads Viewer) ⚡**: Tabella dei contatti potenziata con **aggiornamenti in tempo reale** (tramite Supabase Realtime) e pulsante di sync manuale. I nuovi lead appaiono magicamente senza ricaricare la pagina. Inclusi filtri per la nuova sorgente "Sanctuary VIP".
-- 🟡 **Gestione Academy (LMS)**: Struttura DB completa. Manca lo sviluppo dell'interfaccia Admin/Studente. (Prossimo grande step, legato alla decisione sui player video).
-
-### 3. Database & Backend 🟢
-- ✅ **Database 100% Allineato**: Seed servizi corretto (idempotente). Seed Journal completato. Rimossa l'ambiguità delle firme RPC (Fix 500 Multiple Choices).
-- ✅ **Sicurezza RLS**: La scrittura su tabella `posts` e `services` è blindata e limitata a Yuli (Admin).
-- ✅ **Webhook & API Email (Vercel)**: 
-  - Endpoint `/api/submit-and-email` irrobustito con `try-catch` globale anti-crash.
-  - Sostituito il mittente di test con il dominio aziendale verificato (`yuli@yuliolistico.com`) per sbloccare l'invio globale via Resend.
-- ✅ **Integrazione VIP**: Aggiunto form "The Sanctuary" con tracciamento telefono (campo `text` per prefissi internazionali).
+Tutto il front-end pubblico è implementato e allineato alle direttive "a domicilio" (nessun riferimento a studio fisico).
+- ✅ **Quiz Olistico (CRM-ready)**: Totalmente ridisegnato. Mostra tutte le varianti dell'archetipo vincente, con tier recuperati dinamicamente dal DB (`services.category`). Risolve parità di punteggio con pesi (weight). Aggiunta "sinergia sussurrata" discreta per l'archetipo secondario. Nessun prezzo/durata hardcoded.
+- ✅ **Il Journal Olistico**: Vetrina VIP attiva. Gli articoli vengono caricati live da database (niente mock).
+- ✅ **L'Archivio (Lead Gen)**: Attivo e funzionante (Cancello Email + Scaricamento file).
+- ✅ **Carte Regalo**: Flusso diretto verso WhatsApp (scelta di business definitiva).
+- ✅ **Academy Waitlist**: Landing page che raccoglie correttamente i contatti nel CRM (in attesa di sviluppi futuri).
+- ✅ **Prenotazioni (Booking)**: Resta temporaneamente in simulazione, in attesa di *Luminel Manager*.
+- ✅ **Legal & SEO**: SEO Dinamico (`useCanonical`), Privacy Policy solida. P.IVA rimandata al 2027.
 
 ---
 
-## 🎯 Conclusione e Prossimi Passi
+## 👑 Il Pannello di Controllo (Admin) 🟢
 
-Il sistema è maturo e pronto per il collaudo reale.
-L'imbuto di acquisizione ("Funnel") ora è chiuso e coerente:
-1. **Scoperta**: Il *Journal Olistico* genera autorevolezza senza chiedere nulla.
-2. **Considerazione**: L'*Archivio* regala PDF in cambio di Email (Lead).
-3. **Conversione**: Il *Booking* (Prenota) e le *Gift Card* trasformano il traffico in clienti.
+- ✅ **Journal Editor**: Editor VIP per scrittura articoli, con toggle publish/hide in realtime.
+- ✅ **Gestione Archivi, Carte Regalo, Servizi**: Attivi, connessi e operativi.
+- ✅ **CRM (Leads Viewer) ⚡**: Tabella contatti con aggiornamenti *Realtime* (Supabase). Integrazione completa del filtro `sanctuary` e supporto per honeypot e marketing consent.
+- 🟡 **Gestione Academy (LMS)**: Struttura DB completa. Interfaccia utente/admin in pausa, subordinata a decisioni future su hosting video e Luminel.
 
-**Cosa fare ora?**
-- Attendere l'integrazione a Settembre di **Lumina Manager** per il sistema di prenotazioni.
-- Decidere le sorti della sezione "Academy": Verrà sviluppata con hosting video interno (Supabase) o si appoggerà a servizi esterni (Luminel)? 
-- Test reale dal vivo: eseguire il percorso cliente dal telefono di Yuli, provare a scaricare un PDF, compilare un Quiz e verificare l'arrivo nel CRM dell'admin.
+---
+
+## 🗄️ Database, Backend & Sicurezza 🟢
+
+Infrastruttura solidificata con 22 file SQL idempotenti in `supabase/setup`.
+- ✅ **Firme RPC Sicure**: La funzione chiave `submit_lead` è validata e blindata contro i bot, inclusiva del source `sanctuary` e difesa da logiche anti-duplicazione stringenti.
+- ✅ **Email Transazionali (Resend + Vercel)**:
+  - Dominio verificato `yuli@yuliolistico.com`.
+  - Endpoint `api/submit-and-email` irrobustito con `try-catch` e validazioni. Inserisce su Supabase tramite REST (Anon Key -> RPC) prima di inviare mail.
+  - Template testuali ospitati e modificabili nel DB (es. welcome, quiz, archive, academy). Testi totalmente ripuliti da riferimenti a spazi fisici.
+- ✅ **Sicurezza RLS**: Scritture sensibili limitate rigorosamente ad admin. RPC usano `SECURITY DEFINER` + `SET search_path = public` con default esatti per evitare ambiguità.
+- ✅ **Documentazione Strategica Centralizzata**: `SECURITY_ARCHITECTURE.md`, `FINANCE_AND_ANALYTICS.md` e `YULI_DNA.md` spostati nella directory `strategy/`.
+
+---
+
+## 📌 Decisioni di Prodotto Consolidate
+
+1. **Booking**: Resta in simulazione (nessuna urgenza, rientro post-settembre).
+2. **Luminel Manager**: Sarà un SaaS separato; in futuro gestirà booking/pagamenti Academy per Yuli.
+3. **Academy**: Solo la coda (Waitlist) è attiva lato pubblico. Il frontend dei corsi reali resta in stand-by finché non ci saranno i video e Luminel maturo.
+4. **Gift Card**: Trattativa diretta su WhatsApp, niente e-commerce integrato.
+5. **P.IVA**: Rimandata consapevolmente all'anno fiscale 2027.
+
+---
+
+## 🎯 Da Fare (Task Aperti, Non Urgenti)
+
+- 🟡 **Dashboard Admin UX Mobile**: Migliorare la leggibilità dell'interfaccia di amministrazione da smartphone, se l'admin dovrà gestirla speso in mobilità.
+- 🟡 **Applicazione Regole Copy (Anti-Promessa-Clinica)**: Rivedere le frasi nel codice (es. in `SolutionBridge.tsx`) per rimuovere allusioni a fisioterapia, cura, e "spegnimento dolori cronici".
+- 🟡 **Rimozione Placeholder Academy**: Rimuovere/Sostituire la testimonianza "finta" ("Studente Masterclass 2024") con qualcosa di onesto e "coming soon".
+- 🟡 **Verifica Realtime RLS sul CRM**: Testare attivamente se la sottoscrizione al canale Supabase Realtime per i lead rispetti rigorosamente la regola RLS di sola lettura per admin.
+- 🟡 **CAPTCHA Vero**: Upgradare l'honeypot a un sistema avanzato (es. Turnstile) quando/se il traffico reale lo renderà necessario.
+
+> *Ultimo aggiornamento: 31 Agosto 2026*
