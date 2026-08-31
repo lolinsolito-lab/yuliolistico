@@ -130,7 +130,9 @@ export const saveQuizConfig = async (newRules: DiagnosisRule[], newPrescriptions
             prescriptions: newPrescriptions,
             updated_at: new Date()
         })
-        .eq('is_active', true);
+        .eq('is_active', true)
+        .select()
+        .single();
 
     // If update fails (maybe row doesn't exist yet?), try insert for the first time
     if (error || !data) {
@@ -191,9 +193,7 @@ export const analyzeSymptom = (input: string): AiRecommendation => {
         return {
             treatment: "Rituale della Scoperta",
             reasoning: "Il tuo corpo parla una lingua profonda che oggi sfugge a una singola etichetta. Ti proponiamo un rituale esplorativo in cui ascolteremo il tuo corpo dal vivo, adattando le tecniche in tempo reale per trovare esattamente la sinergia di cui hai bisogno.",
-            oilRecommendation: "Olio di Mandorle Dolci & Lavanda (Equilibrio Universale)",
-            duration: "60 min",
-            price: "€80"
+            oilRecommendation: "Olio di Mandorle Dolci & Lavanda (Equilibrio Universale)"
         };
     }
 
