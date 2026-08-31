@@ -30,7 +30,21 @@ interface AdminLayoutProps {
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) => {
     const { signOut } = useAuth();
     const navigate = useNavigate();
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 768);
+
+    // Gestione chiusura automatica su resize
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 768) {
+                setIsSidebarOpen(true);
+            } else {
+                setIsSidebarOpen(false);
+            }
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const [adminData, setAdminData] = useState({
         brand_name: 'Yuli Olistico',
         full_name: 'Yuliya',
@@ -79,6 +93,19 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
                 {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
 
+            {/* ── BACKDROP SU MOBILE ─────────── */}
+            <AnimatePresence>
+                {isSidebarOpen && window.innerWidth < 768 && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setIsSidebarOpen(false)}
+                        className="fixed inset-0 bg-black/60 z-30 md:hidden backdrop-blur-sm"
+                    />
+                )}
+            </AnimatePresence>
+
             {/* ── SIDEBAR ────────────────────── */}
             <AnimatePresence mode="wait">
                 {(isSidebarOpen || window.innerWidth >= 768) && (
@@ -111,7 +138,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
                                 return (
                                     <button
                                         key={item.id}
-                                        onClick={() => navigate(item.path)}
+                                        onClick={() => {
+                                            navigate(item.path);
+                                            if (window.innerWidth < 768) setIsSidebarOpen(false);
+                                        }}
                                         className={`w-full flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-300 group
                       ${isActive
                                                 ? 'bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/20 shadow-[0_0_15px_rgba(212,175,55,0.1)]'
@@ -158,12 +188,12 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
             {/* ── MAIN CONTENT ───────────────── */}
             <main className="flex-1 h-screen overflow-y-auto relative custom-scrollbar bg-[#faf9f6]">
                 {/* Top Bar glass effect */}
-                <header className="sticky top-0 z-30 bg-[#faf9f6]/80 backdrop-blur-md px-8 py-4 border-b border-stone-200 flex justify-between items-center">
-                    <div>
-                        <span className="text-xs font-bold text-[#c07a60] uppercase tracking-wider mb-1 block">
+                <header className="sticky top-0 z-20 bg-[#faf9f6]/80 backdrop-blur-md px-4 pl-16 md:px-8 py-4 border-b border-stone-200 flex justify-between items-center">
+                    <div className="flex-1 min-w-0 pr-4">
+                        <span className="text-[10px] md:text-xs font-bold text-[#c07a60] uppercase tracking-wider mb-1 block truncate">
                             {menuItems.find(i => i.id === activeSection)?.label}
                         </span>
-                        <h2 className="font-serif text-2xl text-[#292524]">
+                        <h2 className="font-serif text-lg md:text-2xl text-[#292524] leading-tight truncate">
                             {activeSection === 'overview' && "Bentornata al Comando."}
                             {activeSection === 'website' && "Gestione Contenuti Digitali."}
                             {activeSection === 'services' && "Catalogo Esperienze & Rituali."}
@@ -184,7 +214,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, activeSection }) =>
                     </div>
                 </header>
 
-                <div className="p-8 max-w-7xl mx-auto">
+                <div className="p-4 md:p-8 max-w-7xl mx-auto">
                     {children}
                 </div>
             </main>

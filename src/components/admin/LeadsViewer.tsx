@@ -60,22 +60,22 @@ const LeadsViewer: React.FC = () => {
     if (loading) return <div className="p-10 flex justify-center"><Loader className="animate-spin text-[#c07a60]" /></div>;
 
     return (
-        <div className="space-y-6 max-w-7xl mx-auto p-8">
-            <div className="flex justify-between items-center mb-8">
+        <div className="space-y-6 max-w-7xl mx-auto">
+            <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6 mb-8">
                 <div>
                     <h2 className="text-3xl font-serif text-[#292524] mb-2">Leads Valutazione</h2>
                     <p className="text-stone-500 text-sm">Controlla chi ha completato il quiz e necessita di contatto.</p>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 w-full xl:w-auto">
                     <div className="flex flex-wrap bg-stone-100 p-1 rounded-lg gap-1">
-                        <button onClick={() => setSourceFilter('ALL')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'ALL' ? 'bg-white shadow-sm text-[#292524]' : 'text-stone-400 hover:text-stone-600'}`}>Tutti</button>
-                        <button onClick={() => setSourceFilter('quiz')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'quiz' ? 'bg-[#c07a60]/10 text-[#c07a60]' : 'text-stone-400 hover:text-stone-600'}`}>Quiz</button>
-                        <button onClick={() => setSourceFilter('academy')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'academy' ? 'bg-indigo-50 text-indigo-600' : 'text-stone-400 hover:text-stone-600'}`}>Academy</button>
-                        <button onClick={() => setSourceFilter('newsletter')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'newsletter' ? 'bg-amber-50 text-amber-600' : 'text-stone-400 hover:text-stone-600'}`}>Newsletter</button>
-                        <button onClick={() => setSourceFilter('sanctuary')} className={`px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'sanctuary' ? 'bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/20 shadow-sm' : 'text-stone-400 hover:text-[#d4af37]'}`}>Sanctuary VIP</button>
+                        <button onClick={() => setSourceFilter('ALL')} className={`px-3 md:px-4 py-1.5 rounded-md text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'ALL' ? 'bg-white shadow-sm text-[#292524]' : 'text-stone-400 hover:text-stone-600'}`}>Tutti</button>
+                        <button onClick={() => setSourceFilter('quiz')} className={`px-3 md:px-4 py-1.5 rounded-md text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'quiz' ? 'bg-[#c07a60]/10 text-[#c07a60]' : 'text-stone-400 hover:text-stone-600'}`}>Quiz</button>
+                        <button onClick={() => setSourceFilter('academy')} className={`px-3 md:px-4 py-1.5 rounded-md text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'academy' ? 'bg-indigo-50 text-indigo-600' : 'text-stone-400 hover:text-stone-600'}`}>Academy</button>
+                        <button onClick={() => setSourceFilter('newsletter')} className={`px-3 md:px-4 py-1.5 rounded-md text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'newsletter' ? 'bg-amber-50 text-amber-600' : 'text-stone-400 hover:text-stone-600'}`}>Newsletter</button>
+                        <button onClick={() => setSourceFilter('sanctuary')} className={`px-3 md:px-4 py-1.5 rounded-md text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all ${sourceFilter === 'sanctuary' ? 'bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/20 shadow-sm' : 'text-stone-400 hover:text-[#d4af37]'}`}>Sanctuary VIP</button>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 w-full md:w-auto">
                         <button 
                             onClick={fetchLeads} 
                             disabled={loading}
@@ -92,7 +92,7 @@ const LeadsViewer: React.FC = () => {
                                 placeholder="Cerca nome, email..."
                                 value={filter}
                                 onChange={(e) => setFilter(e.target.value)}
-                                className="pl-10 pr-4 py-3 border border-stone-200 rounded-lg outline-none focus:border-[#c07a60] transition-all bg-white shadow-sm w-48 focus:w-64"
+                                className="pl-10 pr-4 py-3 border border-stone-200 rounded-lg outline-none focus:border-[#c07a60] transition-all bg-white shadow-sm w-full md:w-48 md:focus:w-64"
                             />
                         </div>
                     </div>
@@ -104,16 +104,16 @@ const LeadsViewer: React.FC = () => {
                     <table className="w-full text-left border-collapse">
                         <thead className="bg-[#faf9f6] border-b border-stone-100">
                             <tr>
-                                <th className="p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold">Data & Contatto</th>
-                                <th className="p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold">Valutazione</th>
-                                <th className="p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold">Sorgente</th>
-                                <th className="p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold text-right">Stato</th>
+                                <th className="p-4 md:p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold min-w-[200px]">Data & Contatto</th>
+                                <th className="p-4 md:p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold min-w-[250px]">Valutazione</th>
+                                <th className="p-4 md:p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold">Sorgente</th>
+                                <th className="p-4 md:p-6 text-[10px] uppercase tracking-[0.2em] text-[#a8a29e] font-bold text-right">Stato</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-stone-100 bg-white">
                             {filteredLeads.map((lead) => (
                                 <tr key={lead.id} className="hover:bg-stone-50/50 transition-colors group">
-                                    <td className="p-6 align-top w-1/3">
+                                    <td className="p-4 md:p-6 align-top w-1/3">
                                         <div className="font-serif text-xl text-[#292524] mb-1 group-hover:text-[#c07a60] transition-colors">
                                             {lead.name}
                                         </div>
@@ -131,7 +131,7 @@ const LeadsViewer: React.FC = () => {
                                         </div>
                                     </td>
 
-                                    <td className="p-6 align-top w-1/2">
+                                    <td className="p-4 md:p-6 align-top w-1/2">
                                         <div className="bg-stone-50 p-4 rounded-lg border border-stone-100 mb-3">
                                             <span className="text-[10px] uppercase tracking-widest text-stone-400 block mb-1">Input Utente</span>
                                             <p className="text-stone-600 italic text-sm">"{lead.symptom}"</p>
@@ -144,7 +144,7 @@ const LeadsViewer: React.FC = () => {
                                         </div>
                                     </td>
 
-                                    <td className="p-6 align-top">
+                                    <td className="p-4 md:p-6 align-top">
                                         <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest ${
                                             lead.source === 'sanctuary' ? 'bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/30' :
                                             lead.source === 'academy' ? 'bg-indigo-50 text-indigo-600 border border-indigo-100' :
@@ -157,7 +157,7 @@ const LeadsViewer: React.FC = () => {
                                         </span>
                                     </td>
 
-                                    <td className="p-6 align-top text-right w-1/6">
+                                    <td className="p-4 md:p-6 align-top text-right w-1/6">
                                         <div className="flex flex-col items-end gap-3">
                                             <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full ${lead.status === 'new' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-gray-100 text-gray-500'}`}>
                                                 <CheckCircle className="w-3 h-3" /> {lead.status || 'NEW'}
