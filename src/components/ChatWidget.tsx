@@ -8,12 +8,12 @@ interface Message {
   sender: 'user' | 'bot';
 }
 
-const STATIC_RESPONSE = "Grazie di cuore per avermi scritto. 🌿 Essendo spesso in studio per i trattamenti non riesco a rispondere in tempo reale. Copia questo messaggio e inviamelo su WhatsApp (320 198 26 29) o via email (yuliolistico@gmail.com). Ti dedicherò tutta la mia attenzione appena possibile! 💌";
+const STATIC_RESPONSE = "Grazie di cuore per avermi scritto. 🌿 Essendo spesso impegnata nei trattamenti non riesco a rispondere in tempo reale. Copia questo messaggio e inviamelo su WhatsApp (320 198 26 29) o via email (yuliolistico@gmail.com). Ti dedicherò tutta la mia attenzione appena possibile! 💌";
 
 const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { id: 0, text: "Ciao! ✨ Sono in studio per i trattamenti e non posso rispondere subito. Usa questa finestra per annotare i tuoi pensieri, poi scrivimi direttamente su WhatsApp o via email e ti risponderò con cura entro 24h.", sender: 'bot' }
+    { id: 0, text: "Ciao! ✨ Sono impegnata in un trattamento e non posso rispondere subito. Usa questa finestra per annotare i tuoi pensieri, poi scrivimi direttamente su WhatsApp o via email e ti risponderò con cura entro 24h.", sender: 'bot' }
   ]);
   const [inputText, setInputText] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);

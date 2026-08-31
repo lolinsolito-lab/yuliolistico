@@ -11,7 +11,7 @@ const BookingPage: React.FC = () => {
         <h2 className="text-4xl md:text-5xl font-serif text-[#292524] mb-4">Prenota la tua Armonia</h2>
         <p className="text-[#57534e] font-light leading-relaxed">
           Seleziona il trattamento e l'orario che preferisci. 
-          Il sistema sincronizzerà automaticamente la tua richiesta con il calendario dello studio.
+          Il sistema sincronizzerà automaticamente la tua richiesta con l'agenda di Yuli.
           <br/>
           <span className="text-xs italic text-[#a8a29e] mt-2 block">
             Trattamenti esclusivamente olistici ai sensi della Legge 4/2013.

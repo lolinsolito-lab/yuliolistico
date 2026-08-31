@@ -10,7 +10,7 @@ L''algoritmo di {{companyName}} ha decodificato quello che ci hai raccontato. Il
 
 Non è una scelta a caso. È il punto da cui iniziare per tornare al tuo corpo.
 
-Se senti che è il momento giusto, la porta è aperta.
+Se senti che è il momento giusto, sono pronta a raggiungerti.
 
 A presto,
 Yuli'

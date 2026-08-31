@@ -70,7 +70,7 @@ Il nostro motore olistico ha elaborato la tua richiesta. Il rituale che il tuo c
 
 {{treatment}}
 
-Ti aspettiamo in studio per iniziare questo percorso.
+Ti raggiungiamo a domicilio per iniziare questo percorso.
 
 A presto,
 {{companyName}}'
