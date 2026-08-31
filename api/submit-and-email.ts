@@ -117,8 +117,7 @@ export default async function handler(req: any, res: any) {
         if (dbError) {
             console.error("Database Error:", dbError);
             if (dbError.message?.includes('duplicate_subscription')) {
-                // Silently succeed so the user doesn't know, but don't send duplicate emails
-                return res.status(200).json({ success: true, emailSent: false, message: 'Already subscribed' });
+                return res.status(409).json({ error: "duplicate_subscription" });
             }
             return res.status(500).json({ error: "Failed to save lead in database", details: dbError });
         }
@@ -216,7 +215,9 @@ export default async function handler(req: any, res: any) {
             let ctaConfig: { text: string; link: string } | undefined = undefined;
             if (source === 'archive' && safeFileUrl !== '#') {
                 ctaConfig = { text: 'SCARICA ORA', link: safeFileUrl };
-            } else if (source === 'quiz' || source === 'newsletter') {
+            } else if (source === 'newsletter') {
+                ctaConfig = { text: 'ESPLORA IL JOURNAL', link: 'https://www.yuliolistico.com/journal' };
+            } else if (source === 'quiz') {
                 ctaConfig = { text: 'PRENOTA ORA', link: 'https://www.yuliolistico.com/#booking' };
             }
 

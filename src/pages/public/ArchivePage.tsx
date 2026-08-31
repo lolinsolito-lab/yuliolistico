@@ -45,7 +45,7 @@ const ArchivePage: React.FC = () => {
     const [name, setName] = useState('');
     const [honeypot, setHoneypot] = useState('');
     const [marketingConsent, setMarketingConsent] = useState(false);
-    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'partial_error'>('idle');
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'partial_error' | 'already_subscribed'>('idle');
 
     useEffect(() => {
         const fetchResources = async () => {
@@ -106,10 +106,21 @@ const ArchivePage: React.FC = () => {
                 setName('');
                 setMarketingConsent(false);
             }, 8000);
-        } catch {
-            // Fail silently on complete failure, but close modal to prevent stuck UI
-            setEmailModal(null);
-            setStatus('idle');
+        } catch (err: any) {
+            if (err?.message?.includes('duplicate_subscription')) {
+                setStatus('already_subscribed');
+                setTimeout(() => {
+                    setEmailModal(null);
+                    setStatus('idle');
+                    setEmail('');
+                    setName('');
+                    setMarketingConsent(false);
+                }, 8000);
+            } else {
+                // Fail silently on complete failure, but close modal to prevent stuck UI
+                setEmailModal(null);
+                setStatus('idle');
+            }
         }
     };
 
@@ -248,11 +259,20 @@ const ArchivePage: React.FC = () => {
                                 <X className="w-5 h-5" />
                             </button>
 
-                            {status === 'success' ? (
+                            {status === 'success' || status === 'already_subscribed' ? (
                                 <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }}>
                                     <Download className="w-10 h-10 text-[#d4af37] mx-auto mb-3" />
-                                    <h3 className="font-serif text-xl mb-1">Controlla la tua email!</h3>
-                                    <p className="text-sm text-stone-500">Ti abbiamo appena inviato il link per il download gratuito. Se non lo vedi, controlla anche nella cartella Spam o Promozioni.</p>
+                                    {status === 'already_subscribed' ? (
+                                        <>
+                                            <h3 className="font-serif text-xl mb-1 text-[#c07a60]">Sei già nella lista!</h3>
+                                            <p className="text-sm text-stone-500">Ti aggiorneremo appena ci sono novità.</p>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <h3 className="font-serif text-xl mb-1">Controlla la tua email!</h3>
+                                            <p className="text-sm text-stone-500">Ti abbiamo appena inviato il link per il download gratuito. Se non lo vedi, controlla anche nella cartella Spam o Promozioni.</p>
+                                        </>
+                                    )}
                                 </motion.div>
                             ) : status === 'partial_error' ? (
                                 <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }}>

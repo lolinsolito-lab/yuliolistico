@@ -7,7 +7,7 @@ const Membership: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [honeypot, setHoneypot] = useState('');
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error' | 'already_subscribed'>('idle');
   const [marketingConsent, setMarketingConsent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,9 +46,13 @@ const Membership: React.FC = () => {
         setFormData({ name: '', email: '', phone: '', message: '' });
         setMarketingConsent(false);
       }, 3000);
-    } catch {
-      setStatus('error');
-    }
+    } catch (err: any) {
+        if (err?.message?.includes('duplicate_subscription')) {
+          setStatus('already_subscribed');
+        } else {
+          setStatus('error');
+        }
+      }
   };
 
   return (
@@ -141,7 +145,7 @@ const Membership: React.FC = () => {
                 <X className="w-5 h-5" />
               </button>
 
-              {status === 'success' ? (
+              {status === 'success' || status === 'already_subscribed' ? (
                 /* Success State */
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -149,8 +153,17 @@ const Membership: React.FC = () => {
                   className="text-center py-8"
                 >
                   <CheckCircle className="w-12 h-12 text-[#d4af37] mx-auto mb-4" />
-                  <h3 className="text-2xl font-serif mb-2">Sei nella Lista Riservata</h3>
-                  <p className="text-sm text-white/50 leading-relaxed">Sarai tra i primi a sapere quando<br />il Sanctuary aprirà le porte.</p>
+                  {status === 'already_subscribed' ? (
+                    <>
+                      <h3 className="text-2xl font-serif mb-2">Sei già nella lista</h3>
+                      <p className="text-sm text-white/50 leading-relaxed">Ti aggiorneremo appena ci sono novità.</p>
+                    </>
+                  ) : (
+                    <>
+                      <h3 className="text-2xl font-serif mb-2">Sei nella Lista Riservata</h3>
+                      <p className="text-sm text-white/50 leading-relaxed">Sarai tra i primi a sapere quando<br />il Sanctuary aprirà le porte.</p>
+                    </>
+                  )}
                 </motion.div>
               ) : (
                 /* Form */

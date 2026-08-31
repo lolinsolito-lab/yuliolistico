@@ -6,7 +6,7 @@ const Newsletter: React.FC = () => {
   const [email, setEmail] = useState('');
   const [honeypot, setHoneypot] = useState('');
   const [marketingConsent, setMarketingConsent] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'already_subscribed'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,9 +23,13 @@ const Newsletter: React.FC = () => {
         }, 'newsletter', honeypot);
         setStatus('success');
         setEmail('');
-      } catch (err) {
+      } catch (err: any) {
         console.error(err);
-        setStatus('idle');
+        if (err?.message?.includes('duplicate_subscription')) {
+          setStatus('already_subscribed');
+        } else {
+          setStatus('idle');
+        }
       }
     }
   };
@@ -45,6 +49,11 @@ const Newsletter: React.FC = () => {
           <div className="flex items-center justify-center gap-2 text-[#849b87] animate-pulse">
             <Check className="w-5 h-5" />
             <span className="font-serif text-lg">Sei dentro. Controlla la tua email per il benvenuto.</span>
+          </div>
+        ) : status === 'already_subscribed' ? (
+          <div className="flex items-center justify-center gap-2 text-[#c07a60]">
+            <Check className="w-5 h-5" />
+            <span className="font-serif text-lg">Sei già nella nostra lista — ti aggiorneremo appena ci sono novità.</span>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="max-w-md mx-auto">

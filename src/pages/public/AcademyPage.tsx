@@ -9,7 +9,7 @@ const AcademyPage: React.FC = () => {
     const [email, setEmail] = useState('');
     const [honeypot, setHoneypot] = useState('');
     const [marketingConsent, setMarketingConsent] = useState(false);
-    const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'already_subscribed'>('idle');
 
     const handleSubscribe = async () => {
         if (!email) return;
@@ -25,9 +25,13 @@ const AcademyPage: React.FC = () => {
             }, 'academy', honeypot);
             setStatus('success');
             setEmail('');
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            setStatus('idle');
+            if (error?.message?.includes('duplicate_subscription')) {
+                setStatus('already_subscribed');
+            } else {
+                setStatus('idle');
+            }
         }
     };
     return (
@@ -107,6 +111,11 @@ const AcademyPage: React.FC = () => {
                         <div className="flex items-center justify-center gap-2 text-[#d4af37] animate-pulse py-4">
                             <Check className="w-5 h-5" />
                             <span className="font-serif text-lg">Sei in lista. Ti avviseremo via email 48h prima.</span>
+                        </div>
+                    ) : status === 'already_subscribed' ? (
+                        <div className="flex items-center justify-center gap-2 text-[#c07a60] py-4">
+                            <Check className="w-5 h-5" />
+                            <span className="font-serif text-lg">Sei già nella lista — ti aggiorneremo appena ci sono novità.</span>
                         </div>
                     ) : (
                         <div className="flex flex-col gap-4">
