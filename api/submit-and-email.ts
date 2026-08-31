@@ -119,7 +119,7 @@ export default async function handler(req: any, res: any) {
             if (dbError.message?.includes('duplicate_subscription')) {
                 return res.status(409).json({ error: "duplicate_subscription" });
             }
-            return res.status(500).json({ error: "Failed to save lead in database", details: dbError });
+            return res.status(500).json({ error: "internal_error", message: "Si è verificato un errore temporaneo. Riprova tra poco." });
         }
 
         // Se la source è 'gift' (Gift Card), non inviamo nessuna email, il database era l'unico scopo.
