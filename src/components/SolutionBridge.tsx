@@ -53,7 +53,7 @@ const SolutionBridge: React.FC = () => {
                             id: "02",
                             title: "Decompressione",
                             subtitle: "Emotional",
-                            desc: "Il corpo ricorda ciò che la mente ha voluto dimenticare. Qui trova finalmente lo spazio per lasciar andare. Spazio sicuro per lasciar andare ciò che ti appesantisce.",
+                            desc: "Il corpo ricorda ciò che la mente ha voluto dimenticare. Qui trova finalmente lo spazio sicuro per lasciar andare ciò che ti appesantisce.",
                             icon: Heart,
                             delay: 0.2,
                             image: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=2070&auto=format&fit=crop" // Water ripples
