@@ -44,7 +44,7 @@ const SolutionBridge: React.FC = () => {
                             id: "01",
                             title: "Bio-Ricalibrazione",
                             subtitle: "Physical",
-                            desc: "Non scogliamo solo i nodi. Riscriviamo la postura profonda. Disinneschiamo il dolore cronico alla radice.",
+                            desc: "Non scogliamo solo i nodi. Riscriviamo la postura profonda. Ascoltiamo la tensione più antica, quella che il tempo ha reso silenziosa.",
                             icon: Activity,
                             delay: 0,
                             image: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=2070&auto=format&fit=crop" // Marble/Stone
@@ -53,7 +53,7 @@ const SolutionBridge: React.FC = () => {
                             id: "02",
                             title: "Decompressione",
                             subtitle: "Emotional",
-                            desc: "Il corpo tiene il conto di ogni trauma. Qui saldiamo il debito. Spazio sicuro per lasciar andare ciò che ti appesantisce.",
+                            desc: "Il corpo ricorda ciò che la mente ha voluto dimenticare. Qui trova finalmente lo spazio per lasciar andare. Spazio sicuro per lasciar andare ciò che ti appesantisce.",
                             icon: Heart,
                             delay: 0.2,
                             image: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=2070&auto=format&fit=crop" // Water ripples
@@ -62,7 +62,7 @@ const SolutionBridge: React.FC = () => {
                             id: "03",
                             title: "Silenzio Neurale",
                             subtitle: "Mental",
-                            desc: "Spegniamo il rumore di fondo. Un reset completo del sistema nervoso per tornare a pensare con chiarezza cristallina.",
+                            desc: "Spegniamo il rumore di fondo. Per tornare a pensare con chiarezza cristallina.",
                             icon: BrainCircuit,
                             delay: 0.4,
                             image: "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?q=80&w=2074&auto=format&fit=crop" // Ethereal light

@@ -8,6 +8,7 @@ const Membership: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [honeypot, setHoneypot] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [marketingConsent, setMarketingConsent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,6 +23,7 @@ const Membership: React.FC = () => {
         setStatus('idle');
         setFormData({ name: '', email: '', phone: '', message: '' });
         setHoneypot('');
+        setMarketingConsent(false);
       }, 3000);
       return;
     }
@@ -33,7 +35,8 @@ const Membership: React.FC = () => {
         email: formData.email,
         phone: formData.phone,
         symptom: formData.message || 'Candidatura Sanctuary Membership',
-        result_treatment: 'sanctuary_vip'
+        result_treatment: 'sanctuary_vip',
+        marketing_consent: marketingConsent
       }, 'sanctuary', honeypot);
 
       setStatus('success');
@@ -41,6 +44,7 @@ const Membership: React.FC = () => {
         setShowModal(false);
         setStatus('idle');
         setFormData({ name: '', email: '', phone: '', message: '' });
+        setMarketingConsent(false);
       }, 3000);
     } catch {
       setStatus('error');
@@ -216,6 +220,19 @@ const Membership: React.FC = () => {
                         rows={3}
                         className="w-full py-3 px-4 bg-white/5 border border-white/15 text-white placeholder:text-white/30 focus:outline-none focus:border-[#d4af37] transition-colors text-sm resize-none"
                       />
+                    </div>
+
+                    <div className="flex items-start gap-2 text-left pt-2 pb-2">
+                        <input 
+                            type="checkbox" 
+                            id="gdpr_sanctuary"
+                            checked={marketingConsent}
+                            onChange={(e) => setMarketingConsent(e.target.checked)}
+                            className="mt-1 accent-[#d4af37]"
+                        />
+                        <label htmlFor="gdpr_sanctuary" className="text-[10px] text-white/40 leading-tight">
+                            Acconsento a ricevere approfondimenti e comunicazioni future da Yuli Olistico. (Facoltativo)
+                        </label>
                     </div>
 
                     <button

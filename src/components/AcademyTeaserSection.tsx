@@ -97,8 +97,7 @@ const AcademyTeaserSection: React.FC = () => {
 
                             {/* Overlay Quote */}
                             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#1c1917] to-transparent p-6 z-20">
-                                <p className="font-serif text-lg italic text-white/90">"Ho smesso di vendere ore. Ho iniziato a vendere trasformazioni."</p>
-                                <p className="text-xs text-[#d4af37] uppercase tracking-widest font-bold mt-1">— Studente Masterclass 2024</p>
+                                <p className="font-serif text-lg italic text-white/90">"Non cerchiamo numeri. Cerchiamo le prime dieci persone giuste."</p>
                             </div>
                         </div>
                     </motion.div>
