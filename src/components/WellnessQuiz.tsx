@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ArrowRight, RefreshCcw, Cpu, Lock, CheckCircle } from 'lucide-react';
-import { analyzeSymptom, fetchQuizConfig } from '../services/diagnosticEngine';
+import { analyzeSymptom, fetchQuizConfig, QuizResult } from '../services/diagnosticEngine';
 import { saveLead } from '../services/supabaseService';
 import { supabase } from '../lib/supabaseClient';
-import { AiRecommendation } from '../types';
 import { useBooking } from '../context/BookingContext';
+
+const TIER_LABELS: Record<string, string> = {
+  MANUAL: 'Le Fondamenta',
+  TOOLS: 'La Profondità',
+  RITUAL: 'La Sovranità'
+};
 
 const WellnessQuiz: React.FC = () => {
   const [step, setStep] = useState<'INPUT' | 'LEAD_GEN' | 'RESULT'>('INPUT');
   const [loading, setLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState(""); // For "Wisdom Pill"
+  const [loadingMessage, setLoadingMessage] = useState("");
   const { openBooking } = useBooking();
 
-  // Form State
   const [symptom, setSymptom] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -21,47 +25,51 @@ const WellnessQuiz: React.FC = () => {
   const [honeypot, setHoneypot] = useState('');
   const [marketingConsent, setMarketingConsent] = useState(false);
 
-  const [result, setResult] = useState<AiRecommendation | null>(null);
+  const [result, setResult] = useState<QuizResult | null>(null);
+  const [optionTiers, setOptionTiers] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchQuizConfig();
   }, []);
 
-  // Step 1: Analyze Symptom & Fake Processing
   const handleAnalyze = async () => {
     if (!symptom.trim() || !name.trim()) return;
     setLoading(true);
 
-    // Sequence 1: Listening
     setLoadingMessage("Ascolto il ritmo del tuo respiro...");
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Sequence 2: Connecting
     setLoadingMessage("Connetto con gli antichi elementi...");
     await new Promise(resolve => setTimeout(resolve, 2000));
 
-    // Sequence 3: Decoding
     setLoadingMessage("L'universo ha una risposta per te...");
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     const diagnosis = analyzeSymptom(symptom);
 
-    // Dynamic Lookup for Real-Time Price & Duration
-    if (diagnosis.treatment !== 'Rituale della Scoperta') {
+    if (!diagnosis.isExploratory) {
       try {
+        const treatmentNames = diagnosis.options.map(o => o.treatment);
         const { data, error } = await supabase
           .from('services')
-          .select('price, duration')
-          .eq('title', diagnosis.treatment)
-          .single();
-        
+          .select('title, category')
+          .in('title', treatmentNames);
+
         if (data && !error) {
-           diagnosis.price = data.price;
-           diagnosis.duration = data.duration;
+          const tierMap: Record<string, string> = {};
+          data.forEach((row: any) => {
+            tierMap[row.title] = TIER_LABELS[row.category] || '';
+          });
+          setOptionTiers(tierMap);
+        } else {
+          setOptionTiers({});
         }
       } catch (err) {
-         console.warn("Lookup failed for", diagnosis.treatment, err);
+        console.warn("Tier lookup failed", err);
+        setOptionTiers({});
       }
+    } else {
+      setOptionTiers({});
     }
 
     setResult(diagnosis);
@@ -69,27 +77,29 @@ const WellnessQuiz: React.FC = () => {
     setStep('LEAD_GEN');
   };
 
-  // Step 2: Unlock Result (Lead Gen)
   const handleUnlock = async () => {
     if (!email.trim() || !phone.trim()) return;
     setLoading(true);
 
     try {
       if (result) {
-        // 1. Save to Database and Trigger Email (Unified Vercel API)
+        let treatmentSummary = result.options.map(o => o.treatment).join(' & ');
+        if (result.secondary) {
+          treatmentSummary += ` | Risonanza secondaria: ${result.secondary.treatment}`;
+        }
+
         await saveLead({
           name,
           email,
           phone,
           symptom,
-          result_treatment: result.secondary ? `${result.treatment} & ${result.secondary.treatment}` : result.treatment,
+          result_treatment: treatmentSummary,
           marketing_consent: marketingConsent
         }, 'quiz', honeypot);
         console.log("Lead Saved & Email Triggered via Vercel");
       }
     } catch (error) {
       console.error("Failed to save lead", error);
-      // Continue anyway to show result to user
     }
 
     await new Promise(resolve => setTimeout(resolve, 1500));
@@ -99,7 +109,6 @@ const WellnessQuiz: React.FC = () => {
 
   return (
     <section className="py-32 mb-20 border-b border-[#292524]/5 bg-[#faf9f6] px-6 relative overflow-hidden" id="diagnostic">
-      {/* Tech/Organic Fusion Background */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div className="absolute top-10 right-10 w-96 h-96 border border-[#292524] rounded-full"></div>
         <div className="absolute bottom-10 left-10 w-96 h-96 border border-[#292524] rounded-full"></div>
@@ -108,7 +117,6 @@ const WellnessQuiz: React.FC = () => {
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
 
-          {/* Left: Introduction & Instructions */}
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Cpu className="w-4 h-4 text-[#849b87]" />
@@ -125,7 +133,6 @@ const WellnessQuiz: React.FC = () => {
             <AnimatePresence mode='wait'>
               {step === 'INPUT' && (
                 <div className="relative">
-                  {/* Wisdom Loader Overlay */}
                   <AnimatePresence>
                     {loading && (
                       <motion.div
@@ -211,7 +218,6 @@ const WellnessQuiz: React.FC = () => {
                   </p>
 
                   <div className="space-y-4 text-left">
-                    {/* Honeypot invisibile */}
                     <div style={{ display: 'none' }} aria-hidden="true">
                       <label htmlFor="quiz_website">Website</label>
                       <input
@@ -239,7 +245,6 @@ const WellnessQuiz: React.FC = () => {
                       className="w-full bg-white p-4 border border-[#292524]/10 outline-none"
                     />
 
-                    {/* GDPR Consent */}
                     <div className="flex items-start gap-2 text-left pt-2 pb-2">
                         <input 
                             type="checkbox" 
@@ -268,13 +273,10 @@ const WellnessQuiz: React.FC = () => {
 
           </div>
 
-          {/* Right: The Result Card (Locked/Unlocked State) */}
           <div className="relative min-h-[500px] flex items-center justify-center">
-            {/* Background Blob */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#f3e9d2] rounded-full blur-[100px] opacity-40 pointer-events-none"></div>
 
             <AnimatePresence mode='wait'>
-              {/* Result Card */}
               {step === 'RESULT' && result && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
@@ -285,58 +287,58 @@ const WellnessQuiz: React.FC = () => {
                     <CheckCircle className="w-3 h-3 text-[#c07a60]" /> Match Confermato
                   </div>
 
-                  <div className="mb-2 text-xs text-[#a8a29e] uppercase tracking-widest">{name}, il tuo Rituale Suggerito</div>
-                  <h3 className="text-4xl font-serif text-[#292524] mb-6 leading-tight">
-                    {result.treatment}
-                  </h3>
+                  <div className="mb-6 text-xs text-[#a8a29e] uppercase tracking-widest">
+                    {name}, {result.isExploratory ? 'il tuo Rituale Suggerito' : 'i Rituali Suggeriti per te'}
+                  </div>
 
-                  {(result.duration || result.price) && (
-                    <div className="flex items-center justify-center gap-4 text-sm text-[#c07a60] font-bold uppercase tracking-widest mb-6 -mt-2">
-                      {result.duration && <span>{result.duration}</span>}
-                      {result.duration && result.price && <span>•</span>}
-                      {result.price && <span>{result.price}</span>}
-                    </div>
-                  )}
+                  <div className="space-y-8 text-left">
+                    {result.options.map((option, idx) => (
+                      <div key={idx} className={idx > 0 ? "pt-8 border-t border-[#292524]/10" : ""}>
+                        <h3 className="text-3xl font-serif text-[#292524] mb-1 text-center leading-tight">
+                          {option.treatment}
+                        </h3>
 
-                  {result.secondary && (
-                    <div className="mb-6 p-4 border border-[#c07a60]/20 bg-[#c07a60]/5 rounded-sm">
-                      <div className="text-[10px] text-[#c07a60] uppercase tracking-widest mb-1">Sinergia Complementare:</div>
-                      <h4 className="text-xl font-serif text-[#292524] mb-2">{result.secondary.treatment}</h4>
-                      {(result.secondary.duration || result.secondary.price) && (
-                        <div className="flex items-center justify-center gap-3 text-xs text-[#57534e] uppercase tracking-widest">
-                          {result.secondary.duration && <span>{result.secondary.duration}</span>}
-                          {result.secondary.duration && result.secondary.price && <span>•</span>}
-                          {result.secondary.price && <span>{result.secondary.price}</span>}
+                        {optionTiers[option.treatment] && (
+                          <div className="text-center text-xs text-[#c07a60] uppercase tracking-widest font-bold mb-4">
+                            {optionTiers[option.treatment]}
+                          </div>
+                        )}
+
+                        <div className="mb-4 relative">
+                          <span className="absolute -top-4 -left-2 text-5xl text-[#c07a60]/20 font-serif">"</span>
+                          <p className="text-[#57534e] text-base font-light italic leading-relaxed relative z-10 whitespace-pre-line px-2">
+                            {option.reasoning}
+                          </p>
                         </div>
-                      )}
+
+                        <div className="bg-[#faf9f6] p-4 border border-[#292524]/5 text-center">
+                          <span className="block text-[10px] uppercase tracking-widest text-[#a8a29e] mb-1">Consiglio Sensoriale</span>
+                          <p className="text-[#c07a60] font-serif text-lg">{option.oilRecommendation}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Sinergia sussurrata — discreta, nessun bottone proprio */}
+                  {result.secondary && (
+                    <div className="mt-8 pt-6 border-t border-dashed border-[#c07a60]/20 text-center">
+                      <p className="text-[10px] text-[#a8a29e] uppercase tracking-widest mb-2">
+                        Abbiamo notato anche un'altra risonanza in te
+                      </p>
+                      <p className="text-lg font-serif text-[#57534e] italic">
+                        {result.secondary.treatment}
+                      </p>
                     </div>
                   )}
 
-                  <div className="mb-8 relative">
-                    <span className="absolute -top-4 -left-2 text-6xl text-[#c07a60]/20 font-serif">"</span>
-                    <p className="text-[#57534e] text-lg font-light italic leading-relaxed relative z-10 whitespace-pre-line">
-                      {result.reasoning}
-                    </p>
-                  </div>
-
-                  <div className="bg-[#faf9f6] p-6 mb-8 border border-[#292524]/5">
-                    <span className="block text-xs uppercase tracking-widest text-[#a8a29e] mb-2">Consiglio Sensoriale</span>
-                    <p className="text-[#c07a60] font-serif text-xl">{result.oilRecommendation}</p>
-                    {result.secondary && (
-                      <p className="text-[#c07a60] font-serif text-md mt-2 opacity-80">+ {result.secondary.oilRecommendation}</p>
-                    )}
-                  </div>
-
-                  <button onClick={openBooking} className="w-full bg-[#292524] text-white py-4 uppercase text-xs tracking-[0.2em] font-bold hover:bg-[#c07a60] transition-colors flex items-center justify-center gap-2 group shadow-xl cursor-pointer">
+                  <button onClick={openBooking} className="w-full mt-8 bg-[#292524] text-white py-4 uppercase text-xs tracking-[0.2em] font-bold hover:bg-[#c07a60] transition-colors flex items-center justify-center gap-2 group shadow-xl cursor-pointer">
                     Prenota Questa Esperienza <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </motion.div>
               )}
 
-              {/* Locked State Visualization (When NOT in Result) */}
               {step !== 'RESULT' && (
                 <div className="relative z-10 w-full h-full flex flex-col justify-center pointer-events-none select-none opacity-50 grayscale-[0.5]">
-                  {/* Fake Result Card - Blurred */}
                   <div className="bg-white p-10 shadow-sm border border-[#292524]/5 rounded-sm blur-sm transform scale-95">
                     <div className="h-4 w-24 bg-gray-200 mb-6 mx-auto"></div>
                     <div className="h-8 w-48 bg-gray-200 mb-6 mx-auto"></div>

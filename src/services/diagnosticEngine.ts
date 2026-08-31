@@ -160,11 +160,21 @@ export const saveQuizConfig = async (newRules: DiagnosisRule[], newPrescriptions
     return { success: true };
 };
 
-// 4. The Diagnostic Logic
-export const analyzeSymptom = (input: string): AiRecommendation => {
+// --- LOGICA DIAGNOSTICA ---
+// Restituisce tutte le varianti dell'archetipo vincente (per il risultato
+// principale), più — se un archetipo secondario ha un punteggio vicino al
+// primo — UNA sola proposta "sussurrata" come suggerimento discreto,
+// senza bottone di prenotazione proprio.
+
+export interface QuizResult {
+    isExploratory: boolean;
+    options: AiRecommendation[];
+    secondary?: AiRecommendation;
+}
+
+export const analyzeSymptom = (input: string): QuizResult => {
     const normalizedInput = input.toLowerCase();
 
-    // Scoring System
     const scores: Record<Archetype, number> = {
         PIETRA: 0,
         RUMORE_BIANCO: 0,
@@ -172,7 +182,6 @@ export const analyzeSymptom = (input: string): AiRecommendation => {
         ESAURIMENTO: 0
     };
 
-    // Analyze Keywords
     RULES.forEach(rule => {
         rule.keywords.forEach(keyword => {
             if (normalizedInput.includes(keyword)) {
@@ -181,43 +190,52 @@ export const analyzeSymptom = (input: string): AiRecommendation => {
         });
     });
 
-    // Find Top 2 Winners
-    const sortedArchetypes = (Object.keys(scores) as Archetype[]).sort((a, b) => scores[b] - scores[a]);
-    
-    const primaryWinner = sortedArchetypes[0];
-    const secondaryWinner = sortedArchetypes[1];
-    const maxScore = scores[primaryWinner];
-    const secondScore = scores[secondaryWinner];
+    // Mappa il "Peso Neurale" di ogni archetipo (dalla config attuale, non
+    // fisso nel codice) — serve solo per spareggiare punteggi identici,
+    // così se Yuli cambia i pesi dall'admin, lo spareggio si adatta da solo.
+    const priorityByArchetype: Partial<Record<Archetype, number>> = {};
+    RULES.forEach(rule => { priorityByArchetype[rule.archetype] = rule.priority; });
+
+    const sortedArchetypes = (Object.keys(scores) as Archetype[]).sort((a, b) => {
+        if (scores[b] !== scores[a]) return scores[b] - scores[a];
+        return (priorityByArchetype[b] || 0) - (priorityByArchetype[a] || 0);
+    });
+
+    const winner = sortedArchetypes[0];
+    const maxScore = scores[winner];
 
     if (maxScore === 0) {
         return {
-            treatment: "Rituale della Scoperta",
-            reasoning: "Il tuo corpo parla una lingua profonda che oggi sfugge a una singola etichetta. Ti proponiamo un rituale esplorativo in cui ascolteremo il tuo corpo dal vivo, adattando le tecniche in tempo reale per trovare esattamente la sinergia di cui hai bisogno.",
-            oilRecommendation: "Olio di Mandorle Dolci & Lavanda (Equilibrio Universale)"
+            isExploratory: true,
+            options: [{
+                treatment: "Rituale della Scoperta",
+                reasoning: "Il tuo corpo parla una lingua profonda che oggi sfugge a una singola etichetta. Ti proponiamo un rituale esplorativo in cui ascolteremo il tuo corpo dal vivo, adattando le tecniche in tempo reale per trovare esattamente la sinergia di cui hai bisogno.",
+                oilRecommendation: "Olio di Mandorle Dolci & Lavanda (Equilibrio Universale)"
+            }]
         };
     }
 
-    // Pick a primary ritual
-    const primaryOptions = PRESCRIPTIONS[primaryWinner];
-    const primarySelected = primaryOptions[Math.floor(Math.random() * primaryOptions.length)];
+    const result: QuizResult = {
+        isExploratory: false,
+        options: PRESCRIPTIONS[winner]
+    };
 
-    let result: AiRecommendation = { ...primarySelected };
+    // Sinergia sussurrata: solo se il secondo archetipo è abbastanza vicino
+    // al primo (almeno metà del suo punteggio), e solo UNA proposta,
+    // non un secondo set completo di varianti.
+    const secondaryArchetype = sortedArchetypes[1];
+    const secondScore = scores[secondaryArchetype];
 
-    // If there's a strong secondary emotion/symptom, add a synergistic complementary ritual
     if (secondScore > 0 && secondScore >= maxScore * 0.5) {
-        const secondaryOptions = PRESCRIPTIONS[secondaryWinner];
+        const secondaryOptions = PRESCRIPTIONS[secondaryArchetype];
         const secondarySelected = secondaryOptions[Math.floor(Math.random() * secondaryOptions.length)];
-        
-        // Ensure it's not the exact same treatment (impossible due to archetypes, but just in case)
-        if (secondarySelected.treatment !== primarySelected.treatment) {
-            result.reasoning = `${primarySelected.reasoning} \n\nTuttavia, avverto anche un'altra risonanza in te. C'è una sovrapposizione emotiva complessa. Per questo motivo, ti suggerisco una sinergia profonda con un secondo rituale complementare.`;
-            result.secondary = {
-                treatment: secondarySelected.treatment,
-                reasoning: secondarySelected.reasoning,
-                oilRecommendation: secondarySelected.oilRecommendation,
-                price: secondarySelected.price,
-                duration: secondarySelected.duration
-            };
+
+        // Evita di ripetere un nome già mostrato tra le varianti principali
+        // (possibile solo se Yuli avesse usato lo stesso nome in due
+        // archetipi diversi dall'editor admin).
+        const alreadyShown = result.options.some(o => o.treatment === secondarySelected.treatment);
+        if (!alreadyShown) {
+            result.secondary = secondarySelected;
         }
     }
 
